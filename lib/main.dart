@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           return MaterialApp(
             theme: Styles.themeData(
+              
                 isDarkTheme: context.read<RootAppCubit>().getDark,
                 context: context),
             debugShowCheckedModeBanner: false,

@@ -1,12 +1,11 @@
 
 import 'package:flutter/material.dart';
-import 'package:my_shop/constant/appe_color.dart';
 
 class CusttonTitleText extends StatelessWidget {
   const CusttonTitleText({
     super.key,
     required this.text,
-    this.color = AppColors.kBlackColor,
+    this.color ,
     this.fontSize = 15,
     this.maxLines = 1,
     this.overflow = TextOverflow.ellipsis,

@@ -16,18 +16,10 @@ class RootScreen extends StatelessWidget {
         final cubit = context.read<RootAppCubit>();
         return Scaffold(
           // drawerScrimColor: AppColors.kScaffoldColor,
-        
+
           body: cubit.pages[cubit.currentIndex],
-          appBar: AppBar(
-            
-            title: CusttonTitleText(text: "متجري",fontSize: 25,fontWeight: FontWeight.w600,),
-            centerTitle: true,
-          ),
+        
           bottomNavigationBar: NavigationBar(
-            shadowColor:AppColors.kBlackColor ,
-            height: kBottomNavigationBarHeight+20,
-            backgroundColor: Colors.white,
-            indicatorColor: Colors.transparent,
             selectedIndex: cubit.currentIndex,
             onDestinationSelected: (value) {
               cubit.changeIndex(value);

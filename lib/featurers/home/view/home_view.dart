@@ -10,15 +10,25 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<RootAppCubit, RootAppState>(
       listener: (context, state) {
-        // TODO: implement listener
+
       },
       builder: (context, state) {
-        return Center(
-          child: SwitchListTile(
-              value: context.read<RootAppCubit>().getDark,
-              onChanged: (value) async {
-                await context.read<RootAppCubit>().setTheam(theameValue: value);
-              }),
+        return Scaffold(
+            appBar: AppBar(
+            title: CusttonTitleText(
+              text: "متجري",
+              fontSize: 25,
+              fontWeight: FontWeight.w600,
+            ),
+            centerTitle: true,
+          ),
+          body: Center(
+            child: SwitchListTile(
+                value: context.read<RootAppCubit>().getDark,
+                onChanged: (value) async {
+                  await context.read<RootAppCubit>().setTheam(theameValue: value);
+                }),
+          ),
         );
       },
     );

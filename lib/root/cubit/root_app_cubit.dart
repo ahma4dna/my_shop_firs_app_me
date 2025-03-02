@@ -29,29 +29,29 @@ class RootAppCubit extends Cubit<RootAppState> {
 
   List<NavigationDestination> destinations = [
     NavigationDestination(
-      icon: Icon(IconlyLight.home, color: Color(0xFF1E88E5)),
+      icon: Icon(IconlyLight.home),
       label: "الرئيسية",
-      selectedIcon: Icon(IconlyBold.home, color: Color(0xFF1E88E5)),
+      selectedIcon: Icon(IconlyBold.home),
     ),
     NavigationDestination(
-      icon: Icon(IconlyLight.bag_2, color: Color(0xFF1E88E5)),
+      icon: Icon(IconlyLight.bag_2),
       label: "السلة",
-      selectedIcon: Icon(IconlyBold.bag_2, color: Color(0xFF1E88E5)),
+      selectedIcon: Icon(IconlyBold.bag_2),
     ),
     NavigationDestination(
-      icon: Icon(IconlyLight.search, color: Color(0xFF1E88E5)),
+      icon: Icon(IconlyLight.search),
       label: "البحث",
-      selectedIcon: Icon(IconlyBold.search, color: Color(0xFF1E88E5)),
+      selectedIcon: Icon(IconlyBold.search),
     ),
     NavigationDestination(
-      icon: Icon(IconlyLight.heart, color: Color(0xFF1E88E5)),
+      icon: Icon(IconlyLight.heart),
       label: "المفضلة",
-      selectedIcon: Icon(IconlyBold.heart, color: Color(0xFF1E88E5)),
+      selectedIcon: Icon(IconlyBold.heart),
     ),
     NavigationDestination(
-      icon: Icon(IconlyLight.setting, color: Color(0xFF1E88E5)),
-      label: "الاعدادات",
-      selectedIcon: Icon(IconlyBold.setting, color: Color(0xFF1E88E5)),
+      icon: Icon(IconlyLight.profile),
+      label: "حسابي",
+      selectedIcon: Icon(IconlyBold.profile),
     ),
   ];
 
