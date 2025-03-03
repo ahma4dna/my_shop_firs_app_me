@@ -26,7 +26,7 @@ class HomeView extends StatelessWidget {
             child: SwitchListTile(
                 value: context.read<RootAppCubit>().getDark,
                 onChanged: (value) async {
-                  await context.read<RootAppCubit>().setTheam(theameValue: value);
+                  // await context.read<RootAppCubit>().setTheam(theameValue: value);
                 }),
           ),
         );

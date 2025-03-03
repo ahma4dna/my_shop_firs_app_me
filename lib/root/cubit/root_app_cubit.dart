@@ -3,9 +3,8 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:my_shop/constant/appe_color.dart';
 import 'package:my_shop/featurers/cart/view/cart_view.dart';
-import 'package:my_shop/featurers/favrait/view/favrait_view.dart';
+import 'package:my_shop/featurers/explor/view/explor_view.dart';
 import 'package:my_shop/featurers/home/view/home_view.dart';
 import 'package:my_shop/featurers/search/view/search_view.dart';
 import 'package:my_shop/featurers/setaings/view/seting_view.dart';
@@ -18,7 +17,7 @@ class RootAppCubit extends Cubit<RootAppState> {
     HomeView(),
     CartView(),
     SearchView(),
-    FaviriatVew(),
+    ExplorView(),
     SetingView(),
   ];
   int currentIndex = 0;
@@ -44,9 +43,9 @@ class RootAppCubit extends Cubit<RootAppState> {
       selectedIcon: Icon(IconlyBold.search),
     ),
     NavigationDestination(
-      icon: Icon(IconlyLight.heart),
-      label: "المفضلة",
-      selectedIcon: Icon(IconlyBold.heart),
+      icon: Icon(IconlyLight.discovery),
+      label: "استكشاف",
+      selectedIcon: Icon(IconlyBold.discovery),
     ),
     NavigationDestination(
       icon: Icon(IconlyLight.profile),
@@ -57,6 +56,7 @@ class RootAppCubit extends Cubit<RootAppState> {
 
   bool isDark = false;
   bool get getDark => isDark;
+  
   Future<void> setTheam({required bool theameValue}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("THEM", theameValue);
@@ -66,9 +66,11 @@ class RootAppCubit extends Cubit<RootAppState> {
 
   Future<void> getTheam() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    
-    isDark =  prefs.getBool("THEM")??false;
+
+    isDark = prefs.getBool("THEM") ?? false;
     log('Theme saved: ${prefs.getBool("THEM") ?? false}');
     emit(GetTheame());
   }
+
+
 }

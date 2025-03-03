@@ -7,7 +7,7 @@ class Styles {
       primaryColor:
           isDarkTheme ? AppColor.darkPrimaryColor : AppColor.lightPrimaryColor,
       scaffoldBackgroundColor:
-          isDarkTheme ? AppColor.darkScaffoldColor : AppColor.lightNavBarColor,
+          isDarkTheme ? AppColor.darkNavBarColor : AppColor.lightScaffoldColor,
       brightness: isDarkTheme ? Brightness.dark : Brightness.light,
 
       // تخصيص شريط التطبيق (AppBar)
@@ -21,8 +21,8 @@ class Styles {
           color: isDarkTheme ? Colors.white : Colors.black,
         ),
         backgroundColor: isDarkTheme
-            ? AppColor.darkScaffoldColor
-            : AppColor.lightNavBarColor,
+            ? AppColor.darkNavBarColor
+            : AppColor.lightScaffoldColor,
         elevation: 0,
       ),
 
@@ -30,8 +30,8 @@ class Styles {
       navigationBarTheme: NavigationBarThemeData(
         height: kBottomNavigationBarHeight + 30,
         backgroundColor: isDarkTheme
-            ? AppColor.darkScaffoldColor
-            : AppColor.lightNavBarColor, // خلفية شريط التنقل
+            ? AppColor.darkNavBarColor
+            : AppColor.lightScaffoldColor, // خلفية شريط التنقل
         indicatorColor: isDarkTheme
             ? Color(0xFF64B5F6)
             : Color(0xFFBBDEFB), // اللون المحدد للأيقونات
@@ -109,6 +109,10 @@ class Styles {
           ),
         ),
       ),
+      cardColor: isDarkTheme?AppColor.darkCardColor:AppColor.lightBackgroundColor,
+      cardTheme: CardTheme(color:isDarkTheme?AppColor.darkCardColor:AppColor.lightBackgroundColor,),
+      bottomSheetTheme: BottomSheetThemeData(backgroundColor:isDarkTheme? AppColor.darkNavBarColor:AppColor.lightCardColor,)
+    
     );
   }
 }
