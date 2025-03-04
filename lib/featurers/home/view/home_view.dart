@@ -2,16 +2,19 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/featurers/product/view/product_list.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   HomeView({super.key});
-  List<String> images = [
-    "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
-    "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
-    "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
-  ];
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -32,33 +35,65 @@ class HomeView extends StatelessWidget {
             ),
             centerTitle: true,
           ),
-          body: ListView(
-            children: [
-              SizedBox(
-                height: size.width * 0.05,
-              ),
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: size.width * 0.4,
-                  enlargeCenterPage: true,
-                  autoPlay: true,
-                  autoPlayCurve: Curves.easeInOut,
-                  autoPlayAnimationDuration: Duration(milliseconds: 800,),
-                  viewportFraction: 0.8,
+          body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: size.width * 0.05,
                 ),
-                items: List.generate(images.length, (index) {
-                  return ClipRRect(
-                     borderRadius: BorderRadius.circular(15),
-                    child: Image(
-                      width: size.width*0.9,
-                      fit: BoxFit.cover,
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: size.width * 0.4,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                    autoPlayCurve: Curves.easeInOut,
+                    autoPlayAnimationDuration: Duration(
+                      milliseconds: 800,
+                    ),
+                    viewportFraction: 0.8,
+                  ),
+                  items: List.generate(Constant.images.length, (index) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image(
+                        width: size.width * 0.9,
+                        fit: BoxFit.cover,
                         image: NetworkImage(
-                      images[index],
-                    )),
-                  );
-                }),
-              ),
-            ],
+                          Constant.images[index],
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+                SizedBox(
+                  height: size.width * 0.1,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: Row(
+                    children: [
+                      const CusttonTitleText(
+                        text: "مضاف مؤخرأ",
+                        fontSize: 27,
+                      ),
+                      SizedBox(
+                        width: size.width * 0.05,
+                      ),
+                      const Icon(
+                        Icons.rocket_launch,
+                        size: 30,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.width * 0.06,
+                ),
+                ProductList(),
+              ],
+            ),
           ),
         );
       },
