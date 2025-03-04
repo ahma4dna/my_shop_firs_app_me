@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_shop/constant/appe_color.dart';
-
-import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 
 class RootScreen extends StatelessWidget {
