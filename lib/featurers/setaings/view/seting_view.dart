@@ -293,7 +293,7 @@ class _SetingViewState extends State<SetingView> {
         onTap: () async {
           if (cubit.getDark == true) {
             setState(() {
-              valueBool = !valueBool;
+              valueBool = false;
             });
             await cubit.setTheam(theameValue: valueBool);
           }
@@ -320,7 +320,7 @@ class _SetingViewState extends State<SetingView> {
         onTap: () async {
           if (cubit.getDark == false) {
             setState(() {
-              valueBool = !valueBool;
+              valueBool = true;
             });
             await cubit.setTheam(theameValue: valueBool);
           }

@@ -28,7 +28,8 @@ class Styles {
               : AppColor.lightScaffoldColor,
           elevation: 0,
         ),
-
+        iconTheme:
+            IconThemeData(color: isDarkTheme ? Colors.white : Colors.black),
         // تخصيص شريط التنقل (NavigationBar)
         navigationBarTheme: NavigationBarThemeData(
           shadowColor: isDarkTheme ? Colors.white : Colors.black,
@@ -123,10 +124,8 @@ class Styles {
               ? AppColor.darkCardColor
               : AppColor.lightBackgroundColor,
         ),
-        bottomSheetTheme: BottomSheetThemeData(
-          backgroundColor:
-              isDarkTheme ? AppColor.darkNavBarColor : AppColor.lightCardColor,
-        ));
+        
+      );
   }
 }
 
