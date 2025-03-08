@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconly/iconly.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
@@ -10,9 +9,13 @@ class ProductCard extends StatelessWidget {
   const ProductCard({
     super.key,
     required this.size,
+    this.width,
+    this.height,
   });
 
   final Size size;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +23,14 @@ class ProductCard extends StatelessWidget {
       onTap: () {
         navigationTo(context: context, page: ProductDetiels());
       },
-      child: SizedBox(
-          width: size.width * 0.6,
-          height: size.height * 0.38,
+      child: FittedBox(
+        child: SizedBox(
+          width: width,
+          height: height,
           child: Card(
             elevation: 5,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
@@ -48,17 +53,22 @@ class ProductCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CusttonSubtitleText(
-                        text: "Marka",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w300,
+                      FittedBox(
+                        child: CusttonSubtitleText(
+                          text: "Marka",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w300,
+                          fontSize: size.width * 0.04,
+                        ),
                       ),
-                      CusttonTitleText(
-                        text: "iphone 16 pro Max",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: 20,
+                      FittedBox(
+                        child: CusttonTitleText(
+                          text: "iphone 16 pro Max",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: size.width * 0.055,
+                        ),
                       ),
                     ],
                   ),
@@ -74,7 +84,7 @@ class ProductCard extends StatelessWidget {
                               padding: const EdgeInsets.only(right: 8.0),
                               child: CusttonSubtitleText(
                                 text: "7000",
-                                fontSize: 25,
+                                fontSize: size.width * 0.065,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -84,22 +94,23 @@ class ProductCard extends StatelessWidget {
                               fontWeight: FontWeight.w300,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              fontSize: 20,
+                              fontSize: size.width * 0.0469,
                             ),
                           ],
                         ),
                       ),
                     ),
-                    Flexible(
-                      child: HaertBotton(
-                        onPressed: () {},
-                      ),
+                    HaertBotton(
+                      size: size,
+                      onPressed: () {},
                     ),
                   ],
                 ),
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,7 +8,7 @@ import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/product/view/product_list.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
-import 'package:skeleton_loader/skeleton_loader.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -16,7 +18,17 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  bool loading = false;
+  bool loading = true;
+  @override
+  void initState() {
+    Timer(Duration(seconds: 3), () {
+      setState(() {
+        loading = false;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -28,7 +40,7 @@ class _HomeViewState extends State<HomeView> {
           appBar: AppBar(
             leading: Icon(
               IconlyBold.notification,
-              size: 30,
+              size: size.width * 0.08,
             ),
             title: CusttonTitleText(
               text: "متجري",
@@ -39,28 +51,18 @@ class _HomeViewState extends State<HomeView> {
           ),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: size.width * 0.05,
-                ),
-                slideer(size),
-                SizedBox(
-                  height: size.width * 0.1,
-                ),
-                if (loading == true) ...[
-                  LoadingTitle(size: size),
+            child: Skeletonizer(
+              enabled: loading,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   SizedBox(
-                    height: size.width * 0.08,
+                    height: size.width * 0.05,
                   ),
-                  ListLoadingProduct(size: size),
-                  LoadingTitle(size: size),
+                  slideer(size),
                   SizedBox(
-                    height: size.width * 0.08,
+                    height: size.width * 0.1,
                   ),
-                  ListLoadingCat(size: size),
-                ] else ...[
                   Padding(
                     padding: const EdgeInsets.only(right: 20.0),
                     child: Row(
@@ -82,7 +84,9 @@ class _HomeViewState extends State<HomeView> {
                   SizedBox(
                     height: size.width * 0.06,
                   ),
-                  ProductList(),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ProductList()),
                   SizedBox(
                     height: size.width * 0.06,
                   ),
@@ -100,9 +104,9 @@ class _HomeViewState extends State<HomeView> {
                   SizedBox(
                     height: size.width * 0.03,
                   ),
-                  CategoryList(size: size),
+                  CategoryList(size: size)
                 ],
-              ],
+              ),
             ),
           ),
         );
@@ -139,58 +143,6 @@ class _HomeViewState extends State<HomeView> {
         ),
       );
     });
-  }
-}
-
-class ListLoadingCat extends StatelessWidget {
-  const ListLoadingCat({
-    super.key,
-    required this.size,
-  });
-
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size.width * 1,
-      height: size.height * 0.25,
-      child: ListView.builder(
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 1),
-          child: LoadingCat(size: size),
-        ),
-        itemCount: 5,
-        scrollDirection: Axis.horizontal,
-        physics: BouncingScrollPhysics(),
-      ),
-    );
-  }
-}
-
-class ListLoadingProduct extends StatelessWidget {
-  const ListLoadingProduct({
-    super.key,
-    required this.size,
-  });
-
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size.width * 1,
-      height: size.height * 0.22,
-      child: ListView.builder(
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 1),
-          child: LoadingProduct(size: size),
-        ),
-        itemCount: 5,
-        scrollDirection: Axis.horizontal,
-        physics: BouncingScrollPhysics(),
-      ),
-    );
   }
 }
 
@@ -255,7 +207,7 @@ class CategoryCard extends StatelessWidget {
                   onPressed: onPressed,
                   icon: Icon(
                     icon,
-                    size: 70,
+                    size: size.width * 0.13,
                   ),
                 ),
               ],
@@ -267,99 +219,9 @@ class CategoryCard extends StatelessWidget {
         ),
         CusttonTitleText(
           text: text,
-          fontSize: 22,
+          fontSize: size.width * 0.045,
         ),
       ],
-    );
-  }
-}
-
-class LoadingTitle extends StatelessWidget {
-  const LoadingTitle({
-    super.key,
-    required this.size,
-  });
-
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size.width * 0.6,
-      child: SkeletonLoader(
-        baseColor: Colors.grey,
-        direction: SkeletonDirection.rtl,
-        period: Duration(seconds: 2),
-        items: 1,
-        builder: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          height: size.height * 0.05,
-          decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class LoadingCat extends StatelessWidget {
-  const LoadingCat({
-    super.key,
-    required this.size,
-  });
-
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size.width * 0.3,
-      child: SkeletonLoader(
-        baseColor: Colors.grey,
-        direction: SkeletonDirection.rtl,
-        period: Duration(seconds: 2),
-        items: 1,
-        builder: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          height: size.height * 0.13,
-          decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class LoadingProduct extends StatelessWidget {
-  const LoadingProduct({
-    super.key,
-    required this.size,
-  });
-
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size.width * 0.45,
-      child: SkeletonLoader(
-        baseColor: Colors.grey,
-        direction: SkeletonDirection.rtl,
-        period: Duration(seconds: 2),
-        items: 1,
-        builder: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          height: size.height * 0.2,
-          decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 
 class RootScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class RootScreen extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<RootAppCubit>();
         return Scaffold(
-          // drawerScrimColor: AppColors.kScaffoldColor,
+        
 
           body: cubit.pages[cubit.currentIndex],
         

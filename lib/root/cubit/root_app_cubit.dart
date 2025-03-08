@@ -20,6 +20,13 @@ class RootAppCubit extends Cubit<RootAppState> {
     ExplorView(),
     SetingView(),
   ];
+   List<GlobalKey<NavigatorState>> navigatorKeys = [
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+      GlobalKey<NavigatorState>(),
+        GlobalKey<NavigatorState>(),
+  ];
   int currentIndex = 0;
   void changeIndex(int index) {
     currentIndex = index;

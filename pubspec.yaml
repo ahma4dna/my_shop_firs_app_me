@@ -36,15 +36,17 @@ dependencies:
   #ui
   cupertino_icons: ^1.0.8
   carousel_slider: ^5.0.0
-  skeleton_loader: ^2.0.0+4
   iconly: ^1.0.1
+  eva_icons_flutter: ^3.1.0
+  flutter_rating_bar: ^4.0.1
+  skeletonizer: ^1.4.3
   #state_manegement
   flutter_bloc: ^9.1.0
   bloc: ^9.0.0
   #data
   
   shared_preferences: ^2.5.2
-  eva_icons_flutter: ^3.1.0
+  
 
 
 dev_dependencies:
@@ -70,8 +72,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - images/assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

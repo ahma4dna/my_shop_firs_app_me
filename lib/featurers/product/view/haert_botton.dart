@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 
 class HaertBotton extends StatelessWidget {
-   HaertBotton({super.key, this.onPressed});
+  const HaertBotton({super.key, this.onPressed, required this.size});
   final void Function()? onPressed;
+  final Size size;
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -11,7 +12,7 @@ class HaertBotton extends StatelessWidget {
       icon: Icon(
         IconlyLight.heart,
         color: Colors.red,
-        size: 30,
+        size: size.width * 0.08,
       ),
     );
   }

@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocConsumer<RootAppCubit, RootAppState>(
         listener: (context, state) {
-          // TODO: implement listener
         },
         builder: (context, state) {
           return MaterialApp(
