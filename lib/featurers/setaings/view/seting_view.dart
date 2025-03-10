@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../constant/theam/theame.dart';
 
@@ -16,6 +19,16 @@ class SetingView extends StatefulWidget {
 
 class _SetingViewState extends State<SetingView> {
   bool valueBool = false;
+    bool loading = true;
+  @override
+  void initState() {
+    Timer(Duration(seconds: 3), () {
+      setState(() {
+        loading = false;
+      });
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -26,204 +39,220 @@ class _SetingViewState extends State<SetingView> {
         return Scaffold(
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: ListView(
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 33,
-                      backgroundColor: Color(0xFF1E88E5),
-                      child: Icon(
-                        IconlyBold.profile,
-                        color: Colors.white,
-                        size: 33,
+            child: Skeletonizer(
+              enableSwitchAnimation: true,
+
+              enabled: loading,
+              child: ListView(
+                children: [
+                  Row(
+                    children: [
+                     CircleAvatar(
+
+                          radius:size.width*0.06,
+                          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                          child: Icon(
+                            IconlyBold.profile,
+                            color: Theme.of(context).iconTheme.color,
+                            size: size.width*0.075,
+                          ),
+                        ),
+                      
+                      SizedBox(
+                        width: size.width * 0.03,
+                      ),
+                      FittedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CusttonTitleText(
+                              text: "الاسم",
+                              fontSize: size.width*0.05,
+                            ),
+                            CusttonSubtitleText(
+                              text: "ahmad@gmail.com",
+                              fontSize: size.width*0.05,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.width * 0.03,
+                  ),
+                  CusttonTitleText(
+                    text: "عام",
+                    fontSize: size.width*0.05,
+                  ),
+                  SizedBox(
+                    height: size.width * 0.03,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.width * 0.55,
+                    child: Card(
+                      child: Column(
+                        children: [
+                          MyListTile(
+                            size: size,
+                            name: 'طلباتي',
+                            icone: IconlyBold.buy,
+                            onTap: () {},
+                          ),
+                          Divider(
+                            endIndent: 15,
+                            indent: 15,
+                          ),
+                          MyListTile(
+                            size: size,
+                            name: "المفضلة",
+                            icone: IconlyBold.heart,
+                            onTap: () {},
+                          ),
+                          Divider(
+                            endIndent: 15,
+                            indent: 15,
+                          ),
+                          MyListTile(
+                            size: size,
+                            name: 'تمت مشاهدنه مسبقا',
+                            icone: IconlyBold.time_square,
+                            onTap: () {},
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      width: size.width * 0.03,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CusttonTitleText(
-                          text: "الاسم",
-                          fontSize: 20,
-                        ),
-                        CusttonSubtitleText(
-                          text: "ahmad@gmail.com",
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: size.width * 0.03,
-                ),
-                CusttonTitleText(
-                  text: "عام",
-                  fontSize: 25,
-                ),
-                SizedBox(
-                  height: size.width * 0.03,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: size.width * 0.55,
-                  child: Card(
-                    child: Column(
-                      children: [
-                        MyListTile(
-                          name: 'طلباتي',
-                          icone: IconlyBold.buy,
-                          onTap: () {},
-                        ),
-                        Divider(
-                          endIndent: 15,
-                          indent: 15,
-                        ),
-                        MyListTile(
-                          name: "المفضلة",
-                          icone: IconlyBold.heart,
-                          onTap: () {},
-                        ),
-                        Divider(
-                          endIndent: 15,
-                          indent: 15,
-                        ),
-                        MyListTile(
-                          name: 'تمت مشاهدنه مسبقا',
-                          icone: IconlyBold.time_square,
-                          onTap: () {},
-                        ),
-                      ],
+                  ),
+                  SizedBox(
+                    height: size.width * 0.03,
+                  ),
+                  CusttonTitleText(
+                    text: "الاعدادات",
+                    fontSize: size.width*0.05,
+                  ),
+                  SizedBox(
+                    height: size.width * 0.03,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.width * 0.55,
+                    child: Card(
+                      child: Column(
+                        children: [
+                          MyListTile(
+                            size: size,
+                            name: "الثيم",
+                            icone: Icons.dark_mode_sharp,
+                            onTap: () {
+                              showSelctTheame(context, size, cubit);
+                            },
+                          ),
+                          Divider(
+                            endIndent: 15,
+                            indent: 15,
+                          ),
+                          MyListTile(
+                            size: size,
+                            name: "اللغة",
+                            icone: Icons.language,
+                            onTap: () {
+                              showModalBottomSheet(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(35),
+                                  ),
+                                ),
+                                context: context,
+                                builder: (context) => SizedBox(
+                                  width: double.infinity,
+                                  height: size.width * 0.8,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: size.width * 0.05,
+                                      ),
+                                      Container(
+                                        color: Colors.grey,
+                                        width: 35,
+                                        height: 4,
+                                      ),
+                                      SizedBox(
+                                        height: size.width * 0.04,
+                                      ),
+                                      CusttonTitleText(
+                                        text: "خيارات اللغة",
+                                        fontSize: 20,
+                                      ),
+                                      Divider(),
+                                      SizedBox(
+                                        height: size.width * 0.08,
+                                      ),
+                                      Directionality(
+                                        textDirection: TextDirection.rtl,
+                                        child: ListTile(
+              
+                                          title: CusttonTitleText(
+                                            text: "العربية",
+                                          ),
+                                          trailing: Icon(
+                                              false
+                                                  ? Icons.radio_button_unchecked
+                                                  : Icons.radio_button_checked,
+                                              color: AppColor.darkPrimaryColor),
+                                          onTap: () async {},
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: size.width * 0.04,
+                                      ),
+                                      Directionality(
+                                        textDirection: TextDirection.rtl,
+                                        child: ListTile(
+                                          title: CusttonTitleText(
+                                            text: "English",
+                                          ),
+                                          trailing: Icon(
+                                              false
+                                                  ? Icons.radio_button_unchecked
+                                                  : Icons.radio_button_checked,
+                                              color: AppColor.darkPrimaryColor),
+                                          onTap: () async {},
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          Divider(
+                            endIndent: 15,
+                            indent: 15,
+                          ),
+                          MyListTile(
+                            size: size,
+                            name: "العناوين",
+                            icone: IconlyBold.location,
+                            onTap: () {},
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: size.width * 0.03,
-                ),
-                CusttonTitleText(
-                  text: "الاعدادات",
-                  fontSize: 25,
-                ),
-                SizedBox(
-                  height: size.width * 0.03,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: size.width * 0.55,
-                  child: Card(
-                    child: Column(
-                      children: [
-                        MyListTile(
-                          name: "الثيم",
-                          icone: Icons.dark_mode_sharp,
-                          onTap: () {
-                            showSelctTheame(context, size, cubit);
-                          },
-                        ),
-                        Divider(
-                          endIndent: 15,
-                          indent: 15,
-                        ),
-                        MyListTile(
-                          name: "اللغة",
-                          icone: Icons.language,
-                          onTap: () {
-                            showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(35),
-                                ),
-                              ),
-                              context: context,
-                              builder: (context) => SizedBox(
-                                width: double.infinity,
-                                height: size.width * 0.8,
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: size.width * 0.05,
-                                    ),
-                                    Container(
-                                      color: Colors.grey,
-                                      width: 35,
-                                      height: 4,
-                                    ),
-                                    SizedBox(
-                                      height: size.width * 0.04,
-                                    ),
-                                    CusttonTitleText(
-                                      text: "خيارات اللغة",
-                                      fontSize: 20,
-                                    ),
-                                    Divider(),
-                                    SizedBox(
-                                      height: size.width * 0.08,
-                                    ),
-                                    Directionality(
-                                      textDirection: TextDirection.rtl,
-                                      child: ListTile(
-                                        title: CusttonTitleText(
-                                          text: "العربية",
-                                        ),
-                                        trailing: Icon(
-                                            false
-                                                ? Icons.radio_button_unchecked
-                                                : Icons.radio_button_checked,
-                                            color: AppColor.darkPrimaryColor),
-                                        onTap: () async {},
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: size.width * 0.04,
-                                    ),
-                                    Directionality(
-                                      textDirection: TextDirection.rtl,
-                                      child: ListTile(
-                                        title: CusttonTitleText(
-                                          text: "English",
-                                        ),
-                                        trailing: Icon(
-                                            false
-                                                ? Icons.radio_button_unchecked
-                                                : Icons.radio_button_checked,
-                                            color: AppColor.darkPrimaryColor),
-                                        onTap: () async {},
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        Divider(
-                          endIndent: 15,
-                          indent: 15,
-                        ),
-                        MyListTile(
-                          name: "العناوين",
-                          icone: IconlyBold.location,
-                          onTap: () {},
-                        ),
-                      ],
-                    ),
+                  SizedBox(
+                    height: size.width * 0.06,
                   ),
-                ),
-                SizedBox(
-                  height: size.width * 0.06,
-                ),
-                TextButton(
-                    onPressed: () {},
-                    child: CusttonTitleText(
-                      text: "تسجيل الخروج",
-                      color: Colors.blue,
-                      fontSize: 20,
-                    ))
-              ],
+                  TextButton(
+                      onPressed: () {},
+                      child: CusttonTitleText(
+                        text: "تسجيل الخروج",
+                        color: Colors.blue,
+                        fontSize: size.width*0.05,
+                      ))
+                ],
+              ),
             ),
           ),
         );
@@ -258,7 +287,7 @@ class _SetingViewState extends State<SetingView> {
             ),
             CusttonTitleText(
               text: "خيارات العرض",
-              fontSize: 20,
+              fontSize: size.width*0.05,
             ),
             Divider(),
             SizedBox(
@@ -285,11 +314,15 @@ class _SetingViewState extends State<SetingView> {
         title: CusttonTitleText(
           text: "الوضع الفاتح",
         ),
-        trailing: Icon(
-            cubit.getDark
-                ? Icons.radio_button_unchecked
-                : Icons.radio_button_checked,
-            color: AppColor.darkPrimaryColor),
+        trailing: AnimatedSwitcher(
+          duration: Duration(milliseconds: 300),
+          child: Icon(
+              cubit.getDark
+                  ? Icons.radio_button_unchecked
+                  : Icons.radio_button_checked,
+                  key: ValueKey<bool>(cubit.getDark),
+              color: AppColor.darkPrimaryColor),
+        ),
         onTap: () async {
           if (cubit.getDark == true) {
             setState(() {
@@ -312,11 +345,15 @@ class _SetingViewState extends State<SetingView> {
         title: CusttonTitleText(
           text: "الوضع الداكن",
         ),
-        trailing: Icon(
-            cubit.getDark
-                ? Icons.radio_button_checked
-                : Icons.radio_button_unchecked,
-            color: AppColor.darkPrimaryColor),
+        trailing: AnimatedSwitcher(
+          duration: Duration(milliseconds:300 ),
+          child: Icon(
+              cubit.getDark
+                  ? Icons.radio_button_checked
+                  : Icons.radio_button_unchecked,
+                   key: ValueKey<bool>(cubit.getDark),
+              color: AppColor.darkPrimaryColor),
+        ),
         onTap: () async {
           if (cubit.getDark == false) {
             setState(() {
@@ -352,12 +389,13 @@ class MyListTile extends StatelessWidget {
     required this.name,
     required this.icone,
     this.onTap,
-    this.color,
+    this.color, required this.size,
   });
   final String name;
   final IconData icone;
   final void Function()? onTap;
   final Color? color;
+  final Size size;
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -366,12 +404,12 @@ class MyListTile extends StatelessWidget {
       leading: Icon(
         icone,
         color: color,
-        size: 25,
+        size: size.width*0.05,
       ),
       onTap: onTap,
       title: CusttonTitleText(
         text: name,
-        fontSize: 20,
+        fontSize: size.width*0.05,
       ),
     );
   }

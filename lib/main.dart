@@ -26,15 +26,21 @@ class MyApp extends StatelessWidget {
         listener: (context, state) {
         },
         builder: (context, state) {
-          return MaterialApp(
-        
-            theme: Styles.themeData(
-                isDarkTheme: context.read<RootAppCubit>().getDark,
-                context: context),
-            debugShowCheckedModeBanner: false,
-            home: Directionality(
-              textDirection: TextDirection.rtl,
-              child: RootScreen(),
+          return AnimatedTheme(
+              duration: Duration(milliseconds: 300), 
+            data: Styles.themeData(
+                  isDarkTheme: context.read<RootAppCubit>().getDark,
+                  context: context),
+            child: MaterialApp(
+                    
+              theme: Styles.themeData(
+                  isDarkTheme: context.read<RootAppCubit>().getDark,
+                  context: context),
+              debugShowCheckedModeBanner: false,
+              home: Directionality(
+                textDirection: TextDirection.rtl,
+                child: RootScreen(),
+              ),
             ),
           );
         },

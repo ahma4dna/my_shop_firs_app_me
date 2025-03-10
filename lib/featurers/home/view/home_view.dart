@@ -37,18 +37,20 @@ class _HomeViewState extends State<HomeView> {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            leading: Icon(
-              IconlyBold.notification,
-              size: size.width * 0.08,
-            ),
-            title: CusttonTitleText(
-              text: "متجري",
-              fontSize: 25,
-              fontWeight: FontWeight.w600,
-            ),
-            centerTitle: true,
-          ),
+          // appBar: AppBar(
+          //   leading: Icon(
+          //     IconlyBold.notification,
+          //     size: size.width * 0.08,
+          //   ),
+          //   title: FittedBox(
+          //     child: CusttonTitleText(
+          //       text: "متجري",
+          //       fontSize: size.width * 0.06,
+          //       fontWeight: FontWeight.w600,
+          //     ),
+          //   ),
+          //   centerTitle: true,
+          // ),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Skeletonizer(
@@ -67,17 +69,21 @@ class _HomeViewState extends State<HomeView> {
                     padding: const EdgeInsets.only(right: 20.0),
                     child: Row(
                       children: [
-                        const CusttonTitleText(
-                          text: "مضاف مؤخرأ",
-                          fontSize: 27,
+                        FittedBox(
+                          child: CusttonTitleText(
+                            text: "مضاف مؤخرأ",
+                            fontSize: size.width * 0.06,
+                          ),
                         ),
                         SizedBox(
                           width: size.width * 0.05,
                         ),
-                        const Icon(
-                          Icons.rocket_launch,
-                          size: 30,
-                        ),
+                         FittedBox(
+                           child: Icon(
+                            Icons.rocket_launch,
+                            size: size.width * 0.07,
+                                                   ),
+                         ),
                       ],
                     ),
                   ),
@@ -94,9 +100,9 @@ class _HomeViewState extends State<HomeView> {
                     padding: const EdgeInsets.only(right: 20.0),
                     child: Row(
                       children: [
-                        const CusttonTitleText(
+                         CusttonTitleText(
                           text: "التصنيفات",
-                          fontSize: 27,
+                          fontSize: size.width * 0.06,
                         ),
                       ],
                     ),

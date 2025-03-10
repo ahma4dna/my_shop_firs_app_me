@@ -25,15 +25,15 @@ class _ProductDetielsState extends State<ProductDetiels> {
   ];
   int selctedImage = 0;
   @override
-
-void initState() {
-      Timer(Duration(seconds: 3), () {
+  void initState() {
+    Timer(Duration(seconds: 3), () {
       setState(() {
         loading = false;
       });
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -56,9 +56,11 @@ void initState() {
             icon: Icon(Icons.keyboard_arrow_right),
           ),
         ],
-        title: CusttonTitleText(
-          text: "تفاصيل المنتج",
-          fontSize: 18,
+        title: FittedBox(
+          child: CusttonTitleText(
+            text: "تفاصيل المنتج",
+            fontSize: size.width * 0.05,
+          ),
         ),
         centerTitle: true,
       ),
@@ -102,8 +104,8 @@ void initState() {
                   height: size.width * 0.05,
                 ),
                 Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: selectListImage(size)),
+                    textDirection: TextDirection.rtl,
+                    child: selectListImage(size)),
                 SizedBox(
                   height: size.width * 0.05,
                 ),
@@ -112,29 +114,38 @@ void initState() {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      CusttonTitleText(
-                        text: "وصف المنتج",
-                        fontSize: size.width * 0.05,
-                      ),
-                      SizedBox(
-                        height: size.width * 0.02,
-                      ),
-                      Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: CusttonTitleText(
-                          text:
-                              "● الشاشة: LTPO Super Retina XDR OLED || 2000 nits\n● مزايا الشاشة: HDR10 || Dolby Vision\n● الشريحة: A18 Pro Bionic (3 nm)\n● الكاميرا الرئيسية: 48 ميجابكسل\n● عدد الكاميرات الخلفية : 3\n● الكاميرا الأمامية: 12 ميجابكسل\n● سرعة الشحن: 50% خلال 30 دقيقة\n● مزايا إضافية:\n· التعرف على الوجه بمعرف الوجه\n· الشحن اللاسلكي المغناطيسي MagSafe\n·الذكاء الإصطناعي الخاص بشركة Apple",
-                          maxLines: 22,
-                          fontSize: 14,
-                          color: Colors.grey,
+                      FittedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            CusttonTitleText(
+                              text: "وصف المنتج",
+                              fontSize: size.width * 0.05,
+                            ),
+                            SizedBox(
+                              height: size.width * 0.02,
+                            ),
+                            Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: CusttonTitleText(
+                                text:
+                                    "● الشاشة: LTPO Super Retina XDR OLED || 2000 nits\n● مزايا الشاشة: HDR10 || Dolby Vision\n● الشريحة: A18 Pro Bionic (3 nm)\n● الكاميرا الرئيسية: 48 ميجابكسل\n● عدد الكاميرات الخلفية : 3\n● الكاميرا الأمامية: 12 ميجابكسل\n● سرعة الشحن: 50% خلال 30 دقيقة\n● مزايا إضافية:\n· التعرف على الوجه بمعرف الوجه\n· الشحن اللاسلكي المغناطيسي MagSafe\n·الذكاء الإصطناعي الخاص بشركة Apple",
+                                maxLines: 22,
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            SizedBox(
+                              height: size.width * 0.05,
+                            ),
+                            FittedBox(
+                              child: CusttonTitleText(
+                                text: "قيم المنتج",
+                                fontSize: size.width * 0.05,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      SizedBox(
-                        height: size.width * 0.05,
-                      ),
-                      CusttonTitleText(
-                        text: "قيم المنتج",
-                        fontSize: size.width * 0.05,
                       ),
                       RatingWidget(
                         size: size,
@@ -161,15 +172,12 @@ void initState() {
                         color: Colors.blue[200],
                       ),
                       onRatingUpdate: (rating) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RatingAndRivew(
-                              initialRating: rating,
+                        navigationTo(
+                            context: context,
+                            page: RatingAndRivew(
                               size: size,
-                            ),
-                          ),
-                        );
+                              initialRating: rating,
+                            ),);
                       },
                     ),
                   ),
@@ -326,80 +334,82 @@ class RatingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     int totalRatings = ratings.values.reduce((a, b) => a + b);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "4.5",
-              style: TextStyle(
-                fontSize: size.width * 0.15,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).iconTheme.color,
-              ),
-            ),
-            IgnorePointer(
-              ignoring: true,
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: RatingBar.builder(
-                  itemSize: size.width * 0.05, // Adjust the star size
-                  initialRating: 3,
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  allowHalfRating: false,
-                  itemCount: 5,
-                  glowColor: Colors.transparent,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    size: size.width * 0.1, // Adjust the size of stars
-                    color: Colors.blue[200],
-                  ),
-                  onRatingUpdate: (rating) {},
+    return FittedBox(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "4.5",
+                style: TextStyle(
+                  fontSize: size.width * 0.15,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).iconTheme.color,
                 ),
               ),
-            ),
-            SizedBox(height: size.width * 0.02),
-            Text(
-              "${totalRatings.toString()}",
-              style:
-                  TextStyle(fontSize: size.width * 0.03, color: Colors.white70),
-            ),
-          ],
-        ),
-        SizedBox(width: size.width * 0.04),
-        Column(
-          children: ratings.keys.map((key) {
-            double percentage = ratings[key]! / totalRatings;
-            return Row(
-              children: [
-                Text(
-                  "$key",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: size.width * 0.04,
+              IgnorePointer(
+                ignoring: true,
+                child: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: RatingBar.builder(
+                    itemSize: size.width * 0.05, // Adjust the star size
+                    initialRating: 3,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: false,
+                    itemCount: 5,
+                    glowColor: Colors.transparent,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      size: size.width * 0.1, // Adjust the size of stars
+                      color: Colors.blue[200],
+                    ),
+                    onRatingUpdate: (rating) {},
                   ),
                 ),
-                SizedBox(width: size.width * 0.03),
-                Container(
-                  width:
-                      size.width * 0.55, // Adjust the width of the progress bar
-                  child: LinearProgressIndicator(
-                    value: percentage,
-                    backgroundColor: Colors.grey[800],
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Colors.blue[200]!),
+              ),
+              SizedBox(height: size.width * 0.02),
+              Text(
+                "${totalRatings.toString()}",
+                style: TextStyle(
+                    fontSize: size.width * 0.03, color: Colors.white70),
+              ),
+            ],
+          ),
+          SizedBox(width: size.width * 0.04),
+          Column(
+            children: ratings.keys.map((key) {
+              double percentage = ratings[key]! / totalRatings;
+              return Row(
+                children: [
+                  Text(
+                    "$key",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: size.width * 0.04,
+                    ),
                   ),
-                ),
-              ],
-            );
-          }).toList(),
-        ),
-      ],
+                  SizedBox(width: size.width * 0.03),
+                  Container(
+                    width: size.width *
+                        0.55, // Adjust the width of the progress bar
+                    child: LinearProgressIndicator(
+                      value: percentage,
+                      backgroundColor: Colors.grey[800],
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.blue[200]!),
+                    ),
+                  ),
+                ],
+              );
+            }).toList(),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -426,11 +436,13 @@ class RiewCard extends StatelessWidget {
               SizedBox(
                 height: size.width * 0.02,
               ),
-              CusttonTitleText(
-                text: "الاسم",
-                color: Colors.grey,
-                fontSize: 22,
-                fontWeight: FontWeight.w300,
+              FittedBox(
+                child: CusttonTitleText(
+                  text: "الاسم",
+                  color: Colors.grey,
+                  fontSize: size.width * 0.048,
+                  fontWeight: FontWeight.w300,
+                ),
               ),
               SizedBox(
                 height: size.width * 0.03,
@@ -438,11 +450,13 @@ class RiewCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  CusttonTitleText(
-                    text: "20225/11/23",
-                    fontWeight: FontWeight.w300,
-                    fontSize: 15,
-                    color: Colors.grey,
+                  FittedBox(
+                    child: CusttonTitleText(
+                      text: "20225/11/23",
+                      fontWeight: FontWeight.w300,
+                      fontSize: size.width * 0.038,
+                      color: Colors.grey,
+                    ),
                   ),
                   SizedBox(
                     width: size.width * 0.03,
@@ -479,7 +493,7 @@ class RiewCard extends StatelessWidget {
                 child: CusttonTitleText(
                   text: "20225/11/23" * 20,
                   fontWeight: FontWeight.w500,
-                  fontSize: 16,
+                  fontSize: size.width * 0.038,
                   maxLines: 5,
                   overflow: TextOverflow.ellipsis,
                   color: Colors.grey,
@@ -520,10 +534,12 @@ class _RatingAndRivewState extends State<RatingAndRivew> {
         actions: [
           TextButton(
             onPressed: () {},
-            child: CusttonTitleText(
-              text: "نشر",
-              fontSize: 22,
-              color: Theme.of(context).iconTheme.color,
+            child: FittedBox(
+              child: CusttonTitleText(
+                text: "نشر",
+                fontSize: widget.size.width * 0.06,
+                color: Theme.of(context).iconTheme.color,
+              ),
             ),
           )
         ],
@@ -549,9 +565,11 @@ class _RatingAndRivewState extends State<RatingAndRivew> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  CusttonTitleText(
-                    text: "قيم المنتج",
-                    fontSize: 25,
+                  FittedBox(
+                    child: CusttonTitleText(
+                      text: "قيم المنتج",
+                      fontSize: widget.size.width * 0.065,
+                    ),
                   ),
                 ],
               ),
@@ -588,7 +606,9 @@ class _RatingAndRivewState extends State<RatingAndRivew> {
                 height: widget.size.width * 0.2,
                 child: CusttomTextFormFeild(
                   hintStyle: TextStyle(
-                      color: Theme.of(context).iconTheme.color, fontSize: 20),
+                    color: Theme.of(context).iconTheme.color,
+                    fontSize: widget.size.width * 0.04,
+                  ),
                   controller: controller,
                   hint: "اختياري",
                 ),
@@ -636,10 +656,12 @@ class BottonSeat extends StatelessWidget {
                     vertical: 8,
                     horizontal: size.width * 0.13,
                   ),
-                  child: CusttonTitleText(
-                    text: "إضافة الى السلة",
-                    color: Theme.of(context).iconTheme.color,
-                    fontSize: 20,
+                  child: FittedBox(
+                    child: CusttonTitleText(
+                      text: "إضافة الى السلة",
+                      color: Theme.of(context).iconTheme.color,
+                      fontSize: size.width * 0.05,
+                    ),
                   ),
                 ),
               ),
@@ -647,15 +669,17 @@ class BottonSeat extends StatelessWidget {
             SizedBox(
               width: size.width * 0.02,
             ),
-            CusttonTitleText(
-              text: " دل",
-              fontSize: 18,
+            FittedBox(
+              child: CusttonTitleText(
+                text: " دل",
+                fontSize: size.width * 0.05,
+              ),
             ),
             Flexible(
               child: FittedBox(
                 child: CusttonTitleText(
                   text: " 7000",
-                  fontSize: 23,
+                  fontSize: size.width * 0.05,
                 ),
               ),
             ),

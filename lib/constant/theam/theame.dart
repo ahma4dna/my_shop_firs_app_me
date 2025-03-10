@@ -4,7 +4,13 @@ class Styles {
   static ThemeData themeData(
       {required bool isDarkTheme, required BuildContext context}) {
     return ThemeData(
+      bottomSheetTheme: BottomSheetThemeData(
+      shape: RoundedRectangleBorder(
+        
+      ),
       
+        backgroundColor: isDarkTheme?AppColor.primaryDarkColor:AppColor.lightScaffoldColor
+      ),
       dividerColor: isDarkTheme ? Colors.white : Colors.black,
       primaryColor:
           isDarkTheme ? AppColor.darkPrimaryColor : AppColor.lightPrimaryColor,
