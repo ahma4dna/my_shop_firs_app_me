@@ -11,6 +11,7 @@ import 'package:my_shop/featurers/setaings/view/seting_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 part 'root_app_state.dart';
 
+enum AppThemeMode { system, light, dark }
 class RootAppCubit extends Cubit<RootAppState> {
   RootAppCubit() : super(RootAppInitial());
   List<Widget> pages = [
@@ -61,22 +62,28 @@ class RootAppCubit extends Cubit<RootAppState> {
     ),
   ];
 
-  bool isDark = false;
-  bool get getDark => isDark;
-  
-  Future<void> setTheam({required bool theameValue}) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool("THEM", theameValue);
-    isDark = theameValue;
-    emit(SaveTheme());
+AppThemeMode themeMode = AppThemeMode.system; // الوضع الافتراضي
+
+  Future<void> setTheme(AppThemeMode mode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("THEME_MODE", mode.toString());
+    themeMode = mode;
+    emit(ThemeChanged());
   }
 
-  Future<void> getTheam() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<void> loadTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? storedMode = prefs.getString("THEME_MODE");
 
-    isDark = prefs.getBool("THEM") ?? false;
-    log('Theme saved: ${prefs.getBool("THEM") ?? false}');
-    emit(GetTheame());
+    if (storedMode == AppThemeMode.light.toString()) {
+      themeMode = AppThemeMode.light;
+    } else if (storedMode == AppThemeMode.dark.toString()) {
+      themeMode = AppThemeMode.dark;
+    } else {
+      themeMode = AppThemeMode.system;
+    }
+
+    emit(ThemeLoaded());
   }
 
 

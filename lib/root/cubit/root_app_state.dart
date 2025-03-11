@@ -8,5 +8,5 @@ final class RootAppInitial extends RootAppState {
 
 final class RootAppChangeIndex extends RootAppState {}
 final class SaveTheme extends RootAppState {}
-final class GetTheame extends RootAppState {}
-final class SwitchIsDark extends RootAppState {}
+final class ThemeChanged extends RootAppState {}
+final class ThemeLoaded extends RootAppState {}

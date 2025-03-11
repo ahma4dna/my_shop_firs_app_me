@@ -18,24 +18,30 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) {
           final cubit = RootAppCubit();
-          cubit.getTheam();
+          cubit.loadTheme();
           return cubit;
         }),
       ],
       child: BlocConsumer<RootAppCubit, RootAppState>(
-        listener: (context, state) {
-        },
+        listener: (context, state) {},
         builder: (context, state) {
+          ThemeMode themeMode = ThemeMode.system;
+
           return AnimatedTheme(
-              duration: Duration(milliseconds: 300), 
-            data: Styles.themeData(
-                  isDarkTheme: context.read<RootAppCubit>().getDark,
-                  context: context),
+            duration: Duration(milliseconds: 300),
+            data: themeMode == ThemeMode.dark
+                ? DarkTheme.themeData(context)
+                : LightTheme.themeData(context),
             child: MaterialApp(
-                    
-              theme: Styles.themeData(
-                  isDarkTheme: context.read<RootAppCubit>().getDark,
-                  context: context),
+              themeMode:
+                  context.watch<RootAppCubit>().themeMode == AppThemeMode.dark
+                      ? ThemeMode.dark
+                      : context.watch<RootAppCubit>().themeMode ==
+                              AppThemeMode.light
+                          ? ThemeMode.light
+                          : ThemeMode.system,
+              theme: LightTheme.themeData(context),
+              darkTheme: DarkTheme.themeData(context),
               debugShowCheckedModeBanner: false,
               home: Directionality(
                 textDirection: TextDirection.rtl,

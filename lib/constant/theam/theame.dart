@@ -1,81 +1,52 @@
 import 'package:flutter/material.dart';
 
-class Styles {
-  static ThemeData themeData(
-      {required bool isDarkTheme, required BuildContext context}) {
+class LightTheme {
+  static ThemeData themeData(BuildContext context) {
     return ThemeData(
       bottomSheetTheme: BottomSheetThemeData(
-          shape: RoundedRectangleBorder(),
-          backgroundColor: isDarkTheme
-              ? AppColor.primaryDarkColor
-              : AppColor.lightScaffoldColor),
-      dividerColor: isDarkTheme ? Colors.white : Colors.black,
-      primaryColor:
-          isDarkTheme ? AppColor.darkPrimaryColor : AppColor.lightPrimaryColor,
-      scaffoldBackgroundColor:
-          isDarkTheme ? AppColor.primaryDarkColor : AppColor.lightScaffoldColor,
-      brightness: isDarkTheme ? Brightness.dark : Brightness.light,
+        shape: RoundedRectangleBorder(),
+        backgroundColor: AppColor.lightScaffoldColor,
+      ),
+      dividerColor: Colors.black,
+      primaryColor: AppColor.lightPrimaryColor,
+      scaffoldBackgroundColor: AppColor.lightScaffoldColor,
+      brightness: Brightness.light,
 
       // تخصيص شريط التطبيق (AppBar)
       appBarTheme: AppBarTheme(
-        iconTheme: IconThemeData(
-          color: isDarkTheme
-              ? AppColor.lightBackgroundColor
-              : AppColor.darkScaffoldColor,
-        ),
-        titleTextStyle: TextStyle(
-          color: isDarkTheme ? Colors.white : Colors.black,
-        ),
-        backgroundColor: isDarkTheme
-            ? AppColor.primaryDarkColor
-            : AppColor.lightScaffoldColor,
+        iconTheme: IconThemeData(color: AppColor.darkScaffoldColor),
+        titleTextStyle: TextStyle(color: Colors.black),
+        backgroundColor: AppColor.lightScaffoldColor,
         elevation: 0,
       ),
-      iconTheme:
-          IconThemeData(color: isDarkTheme ? Colors.white : Colors.black),
+      iconTheme: IconThemeData(color: Colors.black),
+
       // تخصيص شريط التنقل (NavigationBar)
       navigationBarTheme: NavigationBarThemeData(
-        shadowColor: isDarkTheme ? Colors.white : Colors.black,
+        shadowColor: Colors.black,
         surfaceTintColor: Colors.transparent,
-
         height: kBottomNavigationBarHeight + 25,
-        backgroundColor: isDarkTheme
-            ? AppColor.primaryDarkColor
-            : AppColor.lightScaffoldColor, // خلفية شريط التنقل
-        indicatorColor: isDarkTheme
-            ? Color(0xFF64B5F6)
-            : Color(0xFFBBDEFB), // اللون المحدد للأيقونات
-
+        backgroundColor: AppColor.lightScaffoldColor,
+        indicatorColor: Color(0xFFBBDEFB),
         labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
           (Set<MaterialState> states) {
             return TextStyle(
               color: states.contains(MaterialState.selected)
-                  ? (isDarkTheme
-                      ? AppColor.darkPrimaryColor
-                      : AppColor.lightPrimaryColor) // لون النص عند التحديد
-                  : (isDarkTheme
-                      ? Colors.white
-                      : Colors.black), // لون النص عند عدم التحديد
-              fontSize: states.contains(MaterialState.selected)
-                  ? 16
-                  : 12, // تكبير النص عند التحديد
+                  ? AppColor.lightPrimaryColor
+                  : Colors.black,
+              fontSize: states.contains(MaterialState.selected) ? 16 : 12,
               fontWeight: states.contains(MaterialState.selected)
                   ? FontWeight.bold
-                  : FontWeight.normal, // زيادة الوزن عند التحديد
+                  : FontWeight.normal,
             );
           },
         ),
-
         iconTheme: MaterialStateProperty.resolveWith<IconThemeData>(
           (Set<MaterialState> states) {
             return IconThemeData(
               color: states.contains(MaterialState.selected)
-                  ? (isDarkTheme
-                      ? AppColor.darkPrimaryColor
-                      : AppColor.lightPrimaryColor) // لون الأيقونة عند التحديد
-                  : (isDarkTheme
-                      ? Colors.white
-                      : Colors.black), // لون الأيقونة عند عدم التحديد
+                  ? AppColor.lightPrimaryColor
+                  : Colors.black,
             );
           },
         ),
@@ -85,17 +56,14 @@ class Styles {
       inputDecorationTheme: InputDecorationTheme(
         contentPadding: const EdgeInsets.all(10),
         filled: true,
-        fillColor:
-            isDarkTheme ? AppColor.darkNavBarColor : AppColor.lightNavBarColor,
+        fillColor: AppColor.lightNavBarColor,
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(width: 1, color: Colors.transparent),
           borderRadius: BorderRadius.circular(12),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: isDarkTheme
-                ? AppColor.darkPrimaryColor
-                : AppColor.lightPrimaryColor,
+            color: AppColor.lightPrimaryColor,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(12),
@@ -105,28 +73,107 @@ class Styles {
       // تخصيص الأزرار (ElevatedButton)
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: WidgetStatePropertyAll(
-            isDarkTheme
-                ? AppColor.darkPrimaryColor
-                : AppColor.lightPrimaryColor,
-          ),
-          textStyle: WidgetStatePropertyAll(
-            TextStyle(
-              color: isDarkTheme ? Colors.white : Colors.black,
-            ),
+          backgroundColor: MaterialStateProperty.all(AppColor.lightPrimaryColor),
+          textStyle: MaterialStateProperty.all(
+            TextStyle(color: Colors.black),
           ),
         ),
       ),
-      cardColor:
-          isDarkTheme ? AppColor.darkCardColor : AppColor.lightBackgroundColor,
+      cardColor: AppColor.lightBackgroundColor,
       cardTheme: CardTheme(
-        color: isDarkTheme
-            ? AppColor.darkCardColor
-            : AppColor.lightBackgroundColor,
+        color: AppColor.lightBackgroundColor,
       ),
     );
   }
 }
+
+class DarkTheme {
+  static ThemeData themeData(BuildContext context) {
+    return ThemeData(
+      bottomSheetTheme: BottomSheetThemeData(
+        shape: RoundedRectangleBorder(),
+        backgroundColor: AppColor.primaryDarkColor,
+      ),
+      dividerColor: Colors.white,
+      primaryColor: AppColor.darkPrimaryColor,
+      scaffoldBackgroundColor: AppColor.primaryDarkColor,
+      brightness: Brightness.dark,
+
+      // تخصيص شريط التطبيق (AppBar)
+      appBarTheme: AppBarTheme(
+        iconTheme: IconThemeData(color: AppColor.lightBackgroundColor),
+        titleTextStyle: TextStyle(color: Colors.white),
+        backgroundColor: AppColor.primaryDarkColor,
+        elevation: 0,
+      ),
+      iconTheme: IconThemeData(color: Colors.white),
+
+      // تخصيص شريط التنقل (NavigationBar)
+      navigationBarTheme: NavigationBarThemeData(
+        shadowColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        height: kBottomNavigationBarHeight + 25,
+        backgroundColor: AppColor.primaryDarkColor,
+        indicatorColor: Color(0xFF64B5F6),
+        labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
+          (Set<MaterialState> states) {
+            return TextStyle(
+              color: states.contains(MaterialState.selected)
+                  ? AppColor.darkPrimaryColor
+                  : Colors.white,
+              fontSize: states.contains(MaterialState.selected) ? 16 : 12,
+              fontWeight: states.contains(MaterialState.selected)
+                  ? FontWeight.bold
+                  : FontWeight.normal,
+            );
+          },
+        ),
+        iconTheme: MaterialStateProperty.resolveWith<IconThemeData>(
+          (Set<MaterialState> states) {
+            return IconThemeData(
+              color: states.contains(MaterialState.selected)
+                  ? AppColor.darkPrimaryColor
+                  : Colors.white,
+            );
+          },
+        ),
+      ),
+
+      // تخصيص مدخلات النصوص (TextField)
+      inputDecorationTheme: InputDecorationTheme(
+        contentPadding: const EdgeInsets.all(10),
+        filled: true,
+        fillColor: AppColor.darkNavBarColor,
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(width: 1, color: Colors.transparent),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColor.darkPrimaryColor,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+
+      // تخصيص الأزرار (ElevatedButton)
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(AppColor.darkPrimaryColor),
+          textStyle: MaterialStateProperty.all(
+            TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+      cardColor: AppColor.darkCardColor,
+      cardTheme: CardTheme(
+        color: AppColor.darkCardColor,
+      ),
+    );
+  }
+}
+
 
 class AppColor {
   // 🎨 ألوان الثيم الداكن (ChatGPT Dark Theme)
