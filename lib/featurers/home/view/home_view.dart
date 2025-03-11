@@ -37,20 +37,20 @@ class _HomeViewState extends State<HomeView> {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-          // appBar: AppBar(
-          //   leading: Icon(
-          //     IconlyBold.notification,
-          //     size: size.width * 0.08,
-          //   ),
-          //   title: FittedBox(
-          //     child: CusttonTitleText(
-          //       text: "متجري",
-          //       fontSize: size.width * 0.06,
-          //       fontWeight: FontWeight.w600,
-          //     ),
-          //   ),
-          //   centerTitle: true,
-          // ),
+          appBar: AppBar(
+            leading: Icon(
+              IconlyBold.notification,
+              size: size.width * 0.08,
+            ),
+            title: FittedBox(
+              child: CusttonTitleText(
+                text: "متجري",
+                fontSize: size.width * 0.06,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            centerTitle: true,
+          ),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Skeletonizer(

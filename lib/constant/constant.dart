@@ -1,7 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:iconly/iconly.dart';
+
 
 class Constant {
   static List<String> images = [
@@ -51,7 +50,18 @@ class CategoryMosel {
     "قطع الطاقة",
     "شاشات",
   ];
-
+  static const List<String> prand = [
+    "iPhone",
+    "Samsung",
+    "Xiaomi",
+    " Honer",
+    "Hawawi",
+    "Asus",
+    "Inteal",
+    "Ryzan",
+    "Nvidya",
+    "Sony",
+  ];
   CategoryMosel({
     required this.text,
     required this.icon,
