@@ -19,16 +19,8 @@ class SetingView extends StatefulWidget {
 
 class _SetingViewState extends State<SetingView> {
   bool valueBool = false;
-    bool loading = true;
-  @override
-  void initState() {
-    Timer(Duration(seconds: 3), () {
-      setState(() {
-        loading = false;
-      });
-    });
-    super.initState();
-  }
+    bool loading = false;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

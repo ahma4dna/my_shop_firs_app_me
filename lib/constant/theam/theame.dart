@@ -5,12 +5,10 @@ class Styles {
       {required bool isDarkTheme, required BuildContext context}) {
     return ThemeData(
       bottomSheetTheme: BottomSheetThemeData(
-      shape: RoundedRectangleBorder(
-        
-      ),
-      
-        backgroundColor: isDarkTheme?AppColor.primaryDarkColor:AppColor.lightScaffoldColor
-      ),
+          shape: RoundedRectangleBorder(),
+          backgroundColor: isDarkTheme
+              ? AppColor.primaryDarkColor
+              : AppColor.lightScaffoldColor),
       dividerColor: isDarkTheme ? Colors.white : Colors.black,
       primaryColor:
           isDarkTheme ? AppColor.darkPrimaryColor : AppColor.lightPrimaryColor,
@@ -141,7 +139,7 @@ class AppColor {
   static const Color darkTextColor =
       Color(0xFFEDEDED); // لون النص الأبيض الفاتح
   static const Color darkCardColor =
-      Color(0xFF1E1E1E); // رمادي غامق; // لون البطاقات الداكن
+      Color(0xFF2E2E2E); // رمادي غامق; // لون البطاقات الداكن
   static const Color darkNavBarColor =
       Color(0xFF1E1E1E); // لون شريط التنقل في الثيم الداكن
   static const Color darkNavBarSelectedColor =

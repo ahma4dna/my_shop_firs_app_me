@@ -15,7 +15,7 @@ class _ProductListState extends State<ProductList> {
 
     return SizedBox(
       width: size.width * 1,
-      height: size.height * 0.38,
+      height: size.height * 0.4,
       child: CustomScrollView(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
@@ -29,8 +29,7 @@ class _ProductListState extends State<ProductList> {
                       EdgeInsets.symmetric(horizontal: 10), // مسافة بين العناصر
                   child: ProductCard(
                     size: size,
-                    width: size.width * 0.6,
-                    height: size.height * 0.38,
+                  
                   ),
                 );
               },

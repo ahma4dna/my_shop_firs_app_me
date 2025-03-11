@@ -1,7 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
-
 class Constant {
   static List<String> images = [
     "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
@@ -12,6 +11,7 @@ class Constant {
 
 class CategoryMosel {
   final String text;
+  
   final IconData icon;
   final void Function()? onPressed;
 
@@ -50,21 +50,86 @@ class CategoryMosel {
     "قطع الطاقة",
     "شاشات",
   ];
-  static const List<String> prand = [
-    "iPhone",
-    "Samsung",
-    "Xiaomi",
-    " Honer",
-    "Hawawi",
-    "Asus",
-    "Inteal",
-    "Ryzan",
-    "Nvidya",
-    "Sony",
-  ];
+
+
   CategoryMosel({
+  
     required this.text,
-    required this.icon,
+  required  this.icon,
     this.onPressed,
   });
+}
+
+class PrandModel{
+    final String text;
+  final void Function()? onPressed;
+
+  static const List<String> prandImageLocal = [
+    "images/assets/apple.png",
+    "images/assets/samsung.png",
+    "images/assets/xiaomi.png",
+    "images/assets/honor.png",
+    "images/assets/huawei.png",
+    "images/assets/asus.png",
+    "images/assets/intel.png",
+    "images/assets/amd.png",
+    "images/assets/nvidia.png",
+    "images/assets/sony.png",
+  ];
+    static const List<String> prand = [
+    "Apple",
+    "Samsung",
+    "Xiaomi ",
+    " Honor ",
+    "Huawei ",
+    "ASUS ",
+    "Intel ",
+    "AMD ",
+    "NVIDIA ",
+    "Sony ",
+  ];
+    static List<PrandModel> prandMoel = [
+    PrandModel(
+      text: "هواتف",
+      onPressed: () {},
+    ),
+    PrandModel(
+      text: "Samsung",
+      onPressed: () {},
+    ),
+    PrandModel(
+      text: "Xiaomi ",
+      onPressed: () {},
+    ),
+    PrandModel(
+      text: " Honor ",
+      onPressed: () {},
+    ),
+    PrandModel(
+      text: "Huawei ",
+      onPressed: () {},
+    ),
+    PrandModel(
+      text: "ASUS ",
+      onPressed: () {},
+    ),
+    PrandModel(
+      text: "Intel ",
+      onPressed: () {},
+    ),
+    PrandModel(
+      text: "AMD ",
+      onPressed: () {},
+    ),
+    PrandModel(
+      text: "NVIDIA ",
+      onPressed: () {},
+    ),
+    PrandModel(
+      text: "Sony ",
+      onPressed: () {},
+    ),
+  ];
+
+  PrandModel({required this.text, required this.onPressed});
 }

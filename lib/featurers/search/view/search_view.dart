@@ -257,7 +257,7 @@ class ListFilterPrand extends StatelessWidget {
               child: Center(
                 child: FittedBox(
                   child: CusttonSubtitleText(
-                    text: CategoryMosel.prand[index],
+                    text: PrandModel.prand[index],
                     color: Theme.of(context).iconTheme.color,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -266,7 +266,7 @@ class ListFilterPrand extends StatelessWidget {
             ),
           ),
         ),
-        itemCount: CategoryMosel.prand.length,
+        itemCount: PrandModel.prand.length,
       ),
     );
   }

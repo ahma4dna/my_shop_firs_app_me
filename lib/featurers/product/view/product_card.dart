@@ -20,94 +20,110 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        navigationTo(context: context, page: ProductDetiels());
-      },
-      child: SizedBox(
-  width: size.width*0.4,
-  child: Card(
-    elevation: 5,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-          ),
-          child: Image.network(
-            "https://storage.store.arriadagroup.com/images/products/4660/images/8b290af9010608bb458a1babb5018259.webp",
-            width: double.infinity,
-            height: size.width * 0.4, // تقليل الارتفاع لتجنب overflow
-            fit: BoxFit.cover,
-          ),
-        ),
-        SizedBox(height: size.width * 0.02),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CusttonSubtitleText(
-                text: "Marka",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                fontWeight: FontWeight.w300,
-                fontSize: size.width * 0.04,
-              ),
-              CusttonTitleText(
-                text: "iphone 16 pro Max",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                fontSize: size.width * 0.055,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: size.width * 0.02), // إضافة مسافة صغيرة لتجنب الازدحام
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-          child: IntrinsicHeight( // يساعد في ضبط ارتفاع الـ Row تلقائيًا
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        onTap: () {
+          navigationTo(context: context, page: ProductDetiels());
+        },
+        child: SizedBox(
+          width: size.width * 0.65,
+          height:size.width * 0.7,
+          child: Card(
+            elevation: 5,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Flexible(
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: size.width * 0.03),
-                        child: CusttonSubtitleText(
-                          text: "7000",
-                          fontSize: size.width * 0.065,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      CusttonSubtitleText(
-                        text: "د.ل",
-                        fontWeight: FontWeight.w300,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: size.width * 0.0469,
-                      ),
-                    ],
+                  flex: 6,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                      bottomLeft: Radius.circular(5),
+                      bottomRight: Radius.circular(5),
+                    ),
+                    child: Image.network(
+                      "https://storage.store.arriadagroup.com/images/products/4660/images/8b290af9010608bb458a1babb5018259.webp",
+                      width: double.infinity,
+                      height: size.width * 0.5, // تقليل الارتفاع لتجنب overflow
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-                HaertBotton(
-                  size: size,
-                  onPressed: () {},
+                SizedBox(height: size.width * 0.02),
+                Flexible(
+                  flex: 3,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CusttonSubtitleText(
+                          text: "Marka",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w300,
+                          fontSize: size.width * 0.04,
+                        ),
+                        CusttonTitleText(
+                          text: "iphone 16 pro Max",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: size.width * 0.055,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
+                SizedBox(
+                    height:
+                        size.width * 0.02), // إضافة مسافة صغيرة لتجنب الازدحام
+                Flexible(
+                  flex: 2,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                    child:  Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: FittedBox(
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(right: size.width * 0.03),
+                                    child: CusttonSubtitleText(
+                                      text: "7000",
+                                      fontSize: size.width * 0.065,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  SizedBox(width: size.width*0.02),
+                                  CusttonSubtitleText(
+                                    text: "د.ل",
+                                    fontWeight: FontWeight.w300,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: size.width * 0.0469,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: HaertBotton(
+                              size: size,
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ),
+                
               ],
             ),
           ),
-        ),
-      ],
-    ),
-  ),
-)
-
-
-    );
+        ));
   }
 }
