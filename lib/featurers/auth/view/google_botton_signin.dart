@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
+import 'package:my_shop/featurers/auth/cubit/auth_cubit.dart';
 
 class GoogleBottonSignin extends StatelessWidget {
   const GoogleBottonSignin({super.key});
 
   @override
   Widget build(BuildContext context) {
-        double withe = MediaQuery.of(context).size.width;
+    double withe = MediaQuery.of(context).size.width;
     return Center(
       child: SizedBox(
         width: withe * 0.9,
@@ -22,7 +24,9 @@ class GoogleBottonSignin extends StatelessWidget {
             ),
             elevation: 5,
           ),
-          onPressed: () {},
+          onPressed: () async {
+            await context.read<AuthCubit>().loginWithGoogleProvder();
+          },
           label: CusttonSubtitleText(
             text: "التسجيل بواسطة جوجل",
             color: Colors.black,
