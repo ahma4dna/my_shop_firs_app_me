@@ -1,4 +1,4 @@
-import 'dart:async';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +27,7 @@ class _SetingViewState extends State<SetingView> {
     return BlocConsumer<RootAppCubit, RootAppState>(
       listener: (context, state) {},
       builder: (context, state) {
-        final cubit = context.read<RootAppCubit>();
+
         return Scaffold(
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -187,6 +187,7 @@ class _SetingViewState extends State<SetingView> {
                                           ),
                                           trailing: Icon(
                                               false
+                                                  // ignore: dead_code
                                                   ? Icons.radio_button_unchecked
                                                   : Icons.radio_button_checked,
                                               color: AppColor.darkPrimaryColor),
@@ -204,6 +205,7 @@ class _SetingViewState extends State<SetingView> {
                                           ),
                                           trailing: Icon(
                                               false
+                                                  // ignore: dead_code
                                                   ? Icons.radio_button_unchecked
                                                   : Icons.radio_button_checked,
                                               color: AppColor.darkPrimaryColor),
@@ -300,11 +302,10 @@ class _SetingViewState extends State<SetingView> {
                     value: AppThemeMode.system,
                     groupValue: cubit.themeMode,
                     onChanged: (value) => cubit.setTheme(AppThemeMode.system),
-                      activeColor: Colors.blue,
+                    activeColor: Colors.blue,
                   ),
                 ),
                 ListTile(
-                
                   leading: Icon(Icons.light_mode),
                   title: CusttonTitleText(
                     text: "الوضع الفاتح",
@@ -314,7 +315,7 @@ class _SetingViewState extends State<SetingView> {
                     value: AppThemeMode.light,
                     groupValue: cubit.themeMode,
                     onChanged: (value) => cubit.setTheme(AppThemeMode.light),
-                      activeColor: Colors.blue,
+                    activeColor: Colors.blue,
                   ),
                 ),
                 ListTile(
@@ -337,78 +338,6 @@ class _SetingViewState extends State<SetingView> {
       },
     );
   }
-
-  Directionality lightTheam(RootAppCubit cubit) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: ListTile(
-        leading: Icon(
-          Icons.dark_mode,
-        ),
-        title: CusttonTitleText(
-          text: "الوضع الفاتح",
-        ),
-        trailing: AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
-          child: Icon(
-              false ? Icons.radio_button_unchecked : Icons.radio_button_checked,
-              key: ValueKey<bool>(false),
-              color: AppColor.darkPrimaryColor),
-        ),
-        onTap: () async {
-          if (false == true) {
-            setState(() {
-              valueBool = false;
-            });
-          }
-        },
-      ),
-    );
-  }
-
-  Directionality darkTheame(RootAppCubit cubit) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: ListTile(
-        leading: Icon(
-          Icons.dark_mode,
-        ),
-        title: CusttonTitleText(
-          text: "الوضع الداكن",
-        ),
-        trailing: AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
-          child: Icon(
-              false ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-              key: ValueKey<bool>(false),
-              color: AppColor.darkPrimaryColor),
-        ),
-        onTap: () async {
-          if (false == false) {
-            setState(() {
-              valueBool = true;
-            });
-          }
-        },
-      ),
-    );
-  }
-}
-
-Widget displayOption(
-    IconData icon, String text, bool isSelected, void Function()? onTap) {
-  return Directionality(
-    textDirection: TextDirection.rtl,
-    child: ListTile(
-        leading: Icon(icon, color: Colors.white),
-        title: CusttonTitleText(text: text),
-        trailing: Icon(
-            isSelected
-                ? Icons.radio_button_checked
-                : Icons.radio_button_unchecked,
-            color: AppColor.darkPrimaryColor),
-        onTap: onTap),
-  );
 }
 
 class MyListTile extends StatelessWidget {

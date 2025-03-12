@@ -30,10 +30,11 @@ class ProductCard extends StatelessWidget {
             elevation: 5,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Flexible(
-                  flex: 6,
+              flex: 3,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15),
@@ -51,24 +52,28 @@ class ProductCard extends StatelessWidget {
                 ),
                 SizedBox(height: size.width * 0.02),
                 Flexible(
-                  flex: 3,
+                flex: 1,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CusttonSubtitleText(
-                          text: "Marka",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.w300,
-                          fontSize: size.width * 0.04,
+                        Flexible(
+                          child: CusttonSubtitleText(
+                            text: "Marka",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.w300,
+                            fontSize: size.width * 0.04,
+                          ),
                         ),
-                        CusttonTitleText(
-                          text: "iphone 16 pro Max",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: size.width * 0.055,
+                        Flexible(
+                          child: CusttonTitleText(
+                            text: "iphone 16 pro Max",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: size.width * 0.055,
+                          ),
                         ),
                       ],
                     ),
@@ -78,7 +83,7 @@ class ProductCard extends StatelessWidget {
                     height:
                         size.width * 0.02), // إضافة مسافة صغيرة لتجنب الازدحام
                 Flexible(
-                  flex: 2,
+              
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
                     child:  Row(

@@ -10,17 +10,17 @@ import 'package:my_shop/featurers/product/view/product_detiels.dart';
 class CartView extends StatelessWidget {
   const CartView({super.key});
 
+  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     return BlocProvider(
       create: (context) => CartCubit(),
       child: BlocConsumer<CartCubit, CartState>(
         listener: (context, state) {
-          // TODO: implement listener
+    
         },
         builder: (context, state) {
-          final cubit = context.read<CartCubit>();
+      
           return Scaffold(
             bottomSheet: CheakBottonSheat(width: width),
             appBar: AppBar(
@@ -176,13 +176,13 @@ class QuantitySelector extends StatelessWidget {
   final VoidCallback onRemove;
   final double withe;
 
-  QuantitySelector({
-    Key? key,
+  const QuantitySelector({
+    super.key,
     required this.quantity,
     required this.onAdd,
     required this.onRemove,
     required this.withe,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -193,6 +193,7 @@ class QuantitySelector extends StatelessWidget {
       builder: (context, state) {
         return Container(
           decoration: BoxDecoration(
+            // ignore: deprecated_member_use
             color: Colors.grey.withOpacity(0.2),
             borderRadius: BorderRadius.circular(10),
           ),

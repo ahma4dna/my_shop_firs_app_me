@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/constant/theam/theame.dart';
+import 'package:my_shop/featurers/auth/view/auth_view.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:my_shop/root/root_screen.dart';
 
@@ -41,11 +42,12 @@ class MyApp extends StatelessWidget {
                           ? ThemeMode.light
                           : ThemeMode.system,
               theme: LightTheme.themeData(context),
+              
               darkTheme: DarkTheme.themeData(context),
               debugShowCheckedModeBanner: false,
               home: Directionality(
                 textDirection: TextDirection.rtl,
-                child: RootScreen(),
+                child: AuthScreen(),
               ),
             ),
           );

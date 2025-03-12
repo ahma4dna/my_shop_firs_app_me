@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+
 import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/product/view/product_list.dart';
@@ -20,8 +19,6 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   bool loading = false;
 
-
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -30,20 +27,20 @@ class _HomeViewState extends State<HomeView> {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-          // appBar: AppBar(
-          //   leading: Icon(
-          //     IconlyBold.notification,
-          //     size: size.width * 0.08,
-          //   ),
-          //   title: FittedBox(
-          //     child: CusttonTitleText(
-          //       text: "متجري",
-          //       fontSize: size.width * 0.06,
-          //       fontWeight: FontWeight.w600,
-          //     ),
-          //   ),
-          //   centerTitle: true,
-          // ),
+          appBar: AppBar(
+            leading: Icon(
+              IconlyBold.notification,
+              size: size.width * 0.08,
+            ),
+            title: FittedBox(
+              child: CusttonTitleText(
+                text: "متجري",
+                fontSize: size.width * 0.06,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            centerTitle: true,
+          ),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Skeletonizer(
@@ -71,12 +68,12 @@ class _HomeViewState extends State<HomeView> {
                         SizedBox(
                           width: size.width * 0.05,
                         ),
-                         FittedBox(
-                           child: Icon(
+                        FittedBox(
+                          child: Icon(
                             Icons.rocket_launch,
                             size: size.width * 0.07,
-                                                   ),
-                         ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -93,7 +90,7 @@ class _HomeViewState extends State<HomeView> {
                     padding: const EdgeInsets.only(right: 20.0),
                     child: Row(
                       children: [
-                         CusttonTitleText(
+                        CusttonTitleText(
                           text: "التصنيفات",
                           fontSize: size.width * 0.06,
                         ),

@@ -317,7 +317,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
 }
 
 class RatingWidget extends StatelessWidget {
-  RatingWidget({required this.size});
+  RatingWidget({super.key, required this.size});
 
   // عدد التقييمات لكل فئة
   final Map<int, int> ratings = {
@@ -374,7 +374,7 @@ class RatingWidget extends StatelessWidget {
               ),
               SizedBox(height: size.width * 0.02),
               Text(
-                "${totalRatings.toString()}",
+                totalRatings.toString(),
                 style: TextStyle(
                     fontSize: size.width * 0.03, color: Colors.white70),
               ),
@@ -394,6 +394,7 @@ class RatingWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: size.width * 0.03),
+                  // ignore: sized_box_for_whitespace
                   Container(
                     width: size.width *
                         0.55, // Adjust the width of the progress bar

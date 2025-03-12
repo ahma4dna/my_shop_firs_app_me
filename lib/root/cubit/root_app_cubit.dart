@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'root_app_state.dart';
 
 enum AppThemeMode { system, light, dark }
+
 class RootAppCubit extends Cubit<RootAppState> {
   RootAppCubit() : super(RootAppInitial());
   List<Widget> pages = [
@@ -21,13 +22,7 @@ class RootAppCubit extends Cubit<RootAppState> {
     ExplorView(),
     SetingView(),
   ];
-   List<GlobalKey<NavigatorState>> navigatorKeys = [
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-      GlobalKey<NavigatorState>(),
-        GlobalKey<NavigatorState>(),
-  ];
+
   int currentIndex = 0;
   void changeIndex(int index) {
     currentIndex = index;
@@ -62,7 +57,7 @@ class RootAppCubit extends Cubit<RootAppState> {
     ),
   ];
 
-AppThemeMode themeMode = AppThemeMode.system; // الوضع الافتراضي
+  AppThemeMode themeMode = AppThemeMode.system; // الوضع الافتراضي
 
   Future<void> setTheme(AppThemeMode mode) async {
     final prefs = await SharedPreferences.getInstance();
@@ -85,6 +80,4 @@ AppThemeMode themeMode = AppThemeMode.system; // الوضع الافتراضي
 
     emit(ThemeLoaded());
   }
-
-
 }

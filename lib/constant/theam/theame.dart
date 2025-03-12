@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class LightTheme {
@@ -28,7 +30,8 @@ class LightTheme {
         height: kBottomNavigationBarHeight + 25,
         backgroundColor: AppColor.lightScaffoldColor,
         indicatorColor: Color(0xFFBBDEFB),
-        labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
+        labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
+          // ignore: deprecated_member_use
           (Set<MaterialState> states) {
             return TextStyle(
               color: states.contains(MaterialState.selected)
