@@ -9,8 +9,11 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
-
-  Future<void> signUp({required String email, required String password}) async {
+  final User? user = Supabase.instance.client.auth.currentUser;
+  Future<void> signUp(
+      {required String email,
+      required String password,
+      required String name}) async {
     emit(SignUpLoading());
     try {
       await Supabase.instance.client.auth.signUp(
@@ -18,6 +21,13 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
       );
       emit(SignUpSucces());
+
+      if (user != null) {
+        await saveDataAuthUser(
+          email: email,
+          name: name,
+        );
+      }
     } catch (e) {
       log(e.toString());
       emit(SignUpErorr());
@@ -60,10 +70,37 @@ class AuthCubit extends Cubit<AuthState> {
           );
           emit(LoginGoogleSucces());
         }
+        final idUser = user!.id;
+        final isNewuser =await Supabase.instance.client
+            .from("users")
+            .select()
+            .eq("id_user", idUser)
+            .maybeSingle();
+        if ( isNewuser == null) {
+          await saveDataAuthUser(
+              email: acountGoogle.email, name: acountGoogle.displayName!);
+        }
       }
     } catch (e) {
       log(e.toString());
       emit(LoginGoogleErorr());
+    }
+  }
+
+  Future<void> saveDataAuthUser(
+      {required String email, required String name}) async {
+    emit(SaveDataLoading());
+
+    try {
+      await Supabase.instance.client.from("users").insert({
+        "id_user": user!.id,
+        "name": name,
+        "email": email,
+      });
+
+      emit(SaveDataSuceccs());
+    } catch (e) {
+      emit(SaveDataErorr());
     }
   }
 }

@@ -13,3 +13,6 @@ final class LoginErorr extends AuthState {}
 final class LoginGoogleLoading extends AuthState {}
 final class LoginGoogleSucces extends AuthState {}
 final class LoginGoogleErorr extends AuthState {}
+final class SaveDataLoading extends AuthState {}
+final class SaveDataSuceccs extends AuthState {}
+final class SaveDataErorr extends AuthState {}

@@ -105,6 +105,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                   onPressed: () async{
                   await  cubit.signUp(
+                    name: namelcontroller.text,
                         email: emailcontroller.text,
                         password: passwordcontroller.text);
                   },
