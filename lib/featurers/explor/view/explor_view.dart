@@ -23,30 +23,30 @@ class ExplorView extends StatelessWidget {
             height: width * 0.1,
           ),
           Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: CusttonTitleText(
-                text: "العلامات التجارية",
-                color: Theme.of(context).iconTheme.color,
-                fontSize: width * 0.05,
-              ),
-              ),
+            padding: const EdgeInsets.only(right: 8.0),
+            child: CusttonTitleText(
+              text: "العلامات التجارية",
+              color: Theme.of(context).iconTheme.color,
+              fontSize: width * 0.05,
+            ),
+          ),
           SizedBox(
             height: width * 0.05,
           ),
           GridView.builder(
-             physics: NeverScrollableScrollPhysics(),
-             shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
             itemCount: PrandModel.prand.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: width*0.03,
-                mainAxisSpacing: width*0.05,
+                crossAxisSpacing: width * 0.03,
+                mainAxisSpacing: width * 0.05,
                 childAspectRatio: 1),
             itemBuilder: (context, index) => SizedBox(
               height: width * 0.35,
               width: width * 0.4,
               child: GestureDetector(
-                onTap:PrandModel.prandMoel[index].onPressed ,
+                onTap: PrandModel.prandMoel[index].onPressed,
                 child: Card(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +70,6 @@ class ExplorView extends StatelessWidget {
               ),
             ),
           ),
-        
         ],
       ),
     );

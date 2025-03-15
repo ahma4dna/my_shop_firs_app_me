@@ -11,7 +11,7 @@ class Constant {
 
 class CategoryMosel {
   final String text;
-  
+
   final IconData icon;
   final void Function()? onPressed;
 
@@ -51,17 +51,15 @@ class CategoryMosel {
     "شاشات",
   ];
 
-
   CategoryMosel({
-  
     required this.text,
-  required  this.icon,
+    required this.icon,
     this.onPressed,
   });
 }
 
-class PrandModel{
-    final String text;
+class PrandModel {
+  final String text;
   final void Function()? onPressed;
 
   static const List<String> prandImageLocal = [
@@ -76,7 +74,7 @@ class PrandModel{
     "images/assets/nvidia.png",
     "images/assets/sony.png",
   ];
-    static const List<String> prand = [
+  static const List<String> prand = [
     "Apple",
     "Samsung",
     "Xiaomi ",
@@ -88,7 +86,7 @@ class PrandModel{
     "NVIDIA ",
     "Sony ",
   ];
-    static List<PrandModel> prandMoel = [
+  static List<PrandModel> prandMoel = [
     PrandModel(
       text: "هواتف",
       onPressed: () {},

@@ -5,7 +5,7 @@ class CusttonSubtitleText extends StatelessWidget {
   const CusttonSubtitleText({
     super.key,
     required this.text,
-    this.color ,
+    this.color,
     this.fontSize = 15,
     this.maxLines = 1,
     this.overflow = TextOverflow.ellipsis,

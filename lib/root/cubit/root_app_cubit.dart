@@ -9,6 +9,7 @@ import 'package:my_shop/featurers/home/view/home_view.dart';
 import 'package:my_shop/featurers/search/view/search_view.dart';
 import 'package:my_shop/featurers/setaings/view/seting_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 part 'root_app_state.dart';
 
 enum AppThemeMode { system, light, dark }
@@ -67,6 +68,7 @@ class RootAppCubit extends Cubit<RootAppState> {
   }
 
   Future<void> loadTheme() async {
+    // log(Supabase.instance.client.auth.currentUser!.id.toString()??"");
     final prefs = await SharedPreferences.getInstance();
     String? storedMode = prefs.getString("THEME_MODE");
 

@@ -11,7 +11,7 @@ class SearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-  
+
     bool? filter = true;
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +59,7 @@ class SearchView extends StatelessWidget {
               ListFilterPrand(
                 width: width,
               ),
-                SizedBox(
+              SizedBox(
                 height: width * 0.05,
               ),
             ],
@@ -246,11 +246,9 @@ class ListFilterPrand extends StatelessWidget {
           child: GestureDetector(
             onTap: () {},
             child: Container(
-              
               width: width * 0.25,
               height: width * 0.075,
               decoration: BoxDecoration(
-                
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(5),
               ),

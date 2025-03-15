@@ -25,7 +25,9 @@ class GoogleBottonSignin extends StatelessWidget {
             elevation: 5,
           ),
           onPressed: () async {
-            await context.read<AuthCubit>().loginWithGoogleProvder();
+            await context
+                .read<AuthCubit>()
+                .loginWithGoogleProvder(context: context);
           },
           label: CusttonSubtitleText(
             text: "التسجيل بواسطة جوجل",

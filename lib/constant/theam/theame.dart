@@ -76,7 +76,8 @@ class LightTheme {
       // تخصيص الأزرار (ElevatedButton)
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(AppColor.lightPrimaryColor),
+          backgroundColor:
+              MaterialStateProperty.all(AppColor.lightPrimaryColor),
           textStyle: MaterialStateProperty.all(
             TextStyle(color: Colors.black),
           ),
@@ -147,6 +148,13 @@ class DarkTheme {
         contentPadding: const EdgeInsets.all(10),
         filled: true,
         fillColor: AppColor.darkNavBarColor,
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(width: 1, color: Colors.transparent),
           borderRadius: BorderRadius.circular(12),
@@ -176,7 +184,6 @@ class DarkTheme {
     );
   }
 }
-
 
 class AppColor {
   // 🎨 ألوان الثيم الداكن (ChatGPT Dark Theme)

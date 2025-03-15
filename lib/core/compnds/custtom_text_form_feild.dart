@@ -9,7 +9,7 @@ class CusttomTextFormFeild extends StatelessWidget {
     required this.hint,
     this.suffixIcon,
     this.prefixIcon,
-     this.obscureText,
+    this.obscureText,
     this.maxLength,
     this.maxLines,
     this.minLines,
@@ -19,12 +19,13 @@ class CusttomTextFormFeild extends StatelessWidget {
     this.fillColor,
     this.disabledBorder,
     this.enabledBorder,
-    this.validator, this.hintStyle, 
+    this.validator,
+    this.hintStyle,
   });
 
   final TextEditingController controller;
   final TextInputType? keyboardType;
-  final String?  hint;
+  final String? hint;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final bool? obscureText;
@@ -38,33 +39,29 @@ class CusttomTextFormFeild extends StatelessWidget {
   final InputBorder? disabledBorder;
   final InputBorder? enabledBorder;
   final String? Function(String?)? validator;
-final TextStyle? hintStyle;
+  final TextStyle? hintStyle;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
       validator: validator,
       inputFormatters: inputFormatters,
       onChanged: onChanged,
       controller: controller,
-      obscureText: obscureText??false,
+      obscureText: obscureText ?? false,
       keyboardType: keyboardType,
       maxLength: maxLength,
       maxLines: maxLength ?? 1,
       minLines: minLines,
       decoration: InputDecoration(
-        
         hintStyle: hintStyle,
         filled: filled,
         fillColor: fillColor,
-      
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
-        
         hintText: hint,
         border: disabledBorder,
-        focusedBorder:enabledBorder,
+        focusedBorder: enabledBorder,
       ),
     );
   }

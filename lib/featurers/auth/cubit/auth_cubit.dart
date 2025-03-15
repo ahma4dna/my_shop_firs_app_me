@@ -1,32 +1,38 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:my_shop/featurers/auth/model/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
-  final User? user = Supabase.instance.client.auth.currentUser;
-  Future<void> signUp(
-      {required String email,
-      required String password,
-      required String name}) async {
+
+  Future<void> signUp({
+    required String email,
+    required String password,
+    required String name,
+    required BuildContext context,
+  }) async {
     emit(SignUpLoading());
     try {
       await Supabase.instance.client.auth.signUp(
         password: password,
         email: email,
       );
-      emit(SignUpSucces());
+
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null) {
+        log("User is null after signup!");
+        emit(SignUpErorr());
+        return;
+      }
+
+      await saveDataAuthUser(email: email, name: name);
 
       if (user != null) {
-        await saveDataAuthUser(
-          email: email,
-          name: name,
-        );
+        emit(SignUpSucces());
       }
     } catch (e) {
       log(e.toString());
@@ -34,23 +40,36 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
     emit(LoginLoading());
     try {
       await Supabase.instance.client.auth.signInWithPassword(
         password: password,
         email: email,
       );
-      emit(LoginSucces());
+
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null) {
+        log("User is null after login!");
+        emit(LoginErorr());
+        return;
+      }
+
+      if (user != null) {
+        emit(LoginSucces());
+      }
     } catch (e) {
       log(e.toString());
       emit(LoginErorr());
     }
   }
 
-  Future<void> loginWithGoogleProvder() async {
+  Future<void> loginWithGoogleProvder({required BuildContext context}) async {
     emit(LoginGoogleLoading());
-
     try {
       final google = GoogleSignIn(
         serverClientId:
@@ -61,24 +80,34 @@ class AuthCubit extends Cubit<AuthState> {
       if (acountGoogle != null) {
         final auth = await acountGoogle.authentication;
         if (auth.accessToken != null && auth.idToken != null) {
-          final accessToken = auth.accessToken;
-          final idToken = auth.idToken;
           await Supabase.instance.client.auth.signInWithIdToken(
             provider: OAuthProvider.google,
-            idToken: idToken!,
-            accessToken: accessToken,
+            idToken: auth.idToken!,
+            accessToken: auth.accessToken!,
           );
-          emit(LoginGoogleSucces());
-        }
-        final idUser = user!.id;
-        final isNewuser =await Supabase.instance.client
-            .from("users")
-            .select()
-            .eq("id_user", idUser)
-            .maybeSingle();
-        if ( isNewuser == null) {
-          await saveDataAuthUser(
-              email: acountGoogle.email, name: acountGoogle.displayName!);
+
+          final user = Supabase.instance.client.auth.currentUser;
+          if (user == null) {
+            log("User is null after Google login!");
+            emit(LoginGoogleErorr());
+            return;
+          }
+
+          final isNewuser = await Supabase.instance.client
+              .from("users")
+              .select()
+              .eq("id_user", user.id)
+              .maybeSingle();
+
+          if (isNewuser == null) {
+            await saveDataAuthUser(
+              email: acountGoogle.email,
+              name: acountGoogle.displayName!,
+            );
+          }
+          if (user != null) {
+            emit(LoginGoogleSucces());
+          }
         }
       }
     } catch (e) {
@@ -90,10 +119,16 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> saveDataAuthUser(
       {required String email, required String name}) async {
     emit(SaveDataLoading());
-
     try {
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null) {
+        log("User is null when saving data!");
+        emit(SaveDataErorr());
+        return;
+      }
+
       await Supabase.instance.client.from("users").insert({
-        "id_user": user!.id,
+        "id_user": user.id,
         "name": name,
         "email": email,
       });
@@ -101,6 +136,60 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SaveDataSuceccs());
     } catch (e) {
       emit(SaveDataErorr());
+    }
+  }
+
+  Future<void> signOut({required BuildContext context}) async {
+    emit(SignOutLoading());
+    try {
+      await Supabase.instance.client.auth.signOut();
+
+      emit(SignOutSucecc());
+
+      // تعديل التوجيه بعد تسجيل الخروج
+    } catch (e) {
+      emit(SignOutErorr());
+    }
+  }
+
+  List<UserModel> lisUser = [];
+
+  UserModel? userModel;
+  Future<void> getDataUser({required BuildContext context}) async {
+    emit(GetDataUserLoading());
+    try {
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null) {
+        // التعامل مع حالة عدم وجود المستخدم
+        emit(GetDataUserErorr());
+        return;
+      }
+
+      final data = await Supabase.instance.client
+          .from("users")
+          .select()
+          .eq("id_user", user.id);
+
+      if (data.isNotEmpty) {
+        lisUser.add(UserModel.fromJson(data.first));
+      } else {
+        // التعامل مع حالة عدم وجود بيانات
+        emit(GetDataUserErorr());
+        return;
+      }
+
+      if (lisUser.isNotEmpty) {
+        userModel = lisUser[0];
+        if (userModel != null && userModel!.name != null) {
+          log(userModel!.name!);
+        } else {
+          log("User name is null");
+        }
+      }
+
+      emit(GetDataUserSucecc());
+    } catch (e) {
+      emit(GetDataUserErorr());
     }
   }
 }

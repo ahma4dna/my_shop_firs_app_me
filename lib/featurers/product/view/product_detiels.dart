@@ -1,16 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/core/compnds/custtom_text_form_feild.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
+import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/haert_botton.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductDetiels extends StatefulWidget {
-  const ProductDetiels({super.key});
-
+  const ProductDetiels({super.key, this.productModel});
+  final ProductModel? productModel;
   @override
   State<ProductDetiels> createState() => _ProductDetielsState();
 }
@@ -26,7 +29,8 @@ class _ProductDetielsState extends State<ProductDetiels> {
   int selctedImage = 0;
   @override
   void initState() {
-    Timer(Duration(seconds: 3), () {
+    context.read<ProductCubit>().getReview(productId: widget.productModel!.productId!);
+    Timer(Duration(milliseconds: 650), () {
       setState(() {
         loading = false;
       });
@@ -42,6 +46,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
       bottomSheet: Skeletonizer(
         enabled: loading,
         child: BottonSeat(
+          productModel: widget.productModel,
           size: size,
           onPressed: () {},
         ),
@@ -88,7 +93,8 @@ class _ProductDetielsState extends State<ProductDetiels> {
                       flex: 3,
                       child: FittedBox(
                         child: CusttonTitleText(
-                          text: "iPhone 16 Pro Max",
+                          text: widget.productModel?.productTitle ??
+                              "iPhone 16 Pro Max",
                           fontSize: size.width * 0.05,
                           overflow: TextOverflow.clip,
                         ),
@@ -114,38 +120,35 @@ class _ProductDetielsState extends State<ProductDetiels> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      FittedBox(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            CusttonTitleText(
-                              text: "وصف المنتج",
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          CusttonTitleText(
+                            text: "وصف المنتج",
+                            fontSize: size.width * 0.05,
+                          ),
+                          SizedBox(
+                            height: size.width * 0.02,
+                          ),
+                          Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: CusttonTitleText(
+                              text: widget.productModel?.descripsion ?? "",
+                              maxLines: 35,
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.width * 0.05,
+                          ),
+                          FittedBox(
+                            child: CusttonTitleText(
+                              text: "قيم المنتج",
                               fontSize: size.width * 0.05,
                             ),
-                            SizedBox(
-                              height: size.width * 0.02,
-                            ),
-                            Directionality(
-                              textDirection: TextDirection.rtl,
-                              child: CusttonTitleText(
-                                text:
-                                    "● الشاشة: LTPO Super Retina XDR OLED || 2000 nits\n● مزايا الشاشة: HDR10 || Dolby Vision\n● الشريحة: A18 Pro Bionic (3 nm)\n● الكاميرا الرئيسية: 48 ميجابكسل\n● عدد الكاميرات الخلفية : 3\n● الكاميرا الأمامية: 12 ميجابكسل\n● سرعة الشحن: 50% خلال 30 دقيقة\n● مزايا إضافية:\n· التعرف على الوجه بمعرف الوجه\n· الشحن اللاسلكي المغناطيسي MagSafe\n·الذكاء الإصطناعي الخاص بشركة Apple",
-                                maxLines: 22,
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            SizedBox(
-                              height: size.width * 0.05,
-                            ),
-                            FittedBox(
-                              child: CusttonTitleText(
-                                text: "قيم المنتج",
-                                fontSize: size.width * 0.05,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       RatingWidget(
                         size: size,
@@ -173,11 +176,12 @@ class _ProductDetielsState extends State<ProductDetiels> {
                       ),
                       onRatingUpdate: (rating) {
                         navigationTo(
-                            context: context,
-                            page: RatingAndRivew(
-                              size: size,
-                              initialRating: rating,
-                            ),);
+                          context: context,
+                          page: RatingAndRivew(
+                            size: size,
+                            initialRating: rating,
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -246,18 +250,21 @@ class _ProductDetielsState extends State<ProductDetiels> {
           navigationTo(
             context: context,
             page: ViewerImage(
-              image: imags[selctedImage],
+              image: widget.productModel?.listUrlImage![selctedImage] ??
+                  imags[selctedImage],
             ),
           );
         },
         child: Hero(
-          tag: imags[selctedImage],
+          tag: widget.productModel?.listUrlImage![selctedImage] ??
+              imags[selctedImage],
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Image.network(
               height: size.width * 1,
               fit: BoxFit.cover,
-              imags[selctedImage],
+              widget.productModel?.listUrlImage![selctedImage] ??
+                  imags[selctedImage],
             ),
           ),
         ),
@@ -300,7 +307,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
                           ? size.width * 0.24
                           : size.width * 0.2,
                       fit: BoxFit.cover,
-                      imags[index],
+                      widget.productModel?.listUrlImage![index] ?? imags[index],
                     ),
                   ),
                 ),
@@ -308,7 +315,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
             ),
           ),
         ),
-        itemCount: imags.length,
+        itemCount: widget.productModel?.listUrlImage!.length ?? imags.length,
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
       ),
@@ -345,7 +352,7 @@ class RatingWidget extends StatelessWidget {
               Text(
                 "4.5",
                 style: TextStyle(
-                  fontSize: size.width * 0.15,
+                  fontSize: size.width * 0.08,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).iconTheme.color,
                 ),
@@ -398,11 +405,17 @@ class RatingWidget extends StatelessWidget {
                   Container(
                     width: size.width *
                         0.55, // Adjust the width of the progress bar
-                    child: LinearProgressIndicator(
-                      value: percentage,
-                      backgroundColor: Colors.grey[800],
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Colors.blue[200]!),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.width * 0.01),
+                      child: LinearProgressIndicator(
+                        borderRadius: BorderRadius.circular(15),
+                        minHeight: size.width * 0.05,
+                        value: percentage,
+                        backgroundColor: Colors.grey[800],
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.blue[200]!),
+                      ),
                     ),
                   ),
                 ],
@@ -627,8 +640,9 @@ class BottonSeat extends StatelessWidget {
     super.key,
     required this.size,
     this.onPressed,
+    this.productModel,
   });
-
+  final ProductModel? productModel;
   final Size size;
   final void Function()? onPressed;
   @override
@@ -679,7 +693,7 @@ class BottonSeat extends StatelessWidget {
             Flexible(
               child: FittedBox(
                 child: CusttonTitleText(
-                  text: " 7000",
+                  text: productModel!.price ?? "0000",
                   fontSize: size.width * 0.05,
                 ),
               ),

@@ -16,11 +16,8 @@ class CartView extends StatelessWidget {
     return BlocProvider(
       create: (context) => CartCubit(),
       child: BlocConsumer<CartCubit, CartState>(
-        listener: (context, state) {
-    
-        },
+        listener: (context, state) {},
         builder: (context, state) {
-      
           return Scaffold(
             bottomSheet: CheakBottonSheat(width: width),
             appBar: AppBar(

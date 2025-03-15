@@ -16,6 +16,9 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final TextEditingController emailcontroller = TextEditingController();
   final TextEditingController passwordcontroller = TextEditingController();
+  final formkey = GlobalKey<FormState>();
+  bool isPassword = true;
+
   @override
   Widget build(BuildContext context) {
     double withe = MediaQuery.of(context).size.width;
@@ -25,110 +28,148 @@ class _LoginFormState extends State<LoginForm> {
       },
       builder: (context, state) {
         final cubit = context.read<AuthCubit>();
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CusttonSubtitleText(text: "البريد الالكتروني"),
-            SizedBox(
-              height: withe * 0.02,
-            ),
-            SizedBox(
-              width: withe * 1,
-              height: withe * 0.15,
-              child: CusttomTextFormFeild(
-                controller: emailcontroller,
-                hint: "example@gmail.com",
-                prefixIcon: Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: withe * 0.05,
-                  ),
-                  child: Icon(IconlyBold.message),
-                ),
+        return Form(
+          key: formkey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CusttonSubtitleText(text: "البريد الالكتروني"),
+              SizedBox(
+                height: withe * 0.02,
               ),
-            ),
-            SizedBox(
-              height: withe * 0.05,
-            ),
-            CusttonSubtitleText(text: " كلمة السر"),
-            SizedBox(
-              height: withe * 0.02,
-            ),
-            SizedBox(
-              width: withe * 1,
-              height: withe * 0.15,
-              child: CusttomTextFormFeild(
-                controller: passwordcontroller,
-                hint: "ادخل كلمة السر",
-                prefixIcon: Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: withe * 0.05,
-                  ),
-                  child: Icon(IconlyBold.password),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: withe * 0.07,
-            ),
-            Center(
-              child: SizedBox(
-                width: withe * 0.9,
-                height: withe * 0.13,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    elevation: 5,
-                  ),
-                  onPressed: () async {
-                    await cubit.login(
-                        email: emailcontroller.text,
-                        password: passwordcontroller.text);
+              SizedBox(
+                width: withe * 1,
+                height: withe * 0.15,
+                child: CusttomTextFormFeild(
+                  controller: emailcontroller,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "يرجي ادخال البريد";
+                    } else {
+                      return null;
+                    }
                   },
-                  child: CusttonSubtitleText(
-                    text: "تسجيل الدخول",
-                    color: Colors.white,
+                  hint: "",
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: withe * 0.05,
+                    ),
+                    child: Icon(IconlyBold.message),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: withe * 0.05,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: withe * 0.39,
-                  child: Divider(
-                    color: Colors.grey,
-                    height: 1,
-                    endIndent: 7,
+              SizedBox(
+                height: withe * 0.05,
+              ),
+              CusttonSubtitleText(text: " كلمة السر"),
+              SizedBox(
+                height: withe * 0.02,
+              ),
+              SizedBox(
+                width: withe * 1,
+                height: withe * 0.15,
+                child: CusttomTextFormFeild(
+                  controller: passwordcontroller,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "يرجي ادخال كلمة السر";
+                    } else {
+                      return null;
+                    }
+                  },
+                  obscureText: isPassword ? true : false,
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isPassword = !isPassword;
+                      });
+                    },
+                    icon: Icon(
+                      isPassword ? Icons.visibility : Icons.visibility_off,
+                    ),
+                  ),
+                  hint: "",
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: withe * 0.05,
+                    ),
+                    child: Icon(IconlyBold.password),
                   ),
                 ),
-                CusttonSubtitleText(
-                  text: "أو",
-                  color: Colors.grey,
-                  fontSize: withe * 0.05,
-                ),
-                SizedBox(
-                  width: withe * 0.39,
-                  child: Divider(
-                    color: Colors.grey,
-                    height: 1,
-                    indent: 7,
+              ),
+              SizedBox(
+                height: withe * 0.07,
+              ),
+              Center(
+                child: SizedBox(
+                  width: withe * 0.9,
+                  height: withe * 0.13,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      elevation: 5,
+                    ),
+                    onPressed: () async {
+                      if (formkey.currentState!.validate()) {
+                        await cubit.login(
+                            context: context,
+                            email: emailcontroller.text,
+                            password: passwordcontroller.text);
+                      }
+                    },
+                    child: CusttonSubtitleText(
+                      text: "تسجيل الدخول",
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ],
-            ),
-            SizedBox(
-              height: withe * 0.05,
-            ),
-            GoogleBottonSignin(),
-          ],
+              ),
+              SizedBox(
+                height: withe * 0.05,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: withe * 0.39,
+                    child: Divider(
+                      color: Colors.grey,
+                      height: 1,
+                      endIndent: 7,
+                    ),
+                  ),
+                  CusttonSubtitleText(
+                    text: "أو",
+                    color: Colors.grey,
+                    fontSize: withe * 0.05,
+                  ),
+                  SizedBox(
+                    width: withe * 0.39,
+                    child: Divider(
+                      color: Colors.grey,
+                      height: 1,
+                      indent: 7,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: withe * 0.05,
+              ),
+              GoogleBottonSignin(),
+            ],
+          ),
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    emailcontroller.dispose();
+    passwordcontroller.dispose();
+    super.dispose();
   }
 }

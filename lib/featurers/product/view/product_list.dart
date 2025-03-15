@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/featurers/product/view/product_card.dart';
 
 class ProductList extends StatefulWidget {
@@ -28,12 +30,13 @@ class _ProductListState extends State<ProductList> {
                   padding:
                       EdgeInsets.symmetric(horizontal: 10), // مسافة بين العناصر
                   child: ProductCard(
+                    productModel: context.read<ProductCubit>().products[index],
                     size: size,
-                  
                   ),
                 );
               },
-              childCount: 10, // عدد العناصر
+              childCount: context.read<ProductCubit>().products.length ??
+                  2, // عدد العناصر
             ),
           ),
         ],

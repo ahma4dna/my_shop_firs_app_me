@@ -1,8 +1,12 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/constant/bloc_obsorvr.dart';
 import 'package:my_shop/constant/theam/theame.dart';
+import 'package:my_shop/featurers/auth/cubit/auth_cubit.dart';
 import 'package:my_shop/featurers/auth/view/auth_view.dart';
+import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:my_shop/root/root_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -26,15 +30,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) {
-          final cubit = RootAppCubit();
-          cubit.loadTheme();
-          return cubit;
-        }),
+        BlocProvider(
+          create: (context) {
+            return ProductCubit();
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return RootAppCubit()..loadTheme();
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return AuthCubit();
+          },
+        ),
       ],
       child: BlocConsumer<RootAppCubit, RootAppState>(
         listener: (context, state) {},
         builder: (context, state) {
+          User? user = Supabase.instance.client.auth.currentUser;
           ThemeMode themeMode = ThemeMode.system;
 
           return AnimatedTheme(
@@ -53,10 +68,15 @@ class MyApp extends StatelessWidget {
               theme: LightTheme.themeData(context),
               darkTheme: DarkTheme.themeData(context),
               debugShowCheckedModeBanner: false,
-              home: Directionality(
-                textDirection: TextDirection.rtl,
-                child: AuthScreen(),
-              ),
+              home: user != null
+                  ? Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: RootScreen(),
+                    )
+                  : Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: AuthScreen(),
+                    ),
             ),
           );
         },
