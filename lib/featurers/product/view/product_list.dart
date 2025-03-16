@@ -30,6 +30,8 @@ class _ProductListState extends State<ProductList> {
                   padding:
                       EdgeInsets.symmetric(horizontal: 10), // مسافة بين العناصر
                   child: ProductCard(
+                    // listRiv: context.read<ProductCubit>().reviews,
+                    // reviewModel:  context.read<ProductCubit>().reviews[index],
                     productModel: context.read<ProductCubit>().products[index],
                     size: size,
                   ),

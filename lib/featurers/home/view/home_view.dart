@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +19,20 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  Future<void> fatchDataProduct() async {
+    try {
+      Future.wait({
+        context.read<ProductCubit>().getProduct(),
+      });
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
   bool loading = true;
   @override
   void initState() {
-    context.read<ProductCubit>().getProduct();
+    fatchDataProduct();
     Timer(Duration(milliseconds: 1500), () {
       setState(() {
         loading = false;

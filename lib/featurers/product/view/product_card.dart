@@ -3,6 +3,7 @@ import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
+import 'package:my_shop/featurers/product/model/review_model/review_model.dart';
 import 'package:my_shop/featurers/product/view/haert_botton.dart';
 import 'package:my_shop/featurers/product/view/product_detiels.dart';
 
@@ -12,13 +13,15 @@ class ProductCard extends StatelessWidget {
     required this.size,
     this.width,
     this.height,
-    required this.productModel,
+    required this.productModel, 
   });
 
   final Size size;
   final double? width;
   final double? height;
   final ProductModel productModel;
+  // final ReviewModel? reviewModel;
+  // final List<ReviewModel>? listRiv;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -27,6 +30,8 @@ class ProductCard extends StatelessWidget {
               context: context,
               page: ProductDetiels(
                 productModel: productModel,
+                // reviewModel: reviewModel,
+                // listRiv: listRiv,
               ));
         },
         child: SizedBox(
