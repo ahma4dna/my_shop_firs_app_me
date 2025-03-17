@@ -4,8 +4,8 @@ import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/model/review_model/review_model.dart';
-import 'package:my_shop/featurers/product/view/haert_botton.dart';
-import 'package:my_shop/featurers/product/view/product_detiels.dart';
+import 'package:my_shop/featurers/product/view/product_home/haert_botton.dart';
+import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
-import 'package:my_shop/featurers/product/view/product_card.dart';
+import 'package:my_shop/featurers/product/view/product_home/product_card.dart';
 
 class ProductList extends StatefulWidget {
   const ProductList({super.key});

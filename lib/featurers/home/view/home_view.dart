@@ -8,7 +8,7 @@ import 'package:iconly/iconly.dart';
 import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
-import 'package:my_shop/featurers/product/view/product_list.dart';
+import 'package:my_shop/featurers/product/view/product_home/product_list.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeView extends StatefulWidget {

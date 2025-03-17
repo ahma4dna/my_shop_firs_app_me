@@ -2,11 +2,14 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 
 import 'package:my_shop/core/data/remoat/api_dio.dart';
+import 'package:my_shop/core/function/show_snak_bar.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/model/review_model/review_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:meta/meta.dart';
 
 part 'product_state.dart';
 
@@ -47,9 +50,10 @@ class ProductCubit extends Cubit<ProductState> {
   bool isLoadingriv = true;
   ReviewModel? reviewModel;
   int? rateuser = 0;
-  String? nameUser, commentUser, date;
+  String? nameUser, commentUser, date, id;
   Future<void> getReview({required String productId}) async {
     //restart
+    id = null;
     rateuser = null;
     nameUser = null;
     commentUser = null;
@@ -113,12 +117,13 @@ class ProductCubit extends Cubit<ProductState> {
               nameUser = rev.users!.name;
               commentUser = rev.comment;
               date = rev.createdAt;
+              id = rev.idReviwe;
             }
           }
-          log(reviewModel!.rate.toString());
+          // log(reviewModel!.rate.toString());
         }
 
-        emit(GetProductSucecc());
+        emit(GetReviewSucecc());
       }
     } catch (e) {
       log(e.toString());
@@ -126,6 +131,57 @@ class ProductCubit extends Cubit<ProductState> {
     } finally {
       //end
       isLoadingriv = false;
+    }
+  }
+
+  Future<void> updateReview(
+      {required String idRev,
+      required String productId,
+      required Map<String, dynamic> data,required BuildContext context}) async {
+    emit(PutReviewLoading());
+    try {
+      await _apiDio.putDat(
+        path: "review?id_reviwe=eq.$idRev",
+        data: data,
+      );
+
+      
+      if (state is PutReviewSucecc) {
+        await getReview(productId: productId);
+      }
+      emit(PutReviewSucecc());
+    } catch (e) {
+      emit(PutReviewErorr());
+      log(e.toString());
+    }finally{
+        showSnakBar(context, "تم تعديل المراجعة");
+    }
+  }
+
+
+    Future<void> postReview(
+      {
+      required String productId,
+      required Map<String, dynamic> data,required BuildContext context}) async {
+    emit(PostReviewLoading());
+    try {
+      await _apiDio.postData(
+        path: "review",
+        data: data,
+      );
+
+      if (state is PostReviewSucecc) {
+        await getReview(productId: productId);
+      }
+            emit(PostReviewSucecc());
+
+    } catch (e) {
+      emit(PostReviewErorr());
+      log(e.toString());
+    }finally{
+        showSnakBar(context, "تم نشر المراجعة");
+
+
     }
   }
 }

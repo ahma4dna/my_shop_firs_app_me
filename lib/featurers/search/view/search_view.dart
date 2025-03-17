@@ -3,7 +3,7 @@ import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/core/compnds/custtom_text_form_feild.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
-import 'package:my_shop/featurers/product/view/product_detiels.dart';
+import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
 
 class SearchView extends StatelessWidget {
   SearchView({super.key});

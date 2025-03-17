@@ -5,7 +5,7 @@ import 'package:iconly/iconly.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
-import 'package:my_shop/featurers/product/view/product_detiels.dart';
+import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
 
 class CartView extends StatelessWidget {
   const CartView({super.key});
