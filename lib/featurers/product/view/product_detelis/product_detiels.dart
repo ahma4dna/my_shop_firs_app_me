@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/function/naviation_to_replace.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/botton_seat_detils.dart';
@@ -17,6 +18,7 @@ import 'package:my_shop/featurers/product/view/product_detelis/review/review_car
 import 'package:my_shop/featurers/product/view/product_home/haert_botton.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProductDetiels extends StatefulWidget {
   const ProductDetiels({super.key, this.productModel});
@@ -39,6 +41,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
       context
           .read<ProductCubit>()
           .getReview(productId: widget.productModel!.productId!),
+     context.read<CartCubit>().getCards(),
     });
   }
 
@@ -51,23 +54,40 @@ class _ProductDetielsState extends State<ProductDetiels> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<ProductCubit>().reviews;
-    final cubitMe = context.read<ProductCubit>();
     Size size = MediaQuery.of(context).size;
 
     return BlocConsumer<ProductCubit, ProductState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
+        final cubit = context.read<ProductCubit>().reviews;
+        final cubitMe = context.read<ProductCubit>();
         return Scaffold(
-          bottomSheet: Skeletonizer(
-            enabled: context.read<ProductCubit>().isLoadingriv,
-            child: BottonSeatDetils(
-              productModel: widget.productModel,
-              size: size,
-              onPressed: () {},
-            ),
+          bottomSheet: BlocBuilder<CartCubit, CartState>(
+            builder: (context, state) {
+              return Skeletonizer(
+                enabled: context.read<ProductCubit>().isLoadingriv,
+                child: BottonSeatDetils(
+                  onPressed2: () async {
+                    if (state is AddCardsSucecc) {}
+                  },
+                  productModel: widget.productModel,
+                  size: size,
+                  onPressed: () async {
+                    await context.read<CartCubit>().addCards(
+                      prodctId: widget.productModel!.productId!,
+                      data: {
+                      "quantiti": 1,
+                      "chach_pay": false,
+                      "for_product": widget.productModel?.productId,
+                      "for_user": Supabase.instance.client.auth.currentUser!.id,
+                      "total_price": widget.productModel?.price,
+                    });
+                
+                  },
+                  state: state,
+                ),
+              );
+            },
           ),
           appBar: AppBar(
             automaticallyImplyLeading: false,

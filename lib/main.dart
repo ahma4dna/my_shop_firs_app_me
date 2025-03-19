@@ -6,6 +6,7 @@ import 'package:my_shop/constant/bloc_obsorvr.dart';
 import 'package:my_shop/constant/theam/theame.dart';
 import 'package:my_shop/featurers/auth/cubit/auth_cubit.dart';
 import 'package:my_shop/featurers/auth/view/auth_view.dart';
+import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:my_shop/root/root_screen.dart';
@@ -43,6 +44,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) {
             return AuthCubit();
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return CartCubit();
           },
         ),
       ],

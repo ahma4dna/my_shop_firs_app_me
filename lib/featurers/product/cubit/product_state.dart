@@ -1,4 +1,5 @@
 part of 'product_cubit.dart';
+
 @immutable
 sealed class ProductState {}
 
@@ -15,6 +16,7 @@ final class GetReviewLoading extends ProductState {}
 final class GetReviewSucecc extends ProductState {}
 
 final class GetReviewErorr extends ProductState {}
+
 final class PutReviewLoading extends ProductState {}
 
 final class PutReviewSucecc extends ProductState {}

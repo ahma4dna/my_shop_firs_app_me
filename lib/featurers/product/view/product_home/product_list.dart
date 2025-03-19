@@ -17,7 +17,7 @@ class _ProductListState extends State<ProductList> {
 
     return SizedBox(
       width: size.width * 1,
-      height: size.height * 0.4,
+      height: size.width * 1,
       child: CustomScrollView(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,

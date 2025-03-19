@@ -3,7 +3,6 @@ import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
-import 'package:my_shop/featurers/product/model/review_model/review_model.dart';
 import 'package:my_shop/featurers/product/view/product_home/haert_botton.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
 
@@ -13,7 +12,7 @@ class ProductCard extends StatelessWidget {
     required this.size,
     this.width,
     this.height,
-    required this.productModel, 
+    required this.productModel,
   });
 
   final Size size;
@@ -36,11 +35,13 @@ class ProductCard extends StatelessWidget {
         },
         child: SizedBox(
           width: size.width * 0.65,
-          height: size.width * 0.7,
+
           child: Card(
+
             elevation: 5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Flexible(
                   flex: 4,
@@ -67,6 +68,7 @@ class ProductCard extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: size.width * 0.03),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Flexible(
@@ -107,6 +109,7 @@ class ProductCard extends StatelessWidget {
                         Flexible(
                           child: FittedBox(
                             child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Padding(
                                   padding:

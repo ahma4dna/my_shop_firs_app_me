@@ -9,7 +9,6 @@ import 'package:my_shop/core/function/show_snak_bar.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/model/review_model/review_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:meta/meta.dart';
 
 part 'product_state.dart';
 
@@ -137,7 +136,8 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> updateReview(
       {required String idRev,
       required String productId,
-      required Map<String, dynamic> data,required BuildContext context}) async {
+      required Map<String, dynamic> data,
+      required BuildContext context}) async {
     emit(PutReviewLoading());
     try {
       await _apiDio.putDat(
@@ -145,7 +145,6 @@ class ProductCubit extends Cubit<ProductState> {
         data: data,
       );
 
-      
       if (state is PutReviewSucecc) {
         await getReview(productId: productId);
       }
@@ -153,16 +152,15 @@ class ProductCubit extends Cubit<ProductState> {
     } catch (e) {
       emit(PutReviewErorr());
       log(e.toString());
-    }finally{
-        showSnakBar(context, "تم تعديل المراجعة");
+    } finally {
+      showSnakBar(context, "تم تعديل المراجعة");
     }
   }
 
-
-    Future<void> postReview(
-      {
-      required String productId,
-      required Map<String, dynamic> data,required BuildContext context}) async {
+  Future<void> postReview(
+      {required String productId,
+      required Map<String, dynamic> data,
+      required BuildContext context}) async {
     emit(PostReviewLoading());
     try {
       await _apiDio.postData(
@@ -173,15 +171,12 @@ class ProductCubit extends Cubit<ProductState> {
       if (state is PostReviewSucecc) {
         await getReview(productId: productId);
       }
-            emit(PostReviewSucecc());
-
+      emit(PostReviewSucecc());
     } catch (e) {
       emit(PostReviewErorr());
       log(e.toString());
-    }finally{
-        showSnakBar(context, "تم نشر المراجعة");
-
-
+    } finally {
+      showSnakBar(context, "تم نشر المراجعة");
     }
   }
 }

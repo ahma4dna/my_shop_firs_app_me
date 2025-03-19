@@ -7,7 +7,8 @@ import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 class ReviewCardMe extends StatelessWidget {
   const ReviewCardMe({
     super.key,
-    required this.size, required this.cubitMe,
+    required this.size,
+    required this.cubitMe,
   });
 
   final ProductCubit cubitMe;
@@ -26,7 +27,7 @@ class ReviewCardMe extends StatelessWidget {
             children: [
               FittedBox(
                 child: CusttonTitleText(
-                  text: cubitMe.nameUser?? "الاسم",
+                  text: cubitMe.nameUser ?? "الاسم",
                   color: Theme.of(context).iconTheme.color,
                   fontSize: size.width * 0.048,
                   fontWeight: FontWeight.bold,
@@ -38,7 +39,7 @@ class ReviewCardMe extends StatelessWidget {
                 children: [
                   FittedBox(
                     child: CusttonTitleText(
-                      text: cubitMe.date??  "20225/11/23",
+                      text: cubitMe.date ?? "20225/11/23",
                       fontWeight: FontWeight.w300,
                       fontSize: size.width * 0.038,
                       color: Colors.grey,
@@ -73,7 +74,7 @@ class ReviewCardMe extends StatelessWidget {
               Directionality(
                 textDirection: TextDirection.rtl,
                 child: ExpandableText(
-                  text: cubitMe.commentUser??  "تعليق المستخدم هنا...",
+                  text: cubitMe.commentUser ?? "تعليق المستخدم هنا...",
                   maxLines: 2,
                   style: TextStyle(
                     fontWeight: FontWeight.w300,

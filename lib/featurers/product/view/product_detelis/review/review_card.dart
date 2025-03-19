@@ -90,6 +90,3 @@ class ReviewCard extends StatelessWidget {
     );
   }
 }
-
-
-
