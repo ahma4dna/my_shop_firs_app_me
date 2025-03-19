@@ -82,6 +82,7 @@ class ProductCubit extends Cubit<ProductState> {
               totaRating = totaRating + rate.rate!;
             }
           }
+          // ignore: unnecessary_null_comparison
           if (totaRating != 0 && totaRating != null) {
             totaRating = (totaRating / reviews.length).toInt();
           }
@@ -153,6 +154,7 @@ class ProductCubit extends Cubit<ProductState> {
       emit(PutReviewErorr());
       log(e.toString());
     } finally {
+      // ignore: use_build_context_synchronously
       showSnakBar(context, "تم تعديل المراجعة");
     }
   }
@@ -176,6 +178,7 @@ class ProductCubit extends Cubit<ProductState> {
       emit(PostReviewErorr());
       log(e.toString());
     } finally {
+      // ignore: use_build_context_synchronously
       showSnakBar(context, "تم نشر المراجعة");
     }
   }

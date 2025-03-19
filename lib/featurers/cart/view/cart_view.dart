@@ -18,11 +18,13 @@ class _CartViewState extends State<CartView> {
     Future.wait({
       context.read<CartCubit>().getCards(),
     });
+  
   }
 
   @override
   void initState() {
     getCards();
+    context.read<CartCubit>().totalPrice();
     super.initState();
   }
 

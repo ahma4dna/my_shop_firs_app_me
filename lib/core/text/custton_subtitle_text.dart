@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_shop/constant/appe_color.dart';
 
 class CusttonSubtitleText extends StatelessWidget {
   const CusttonSubtitleText({

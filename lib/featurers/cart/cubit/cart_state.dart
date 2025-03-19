@@ -34,3 +34,9 @@ final class RemoveAllCardsLoading extends CartState {}
 final class RemoveAllCardsSucecc extends CartState {}
 
 final class RemoveAllCardsErorr extends CartState {}
+
+final class UpdateTotalPriceProdctLoading extends CartState {}
+
+final class UpdateTotalPriceProdctSucecc extends CartState {}
+
+final class UpdateTotalPriceProdctErorr extends CartState {}

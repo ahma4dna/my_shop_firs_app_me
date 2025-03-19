@@ -17,7 +17,7 @@ class _ProductListState extends State<ProductList> {
 
     return SizedBox(
       width: size.width * 1,
-      height: size.width * 1,
+      height: size.width * 0.95,
       child: CustomScrollView(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
@@ -37,8 +37,7 @@ class _ProductListState extends State<ProductList> {
                   ),
                 );
               },
-              childCount: context.read<ProductCubit>().products.length ??
-                  2, // عدد العناصر
+              childCount: context.read<ProductCubit>().products.length, // عدد العناصر
             ),
           ),
         ],

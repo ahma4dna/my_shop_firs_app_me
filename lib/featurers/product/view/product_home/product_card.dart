@@ -53,8 +53,7 @@ class ProductCard extends StatelessWidget {
                       bottomRight: Radius.circular(5),
                     ),
                     child: Image.network(
-                      productModel.listUrlImage![0] ??
-                          "https://storage.store.arriadagroup.com/images/products/4660/images/8b290af9010608bb458a1babb5018259.webp",
+                      productModel.listUrlImage![0],
                       width: double.infinity,
                       height: size.width * 0.5, // تقليل الارتفاع لتجنب overflow
                       fit: BoxFit.cover,

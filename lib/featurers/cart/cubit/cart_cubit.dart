@@ -55,15 +55,16 @@ class CartCubit extends Cubit<CartState> {
   }
 
   Future<void> removeCards(
-      {required Map<String, dynamic> data, required String prodctId}) async {
+      {required Map<String, dynamic> data, required String prodctId,required String id}) async {
     emit(RemoveCardsLoading());
     try {
       final dataRes = await apiDio.delateData(
         path:
-            "card_and_purchase?select=*,products(*)&for_user=eq.${Supabase.instance.client.auth.currentUser!.id}",
+            "card_and_purchase?select=*,products(*)&id=eq.$id",
         data: data,
       );
       //local  remove to cart
+      
       cardPurchases.removeWhere((element) => element.forProduct == prodctId);
 
       log(dataRes.toString());
@@ -91,6 +92,22 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
+Future<void> updateToalProctPrice(
+      {required Map<String, dynamic> data, required String id}) async {
+    emit(UpdateTotalPriceProdctLoading());
+    try {
+      final dataRes = await apiDio.putDat(
+        path: "card_and_purchase?id=eq.$id",
+        data: data,
+      );
+
+      log(dataRes.toString());
+      emit(UpdateTotalPriceProdctSucecc());
+    } catch (e) {
+      log(e.toString());
+      emit(UpdateTotalPriceProdctErorr());
+    }
+  }
   Future<void> removeAllCards() async {
     emit(RemoveAllCardsLoading());
     try {
@@ -114,6 +131,34 @@ class CartCubit extends Cubit<CartState> {
   }
 
   //local quantity
+  int totalPrice() {
+    int result = 0;
+    if (cardPurchases.isNotEmpty) {
+      result = 0;
+
+      for (var item in cardPurchases) {
+        result += int.parse(item.products!.price!) * item.quantiti!;
+      }
+      return result;
+    }
+    return result;
+  }
+
+  int totalPriceOneProdct({required String productId}) {
+    int result = 0;
+    if (cardPurchases.isNotEmpty) {
+      result = 0;
+
+      for (var item in cardPurchases) {
+        if (item.forProduct == productId) {
+          result += int.parse(item.products!.price!) * item.quantiti!;
+          item.totalPrice = result;
+        }
+      }
+      return result;
+    }
+    return result;
+  }
 
   int quantity = 1;
   void addQuantity(int index) {

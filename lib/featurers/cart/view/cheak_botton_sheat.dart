@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
+import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
 
 class CheakBottonSheat extends StatelessWidget {
   const CheakBottonSheat({
     super.key,
     required this.width,
   });
-
   final double width;
 
   @override
@@ -42,7 +43,7 @@ class CheakBottonSheat extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 20.0),
                 child: CusttonSubtitleText(
-                  text: "7000 دل",
+                  text: context.read<CartCubit>().totalPrice().toString(),
                   color: Colors.white,
                 ),
               ),

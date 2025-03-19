@@ -83,7 +83,9 @@ class CartWidget extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () async {
-                        await cubit.removeCards(data: {
+                        await cubit.removeCards(
+                          id: cartModel.id!,
+                          data: {
                           "id": cartModel.id,
                         }, prodctId: cartModel.forProduct!);
                         await cubit.getCards();
@@ -94,7 +96,7 @@ class CartWidget extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: CusttonSubtitleText(
-                        text: "${cartModel.products?.price} دل" ?? "7000 دل",
+                        text: "${cartModel.totalPrice} دل",
                         color: Theme.of(context).iconTheme.color,
                         fontSize: width * 0.05,
                       ),

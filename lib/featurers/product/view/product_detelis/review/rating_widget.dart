@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +6,7 @@ import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/featurers/product/model/review_model/review_model.dart';
 
 class RatingWidget1 extends StatelessWidget {
-  RatingWidget1({super.key, required this.size, this.reviewModel});
+  const RatingWidget1({super.key, required this.size, this.reviewModel});
 
   // عدد التقييمات لكل فئة
 
@@ -34,7 +33,7 @@ class RatingWidget1 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                cubit.totaRating.toString() ?? "4.5",
+                cubit.totaRating.toString(),
                 style: TextStyle(
                   fontSize: size.width * 0.08,
                   fontWeight: FontWeight.bold,
@@ -75,6 +74,7 @@ class RatingWidget1 extends StatelessWidget {
           Column(
             children: ratings.keys.map((key) {
               double percentage = 0;
+              // ignore: unnecessary_null_comparison
               if (cubit.totaRating != 0 && cubit.totaRating != null) {
                 percentage = ratings[key]! / cubit.totaRating;
               }

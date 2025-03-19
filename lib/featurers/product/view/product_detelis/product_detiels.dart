@@ -260,7 +260,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
                                     size: size,
                                     productModel: widget.productModel,
                                     initialRating:
-                                        (cubitMe.rateuser)!.toDouble() ?? 3,
+                                        (cubitMe.rateuser)!.toDouble(),
                                     cubitMe: cubitMe,
                                   ),
                                 );

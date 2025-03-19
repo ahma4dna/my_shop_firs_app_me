@@ -24,7 +24,6 @@ class _LoginFormState extends State<LoginForm> {
     double withe = MediaQuery.of(context).size.width;
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        // TODO: implement listener
       },
       builder: (context, state) {
         final cubit = context.read<AuthCubit>();

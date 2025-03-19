@@ -6,6 +6,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnakBar(
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: CusttonTitleText(text: text, maxLines: 3, color: Colors.white),
+      // ignore: deprecated_member_use
       backgroundColor: Colors.grey.withOpacity(0.8),
     ),
   );

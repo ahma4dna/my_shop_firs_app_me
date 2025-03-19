@@ -31,6 +31,7 @@ class LightTheme {
         backgroundColor: AppColor.lightScaffoldColor,
         indicatorColor: Color(0xFFBBDEFB),
         labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
+          // ignore: duplicate_ignore
           // ignore: deprecated_member_use
           (Set<MaterialState> states) {
             return TextStyle(
