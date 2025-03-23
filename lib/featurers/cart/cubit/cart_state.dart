@@ -19,16 +19,19 @@ final class AddCardsLoading extends CartState {}
 final class AddCardsSucecc extends CartState {}
 
 final class AddCardsErorr extends CartState {}
+
 final class RemoveCardsLoading extends CartState {}
 
 final class RemoveCardsSucecc extends CartState {}
 
 final class RemoveCardsErorr extends CartState {}
+
 final class UpdateQuantityCardsLoading extends CartState {}
 
 final class UpdateQuantityCardsSucecc extends CartState {}
 
 final class UpdateQuantityCardsErorr extends CartState {}
+
 final class RemoveAllCardsLoading extends CartState {}
 
 final class RemoveAllCardsSucecc extends CartState {}

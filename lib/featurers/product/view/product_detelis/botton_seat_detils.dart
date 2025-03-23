@@ -23,8 +23,8 @@ class BottonSeatDetils extends StatelessWidget {
     return BlocBuilder<CartCubit, CartState>(
       builder: (context, state) {
         final cubit = context.read<CartCubit>();
-    final bool existsInCart =
-        productModel != null && cubit.isInCart(productModel!.productId ?? "");
+        // final bool existsInCart = productModel != null &&
+        //     cubit.isInCart(productId: productModel!.productId ?? "");
         return ClipRRect(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(0),
@@ -37,52 +37,53 @@ class BottonSeatDetils extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0, left: 5),
-                  child:existsInCart 
-                      ? SizedBox(
-                        width: size.width*0.7,
-                        child: OutlinedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                  child:
+                      cubit.isInCartqe(productId: productModel!.productId ?? "")
+                          ? SizedBox(
+                              width: size.width * 0.7,
+                              child: OutlinedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: onPressed2,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 8,
+                                    horizontal: size.width * 0.13,
+                                  ),
+                                  child: FittedBox(
+                                    child: CusttonTitleText(
+                                      text: " تمت الاضافة الى السلة",
+                                      color: Theme.of(context).iconTheme.color,
+                                      fontSize: size.width * 0.05,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                            onPressed: onPressed2,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: size.width * 0.13,
+                            )
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                               ),
-                              child: FittedBox(
-                                child: CusttonTitleText(
-                                  text: " تمت الاضافة الى السلة",
-                                  color: Theme.of(context).iconTheme.color,
-                                  fontSize: size.width * 0.05,
+                              onPressed: onPressed,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: size.width * 0.13,
+                                ),
+                                child: FittedBox(
+                                  child: CusttonTitleText(
+                                    text: "إضافة الى السلة",
+                                    color: Theme.of(context).iconTheme.color,
+                                    fontSize: size.width * 0.05,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                      )
-                      : ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onPressed: onPressed,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: size.width * 0.13,
-                            ),
-                            child: FittedBox(
-                              child: CusttonTitleText(
-                                text: "إضافة الى السلة",
-                                color: Theme.of(context).iconTheme.color,
-                                fontSize: size.width * 0.05,
-                              ),
-                            ),
-                          ),
-                        ),
                 ),
                 SizedBox(
                   width: size.width * 0.02,

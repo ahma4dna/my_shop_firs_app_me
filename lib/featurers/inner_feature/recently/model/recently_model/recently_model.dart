@@ -1,36 +1,28 @@
 import 'package:my_shop/featurers/product/model/product_model.dart';
 
-class CartModel {
+
+class RecentlyModel {
   String? id;
   DateTime? createdAt;
-  int? quantiti;
-  bool? chachPay;
   String? forProduct;
   String? forUser;
-  int? totalPrice;
   ProductModel? products;
 
-  CartModel({
+  RecentlyModel({
     this.id,
     this.createdAt,
-    this.quantiti,
-    this.chachPay,
     this.forProduct,
     this.forUser,
-    this.totalPrice,
     this.products,
   });
 
-  factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
+  factory RecentlyModel.fromJson(Map<String, dynamic> json) => RecentlyModel(
         id: json['id'] as String?,
         createdAt: json['created_at'] == null
             ? null
             : DateTime.parse(json['created_at'] as String),
-        quantiti: json['quantiti'] as int?,
-        chachPay: json['chach_pay'] as bool?,
         forProduct: json['for_product'] as String?,
         forUser: json['for_user'] as String?,
-        totalPrice: json['total_price'] as int?,
         products: json['products'] == null
             ? null
             : ProductModel.fromJson(json['products'] as Map<String, dynamic>),
@@ -39,11 +31,8 @@ class CartModel {
   Map<String, dynamic> toJson() => {
         'id': id,
         'created_at': createdAt?.toIso8601String(),
-        'quantiti': quantiti,
-        'chach_pay': chachPay,
         'for_product': forProduct,
         'for_user': forUser,
-        'total_price': totalPrice,
         'products': products?.toJson(),
       };
 }

@@ -30,7 +30,7 @@ class CartWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Card(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Flexible(
                 child: ClipRRect(
@@ -60,48 +60,61 @@ class CartWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CusttonSubtitleText(
-                        text: cartModel.products?.productTitle ??
-                            "iPhone 16 Pro Max",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      Flexible(
+                        child: CusttonSubtitleText(
+                          text: cartModel.products?.productTitle ??
+                              "iPhone 16 Pro Max",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       SizedBox(height: width * 0.05),
-                      QuantitySelector(
-                        cartModel: cartModel,
-                        quantity: cartModel.quantiti ?? 1,
-                        withe: width,
-                        index: index, // تمرير index إلى QuantitySelector
+                      Flexible(
+                        child: QuantitySelector(
+                          cartModel: cartModel,
+                          quantity: cartModel.quantiti ?? 1,
+                          withe: width,
+                          index: index, // تمرير index إلى QuantitySelector
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
               Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    IconButton(
-                      onPressed: () async {
-                        await cubit.removeCards(
-                          id: cartModel.id!,
-                          data: {
-                          "id": cartModel.id,
-                        }, prodctId: cartModel.forProduct!);
-                        await cubit.getCards();
-                      },
-                      icon: Icon(IconlyLight.delete),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Flexible(
+                          child: IconButton(
+                            onPressed: () async {
+                              await cubit.removeCards(
+                                  id: cartModel.id!,
+                                  data: {
+                                    "id": cartModel.id,
+                                  },
+                                  prodctId: cartModel.forProduct!);
+                              await cubit.getCards();
+                            },
+                            icon: Icon(IconlyLight.delete),
+                          ),
+                        ),
+                        Spacer(),
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: CusttonSubtitleText(
+                              text: "${cartModel.totalPrice} دل",
+                              color: Theme.of(context).iconTheme.color,
+                              fontSize: width * 0.05,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: CusttonSubtitleText(
-                        text: "${cartModel.totalPrice} دل",
-                        color: Theme.of(context).iconTheme.color,
-                        fontSize: width * 0.05,
-                      ),
-                    ),
-                    SizedBox(height: width * 0.04),
                   ],
                 ),
               ),

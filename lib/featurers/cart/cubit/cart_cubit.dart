@@ -55,16 +55,17 @@ class CartCubit extends Cubit<CartState> {
   }
 
   Future<void> removeCards(
-      {required Map<String, dynamic> data, required String prodctId,required String id}) async {
+      {required Map<String, dynamic> data,
+      required String prodctId,
+      required String id}) async {
     emit(RemoveCardsLoading());
     try {
       final dataRes = await apiDio.delateData(
-        path:
-            "card_and_purchase?select=*,products(*)&id=eq.$id",
+        path: "card_and_purchase?select=*,products(*)&id=eq.$id",
         data: data,
       );
       //local  remove to cart
-      
+
       cardPurchases.removeWhere((element) => element.forProduct == prodctId);
 
       log(dataRes.toString());
@@ -92,7 +93,7 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-Future<void> updateToalProctPrice(
+  Future<void> updateToalProctPrice(
       {required Map<String, dynamic> data, required String id}) async {
     emit(UpdateTotalPriceProdctLoading());
     try {
@@ -108,6 +109,7 @@ Future<void> updateToalProctPrice(
       emit(UpdateTotalPriceProdctErorr());
     }
   }
+
   Future<void> removeAllCards() async {
     emit(RemoveAllCardsLoading());
     try {
@@ -126,7 +128,7 @@ Future<void> updateToalProctPrice(
     }
   }
 
-  bool isInCart(String productId) {
+  bool isInCartqe({required String productId}) {
     return cardPurchases.any((cartItem) => cartItem.forProduct == productId);
   }
 

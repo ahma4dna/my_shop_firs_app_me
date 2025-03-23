@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+import 'package:my_shop/core/function/naviation_to.dart';
 
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/auth/cubit/auth_cubit.dart';
 import 'package:my_shop/featurers/auth/view/auth_view.dart';
+import 'package:my_shop/featurers/inner_feature/like/view/like.dart';
+import 'package:my_shop/featurers/inner_feature/recently/view/recently.dart';
 
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -36,12 +39,9 @@ class _SetingViewState extends State<SetingView> {
         listener: (context, state) {
           if (state is SignOutSucecc) {
             WidgetsBinding.instance.addPostFrameCallback((_) async {
-              // استخدام Navigator.pushReplacement مع التوجيه الصحيح
               await Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => AuthScreen()), // شاشة الدخول
-                // إزالة جميع الصفحات السابقة
+                MaterialPageRoute(builder: (context) => AuthScreen()),
               );
             });
           }
@@ -118,7 +118,9 @@ class _SetingViewState extends State<SetingView> {
                               size: size,
                               name: "المفضلة",
                               icone: IconlyBold.heart,
-                              onTap: () {},
+                              onTap: () {
+                                navigationTo(context: context, page: Like());
+                              },
                             ),
                             Divider(
                               endIndent: 15,
@@ -128,7 +130,10 @@ class _SetingViewState extends State<SetingView> {
                               size: size,
                               name: 'تمت مشاهدنه مسبقا',
                               icone: IconlyBold.time_square,
-                              onTap: () {},
+                              onTap: () {
+                                navigationTo(
+                                    context: context, page: Recently());
+                              },
                             ),
                           ],
                         ),

@@ -28,3 +28,27 @@ final class PostReviewLoading extends ProductState {}
 final class PostReviewSucecc extends ProductState {}
 
 final class PostReviewErorr extends ProductState {}
+
+final class GetLikeProductLoading extends ProductState {}
+
+final class GetLikeProductSucecc extends ProductState {}
+
+final class GetLikeProductErorr extends ProductState {}
+
+final class PostLikeProductLoading extends ProductState {}
+
+final class PostLikeProductSucecc extends ProductState {}
+
+final class PostLikeProductErorr extends ProductState {}
+
+final class UnLikeProductLoading extends ProductState {}
+
+final class UnLikeProductSucecc extends ProductState {}
+
+final class UnLikeProductErorr extends ProductState {}
+
+final class UnLikeAllProductLoading extends ProductState {}
+
+final class UnLikeAllProductSucecc extends ProductState {}
+
+final class UnLikeAllProductErorr extends ProductState {}

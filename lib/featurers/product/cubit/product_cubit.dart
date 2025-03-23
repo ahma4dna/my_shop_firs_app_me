@@ -1,15 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-
 import 'package:my_shop/core/data/remoat/api_dio.dart';
 import 'package:my_shop/core/function/show_snak_bar.dart';
+import 'package:my_shop/featurers/product/model/like_model/like_model.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/model/review_model/review_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 part 'product_state.dart';
 
 class ProductCubit extends Cubit<ProductState> {
@@ -181,5 +179,80 @@ class ProductCubit extends Cubit<ProductState> {
       // ignore: use_build_context_synchronously
       showSnakBar(context, "تم نشر المراجعة");
     }
+  }
+
+  List<LikeModel> likes = [];
+
+  Future<void> getLike() async {
+    likes = [];
+    emit(GetLikeProductLoading());
+    try {
+      final data = await _apiDio.getData(
+        path:
+            "like_table?for_user=eq.${Supabase.instance.client.auth.currentUser!.id}&select=*,products(*)",
+      );
+      for (var like in data.data) {
+        likes.add(LikeModel.fromJson(like));
+      }
+      emit(GetLikeProductSucecc());
+    } catch (e) {
+      log(e.toString());
+      emit(GetLikeProductErorr());
+    }
+  }
+
+  Future<void> postLike(
+      {required String productId,
+      required Map<String, dynamic> dataMap}) async {
+    emit(PostLikeProductLoading());
+    try {
+      final data = await _apiDio.postData(
+        path:
+            "like_table?for_user=eq.${Supabase.instance.client.auth.currentUser!.id}&for_product=eq.$productId",
+        data: dataMap,
+      );
+
+      emit(PostLikeProductSucecc());
+      likes.add(LikeModel(forProduct: productId));
+    } catch (e) {
+      log(e.toString());
+      emit(PostLikeProductErorr());
+    }
+  }
+
+  Future<void> unLike({required String productId}) async {
+    emit(UnLikeProductLoading());
+    try {
+      final data = await _apiDio.delatAll(
+        path:
+            "like_table?for_user=eq.${Supabase.instance.client.auth.currentUser!.id}&for_product=eq.$productId",
+      );
+
+      emit(UnLikeProductSucecc());
+      likes.removeWhere((element) => element.forProduct == productId);
+    } catch (e) {
+      log(e.toString());
+      emit(UnLikeProductErorr());
+    }
+  }
+
+  Future<void> unLikeAll() async {
+    emit(UnLikeAllProductLoading());
+    try {
+      final data = await _apiDio.delatAll(
+        path:
+            "like_table?for_user=eq.${Supabase.instance.client.auth.currentUser!.id}",
+      );
+
+      emit(UnLikeAllProductSucecc());
+      likes.clear();
+    } catch (e) {
+      log(e.toString());
+      emit(UnLikeAllProductErorr());
+    }
+  }
+
+  bool isLikw({required String productId}) {
+    return likes.any((element) => element.forProduct == productId);
   }
 }

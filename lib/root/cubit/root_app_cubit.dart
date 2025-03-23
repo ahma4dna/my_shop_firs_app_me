@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
@@ -37,9 +36,12 @@ class RootAppCubit extends Cubit<RootAppState> {
     ),
     NavigationDestination(
       icon: Badge(
-        backgroundColor: Colors.red,
-        label: CusttonTitleText(text: "3",fontSize: 12,),
-        child: Icon(IconlyLight.bag_2)),
+          backgroundColor: Colors.red,
+          label: CusttonTitleText(
+            text: "3",
+            fontSize: 12,
+          ),
+          child: Icon(IconlyLight.bag_2)),
       label: "السلة",
       selectedIcon: Icon(IconlyBold.bag_2),
     ),

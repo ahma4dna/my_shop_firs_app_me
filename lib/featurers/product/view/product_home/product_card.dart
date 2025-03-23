@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/product_home/haert_botton.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   const ProductCard({
     super.key,
     required this.size,
@@ -19,8 +22,13 @@ class ProductCard extends StatelessWidget {
   final double? width;
   final double? height;
   final ProductModel productModel;
+
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
   // final ReviewModel? reviewModel;
-  // final List<ReviewModel>? listRiv;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -28,16 +36,15 @@ class ProductCard extends StatelessWidget {
           navigationTo(
               context: context,
               page: ProductDetiels(
-                productModel: productModel,
+                productModel: widget.productModel,
                 // reviewModel: reviewModel,
                 // listRiv: listRiv,
+                
               ));
         },
         child: SizedBox(
-          width: size.width * 0.65,
-
+          width: widget.size.width * 0.65,
           child: Card(
-
             elevation: 5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,19 +60,20 @@ class ProductCard extends StatelessWidget {
                       bottomRight: Radius.circular(5),
                     ),
                     child: Image.network(
-                      productModel.listUrlImage![0],
+                      widget.productModel.listUrlImage![0],
                       width: double.infinity,
-                      height: size.width * 0.5, // تقليل الارتفاع لتجنب overflow
+                      height: widget.size.width *
+                          0.5, // تقليل الارتفاع لتجنب overflow
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                SizedBox(height: size.width * 0.02),
+                SizedBox(height: widget.size.width * 0.02),
                 Flexible(
                   flex: 2,
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: widget.size.width * 0.03),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,21 +81,21 @@ class ProductCard extends StatelessWidget {
                         Flexible(
                           flex: 1,
                           child: CusttonSubtitleText(
-                            text: productModel.marka ?? "marka",
+                            text: widget.productModel.marka ?? "marka",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w300,
-                            fontSize: size.width * 0.04,
+                            fontSize: widget.size.width * 0.04,
                           ),
                         ),
                         Flexible(
                           flex: 3,
                           child: CusttonTitleText(
-                            text: productModel.productTitle ??
+                            text: widget.productModel.productTitle ??
                                 "iphone 16 pro Max",
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            fontSize: size.width * 0.055,
+                            fontSize: widget.size.width * 0.055,
                           ),
                         ),
                       ],
@@ -95,13 +103,13 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                    height:
-                        size.width * 0.02), // إضافة مسافة صغيرة لتجنب الازدحام
+                    height: widget.size.width *
+                        0.02), // إضافة مسافة صغيرة لتجنب الازدحام
                 Flexible(
                   flex: 1,
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: widget.size.width * 0.03),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -111,22 +119,22 @@ class ProductCard extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Padding(
-                                  padding:
-                                      EdgeInsets.only(right: size.width * 0.03),
+                                  padding: EdgeInsets.only(
+                                      right: widget.size.width * 0.03),
                                   child: CusttonSubtitleText(
-                                    text: productModel.price ?? "7000",
-                                    fontSize: size.width * 0.065,
+                                    text: widget.productModel.price ?? "7000",
+                                    fontSize: widget.size.width * 0.065,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                SizedBox(width: size.width * 0.02),
+                                SizedBox(width: widget.size.width * 0.02),
                                 CusttonSubtitleText(
                                   text: "د.ل",
                                   fontWeight: FontWeight.w300,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  fontSize: size.width * 0.0469,
+                                  fontSize: widget.size.width * 0.0469,
                                 ),
                               ],
                             ),
@@ -134,8 +142,8 @@ class ProductCard extends StatelessWidget {
                         ),
                         Flexible(
                           child: HaertBotton(
-                            size: size,
-                            onPressed: () {},
+                            productModel: widget.productModel,
+                            size: widget.size,
                           ),
                         ),
                       ],

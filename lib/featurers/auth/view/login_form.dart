@@ -23,8 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     double withe = MediaQuery.of(context).size.width;
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         final cubit = context.read<AuthCubit>();
         return Form(

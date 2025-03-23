@@ -24,6 +24,9 @@ class _HomeViewState extends State<HomeView> {
       Future.wait({
         context.read<ProductCubit>().getProduct(),
       });
+      Future.wait({
+        context.read<ProductCubit>().getLike(),
+      });
     } catch (e) {
       log(e.toString());
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
+import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
 import 'package:my_shop/featurers/cart/view/cart_widget.dart';
 import 'package:my_shop/featurers/cart/view/cheak_botton_sheat.dart';
@@ -18,7 +19,6 @@ class _CartViewState extends State<CartView> {
     Future.wait({
       context.read<CartCubit>().getCards(),
     });
-  
   }
 
   @override
@@ -42,7 +42,9 @@ class _CartViewState extends State<CartView> {
                 color: Theme.of(context).primaryColor,
               ))
             : Scaffold(
-                bottomSheet: CheakBottonSheat(width: width),
+                bottomSheet: context.read<CartCubit>().cardPurchases.isEmpty
+                    ? null
+                    : CheakBottonSheat(width: width),
                 appBar: AppBar(
                   centerTitle: true,
                   title: CusttonSubtitleText(
@@ -60,38 +62,45 @@ class _CartViewState extends State<CartView> {
                     ),
                   ],
                 ),
-                body: ListView(
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    CustomScrollView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      slivers: [
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(vertical: 5),
-                                child: CartWidget(
-                                  width: width,
-                                  cartModel: context
+                body: context.read<CartCubit>().cardPurchases.isEmpty
+                    ? Center(
+                        child: CusttonTitleText(text: "السله فارغة"),
+                      )
+                    : ListView(
+                        physics: BouncingScrollPhysics(),
+                        children: [
+                          CustomScrollView(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            slivers: [
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 5),
+                                      child: CartWidget(
+                                        width: width,
+                                        cartModel: context
+                                            .read<CartCubit>()
+                                            .cardPurchases[index],
+                                        index: index, // تمرير index لكل عنصر
+                                      ),
+                                    );
+                                  },
+                                  childCount: context
                                       .read<CartCubit>()
-                                      .cardPurchases[index],
-                                  index: index, // تمرير index لكل عنصر
+                                      .cardPurchases
+                                      .length,
                                 ),
-                              );
-                            },
-                            childCount:
-                                context.read<CartCubit>().cardPurchases.length,
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: kBottomNavigationBarHeight + width * 0.1,
-                    )
-                  ],
-                ),
+                          SizedBox(
+                            height: kBottomNavigationBarHeight + width * 0.1,
+                          )
+                        ],
+                      ),
               );
       },
     );

@@ -67,10 +67,11 @@ class QuantitySelector extends StatelessWidget {
             onPressed: () async {
               if (cubit.quantity == 1) {
                 await cubit.removeCards(
-                  id: cartModel.id!,
-                  data: {
-                  "id": cartModel.id,
-                }, prodctId: cartModel.forProduct!);
+                    id: cartModel.id!,
+                    data: {
+                      "id": cartModel.id,
+                    },
+                    prodctId: cartModel.forProduct!);
                 await cubit.getCards();
               }
               cubit.removeQuantity(index);

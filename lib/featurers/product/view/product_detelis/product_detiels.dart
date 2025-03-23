@@ -7,6 +7,7 @@ import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/function/naviation_to_replace.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
+import 'package:my_shop/featurers/inner_feature/recently/cubit/recently_cubit.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/botton_seat_detils.dart';
@@ -41,7 +42,13 @@ class _ProductDetielsState extends State<ProductDetiels> {
       context
           .read<ProductCubit>()
           .getReview(productId: widget.productModel!.productId!),
-     context.read<CartCubit>().getCards(),
+      context.read<CartCubit>().getCards(),
+    });
+    Future.wait({
+      context.read<RecentlyCubit>().addRecently(data: {
+        "for_product": widget.productModel!.productId!,
+        "for_user": Supabase.instance.client.auth.currentUser!.id,
+      }, productId: widget.productModel!.productId!)
     });
   }
 
@@ -67,22 +74,20 @@ class _ProductDetielsState extends State<ProductDetiels> {
               return Skeletonizer(
                 enabled: context.read<ProductCubit>().isLoadingriv,
                 child: BottonSeatDetils(
-                  onPressed2: () async {
-                    if (state is AddCardsSucecc) {}
-                  },
+                  onPressed2: () async {},
                   productModel: widget.productModel,
                   size: size,
                   onPressed: () async {
                     await context.read<CartCubit>().addCards(
-                      prodctId: widget.productModel!.productId!,
-                      data: {
-                      "quantiti": 1,
-                      "chach_pay": false,
-                      "for_product": widget.productModel?.productId,
-                      "for_user": Supabase.instance.client.auth.currentUser!.id,
-                      "total_price": widget.productModel?.price,
-                    });
-                
+                        prodctId: widget.productModel!.productId!,
+                        data: {
+                          "quantiti": 1,
+                          "chach_pay": false,
+                          "for_product": widget.productModel?.productId,
+                          "for_user":
+                              Supabase.instance.client.auth.currentUser!.id,
+                          "total_price": widget.productModel?.price,
+                        });
                   },
                   state: state,
                 ),
@@ -120,8 +125,8 @@ class _ProductDetielsState extends State<ProductDetiels> {
                         Flexible(
                           flex: 1,
                           child: HaertBotton(
+                            productModel: widget.productModel,
                             size: size,
-                            onPressed: () {},
                           ),
                         ),
                         SizedBox(

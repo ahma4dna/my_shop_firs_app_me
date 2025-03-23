@@ -37,7 +37,8 @@ class _ProductListState extends State<ProductList> {
                   ),
                 );
               },
-              childCount: context.read<ProductCubit>().products.length, // عدد العناصر
+              childCount:
+                  context.read<ProductCubit>().products.length, // عدد العناصر
             ),
           ),
         ],

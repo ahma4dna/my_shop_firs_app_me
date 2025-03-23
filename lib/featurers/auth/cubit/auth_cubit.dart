@@ -32,7 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
       await saveDataAuthUser(email: email, name: name);
 
       emit(SignUpSucces());
-        } catch (e) {
+    } catch (e) {
       log(e.toString());
       emit(SignUpErorr());
     }
@@ -58,7 +58,7 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       emit(LoginSucces());
-        } catch (e) {
+    } catch (e) {
       log(e.toString());
       emit(LoginErorr());
     }
@@ -102,7 +102,7 @@ class AuthCubit extends Cubit<AuthState> {
             );
           }
           emit(LoginGoogleSucces());
-                }
+        }
       }
     } catch (e) {
       log(e.toString());
