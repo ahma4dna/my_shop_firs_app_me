@@ -14,3 +14,5 @@ final class GetProductSuceccCat extends SearchState {}
 final class GetProductSuceccMarka extends SearchState {}
 final class GetProductSuceccSe extends SearchState {}
 final class GetProductSuceccMarkaAndCategory extends SearchState {}
+
+final class ClearFilter extends SearchState {}

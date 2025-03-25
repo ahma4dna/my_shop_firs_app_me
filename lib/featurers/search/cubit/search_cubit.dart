@@ -82,4 +82,12 @@ class SearchCubit extends Cubit<SearchState> {
     }).toList();
     emit(GetProductSuceccMarkaAndCategory());
   }
+  void clearFilter() {
+    productsSearchByMarkaAndCat = [];
+    productsSearch = [];
+    selectedCategory = null;
+    selectedMarka = null;
+    
+    emit(ClearFilter());
+  }
 }
