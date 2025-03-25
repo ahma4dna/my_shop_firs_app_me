@@ -1,0 +1,85 @@
+import 'dart:developer';
+
+import 'package:bloc/bloc.dart';
+import 'package:my_shop/core/data/remoat/api_dio.dart';
+import 'package:my_shop/featurers/product/model/product_model.dart';
+
+part 'search_state.dart';
+
+class SearchCubit extends Cubit<SearchState> {
+  SearchCubit() : super(SearchInitial());
+  final ApiDio _apiDio = ApiDio();
+
+  List<ProductModel> products = [];
+
+  Future<void> getProduct() async {
+    products = [];
+    emit(GetProductLoading());
+    try {
+      final data = await _apiDio.getData(path: "products");
+
+      if (data.statusCode == 200) {
+        for (var product in data.data) {
+          products.add(ProductModel.fromJson(product));
+        }
+
+        emit(GetProductSucecc());
+      } else {}
+      // log(data.toString());
+    } catch (e) {
+      // log(e.toString());
+      emit(GetProductErorr());
+    }
+  }
+
+  List<ProductModel> productsSearch = [];
+  void serchByName({required String name}) {
+    productsSearch = [];
+    for (var element in products) {
+      if (element.productTitle!.toLowerCase().contains(name)) {
+        productsSearch.add(element);
+      }
+    }
+  emit(GetProductSuceccSe());
+  }
+
+
+
+  List<ProductModel> productsSearchByMarkaAndCat = [];
+
+  String? selectedCategory;
+  String? selectedMarka;
+
+  void selectCategory(String category) {
+    selectedCategory = category;
+    filterProducts();
+  }
+
+  void selectMarka(String marka) {
+    selectedMarka = marka;
+    filterProducts();
+  }
+
+  void filterProducts() {
+    if (selectedCategory != null && selectedMarka != null) {
+      serchByMarkaAndCat(marka: selectedMarka!, catogry: selectedCategory!);
+    } else if (selectedCategory != null) {
+      productsSearchByMarkaAndCat = products
+          .where((product) => product.catrgory == selectedCategory)
+          .toList();
+    } else if (selectedMarka != null) {
+      productsSearchByMarkaAndCat =
+          products.where((product) => product.marka == selectedMarka).toList();
+    } else {
+      productsSearchByMarkaAndCat = products; // عرض كل المنتجات إذا لم يتم اختيار أي فلتر
+    }
+    emit(GetProductSuceccMarkaAndCategory());
+  }
+
+  void serchByMarkaAndCat({required String marka, required String catogry}) {
+    productsSearchByMarkaAndCat = products.where((product) {
+      return product.marka == marka && product.catrgory == catogry;
+    }).toList();
+    emit(GetProductSuceccMarkaAndCategory());
+  }
+}

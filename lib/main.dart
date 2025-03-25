@@ -9,6 +9,7 @@ import 'package:my_shop/featurers/auth/view/auth_view.dart';
 import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
 import 'package:my_shop/featurers/inner_feature/recently/cubit/recently_cubit.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
+import 'package:my_shop/featurers/search/cubit/search_cubit.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:my_shop/root/root_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -55,6 +56,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) {
             return RecentlyCubit();
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return SearchCubit();
           },
         ),
       ],

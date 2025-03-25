@@ -17,7 +17,9 @@ class CategoryMosel {
 
   static List<CategoryMosel> categryModel = [
     CategoryMosel(
-      onPressed: () {},
+      onPressed: () {
+        
+      },
       text: "هواتف",
       icon: Icons.phone_iphone,
     ),
@@ -88,7 +90,7 @@ class PrandModel {
   ];
   static List<PrandModel> prandMoel = [
     PrandModel(
-      text: "هواتف",
+      text: "Apple",
       onPressed: () {},
     ),
     PrandModel(

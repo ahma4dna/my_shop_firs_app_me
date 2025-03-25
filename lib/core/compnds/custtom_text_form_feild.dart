@@ -20,7 +20,7 @@ class CusttomTextFormFeild extends StatelessWidget {
     this.disabledBorder,
     this.enabledBorder,
     this.validator,
-    this.hintStyle,
+    this.hintStyle, this.onSubmitted,
   });
 
   final TextEditingController controller;
@@ -40,11 +40,15 @@ class CusttomTextFormFeild extends StatelessWidget {
   final InputBorder? enabledBorder;
   final String? Function(String?)? validator;
   final TextStyle? hintStyle;
+final  void Function(String)? onSubmitted;
+
+
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       validator: validator,
+      onFieldSubmitted:onSubmitted ,
       inputFormatters: inputFormatters,
       onChanged: onChanged,
       controller: controller,

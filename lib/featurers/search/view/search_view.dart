@@ -1,100 +1,140 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/core/compnds/custtom_text_form_feild.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
+import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
+import 'package:my_shop/featurers/search/cubit/search_cubit.dart';
 
-class SearchView extends StatelessWidget {
-  SearchView({super.key});
+class SearchView extends StatefulWidget {
+  const SearchView({super.key});
+
+  @override
+  State<SearchView> createState() => _SearchViewState();
+}
+
+class _SearchViewState extends State<SearchView> {
   final TextEditingController controller = TextEditingController();
+  Future<void> getData() async {
+    Future.wait({
+      context.read<SearchCubit>().getProduct(),
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
     bool? filter = true;
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: CusttonSubtitleText(
-          text: "البحت",
-          fontSize: width * 0.065,
-        ),
-      ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: SizedBox(
-                  width: width * 0.95,
-                  height: width * 0.15,
-                  child: CusttomTextFormFeild(
-                    hintStyle: TextStyle(
-                      color: Theme.of(context).iconTheme.color,
-                      fontSize: width * 0.052,
-                    ),
-                    prefixIcon: Icon(Icons.search),
-                    controller: controller,
-                    hint: "البحت",
-                  ),
-                ),
-              ),
+    return BlocConsumer<SearchCubit, SearchState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        final cubit = context.read<SearchCubit>();
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: CusttonSubtitleText(
+              text: "البحت",
+              fontSize: width * 0.065,
             ),
-            if (filter == true) ...[
-              CleraAllFilter(width: width),
-              SizedBox(
-                height: width * 0.02,
-              ),
-              ListFilterCategory(
-                width: width,
-              ),
-              SizedBox(
-                height: width * 0.05,
-              ),
-              ListFilterPrand(
-                width: width,
-              ),
-              SizedBox(
-                height: width * 0.05,
-              ),
-            ],
-            CustomScrollView(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              slivers: [
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 5), // مسافة بين العناصر
-                          child: SearchWidget(
-                            width: width,
-                          ));
-                    },
-                    childCount: 10, // عدد العناصر
+          ),
+          body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: SizedBox(
+                      width: width * 0.95,
+                      height: width * 0.15,
+                      child: CusttomTextFormFeild(
+                        onChanged: (value) async {
+                          cubit.serchByName(name: value);
+                        },
+                        hintStyle: TextStyle(
+                          color: Theme.of(context).iconTheme.color,
+                          fontSize: width * 0.052,
+                        ),
+                        prefixIcon: Icon(Icons.search),
+                        controller: controller,
+                        hint: "البحت",
+                      ),
+                    ),
                   ),
                 ),
+                if (filter == true) ...[
+                  CleraAllFilter(width: width),
+                  SizedBox(
+                    height: width * 0.02,
+                  ),
+                  ListFilterCategory(
+                    width: width,
+                  ),
+                  SizedBox(
+                    height: width * 0.05,
+                  ),
+                  ListFilterPrand(
+                    width: width,
+                  ),
+                  SizedBox(
+                    height: width * 0.05,
+                  ),
+                ],
+                CustomScrollView(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  slivers: [
+                    Builder(builder: (context) {
+                      List<ProductModel> products;
+                      if (cubit.productsSearchByMarkaAndCat.isNotEmpty) {
+                        products = cubit.productsSearchByMarkaAndCat;
+                      }  else {
+                        products = cubit.products;
+                      }
+
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5), // مسافة بين العناصر
+                            child: SearchWidget(
+                              width: width,
+                              productModel: products[index],
+                            ),
+                          );
+                        }, childCount: products.length // عدد العناصر
+                            ),
+                      );
+                    }),
+                  ],
+                ),
+                SizedBox(
+                  height: kBottomNavigationBarHeight + width * 0.08,
+                )
               ],
             ),
-            SizedBox(
-              height: kBottomNavigationBarHeight + width * 0.08,
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
 
 class SearchWidget extends StatelessWidget {
-  const SearchWidget({super.key, required this.width});
+  const SearchWidget({super.key, required this.width, this.productModel});
   final double width;
+  final ProductModel? productModel;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -117,7 +157,8 @@ class SearchWidget extends StatelessWidget {
                       width: width * 0.3,
                       height: width * 0.37,
                       fit: BoxFit.cover,
-                      "https://storage.store.arriadagroup.com/images/products/4660/variants/8389/1822937191671cc8a91ab218.05490775___8b290af9010608bb458a1babb5018259.webp",
+                      productModel?.listUrlImage?[0] ??
+                          "https://storage.store.arriadagroup.com/images/products/4660/variants/8389/1822937191671cc8a91ab218.05490775___8b290af9010608bb458a1babb5018259.webp",
                     ),
                   ),
                 ),
@@ -131,31 +172,40 @@ class SearchWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      CusttonSubtitleText(
-                        text: "Apple",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        color: Colors.grey,
+                      Flexible(
+                        child: CusttonSubtitleText(
+                          text: productModel?.marka ?? "Apple",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          color: Colors.grey,
+                        ),
                       ),
                       SizedBox(
                         height: width * 0.02,
                       ),
-                      CusttonSubtitleText(
-                        text: "iPhone 16 Pro Max",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: width * 0.05,
+                      Flexible(
+                        flex: 2,
+                        child: CusttonSubtitleText(
+                          text:
+                              productModel?.productTitle ?? "iPhone 16 Pro Max",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: width * 0.05,
+                        ),
                       ),
                       SizedBox(
                         height: width * 0.025,
                       ),
-                      CusttonSubtitleText(
-                        text: " 7000 دل",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        color: Theme.of(context).iconTheme.color,
-                        fontSize: width * 0.06,
+                      Flexible(
+                        child: CusttonSubtitleText(
+                          text: productModel?.price ?? " 7000 دل",
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          color: Theme.of(context).iconTheme.color,
+                          fontSize: width * 0.05,
+                        ),
                       ),
                     ],
                   ),
@@ -192,23 +242,35 @@ class CleraAllFilter extends StatelessWidget {
   }
 }
 
-class ListFilterCategory extends StatelessWidget {
+class ListFilterCategory extends StatefulWidget {
   const ListFilterCategory({super.key, required this.width});
   final double width;
+
+  @override
+  State<ListFilterCategory> createState() => _ListFilterCategoryState();
+}
+
+class _ListFilterCategoryState extends State<ListFilterCategory> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width * 1,
-      height: width * 0.085,
+      width: widget.width * 1,
+      height: widget.width * 0.085,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (contex, index) => Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.02),
+          padding: EdgeInsets.symmetric(horizontal: widget.width * 0.02),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              setState(() {
+                context.read<SearchCubit>().selectCategory(
+                   CategoryMosel.caeoryText[index],
+                    );
+              });
+            },
             child: Container(
-              width: width * 0.25,
-              height: width * 0.075,
+              width: widget.width * 0.25,
+              height: widget.width * 0.075,
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(5),
@@ -244,7 +306,11 @@ class ListFilterPrand extends StatelessWidget {
         itemBuilder: (contex, index) => Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.02),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              context.read<SearchCubit>().selectMarka(
+                  PrandModel.prand[index],
+                  );
+            },
             child: Container(
               width: width * 0.25,
               height: width * 0.075,
