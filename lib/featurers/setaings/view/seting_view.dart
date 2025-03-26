@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+import 'package:my_shop/core/function/my_dilog.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
@@ -172,80 +173,89 @@ class _SetingViewState extends State<SetingView> {
                               name: "اللغة",
                               icone: Icons.language,
                               onTap: () {
-                                showModalBottomSheet(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(35),
-                                    ),
-                                  ),
+                                showDilogOkOrCncel(
                                   context: context,
-                                  builder: (context) => SizedBox(
-                                    width: double.infinity,
-                                    height: size.width * 0.8,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: size.width * 0.05,
-                                        ),
-                                        Container(
-                                          color: Colors.grey,
-                                          width: 35,
-                                          height: 4,
-                                        ),
-                                        SizedBox(
-                                          height: size.width * 0.04,
-                                        ),
-                                        CusttonTitleText(
-                                          text: "خيارات اللغة",
-                                          fontSize: 20,
-                                        ),
-                                        Divider(),
-                                        SizedBox(
-                                          height: size.width * 0.08,
-                                        ),
-                                        Directionality(
-                                          textDirection: TextDirection.rtl,
-                                          child: ListTile(
-                                            title: CusttonTitleText(
-                                              text: "العربية",
-                                            ),
-                                            trailing: Icon(
-                                                false
-                                                    // ignore: dead_code
-                                                    ? Icons
-                                                        .radio_button_unchecked
-                                                    : Icons
-                                                        .radio_button_checked,
-                                                color:
-                                                    AppColor.darkPrimaryColor),
-                                            onTap: () async {},
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: size.width * 0.04,
-                                        ),
-                                        Directionality(
-                                          textDirection: TextDirection.rtl,
-                                          child: ListTile(
-                                            title: CusttonTitleText(
-                                              text: "English",
-                                            ),
-                                            trailing: Icon(
-                                                false
-                                                    // ignore: dead_code
-                                                    ? Icons
-                                                        .radio_button_unchecked
-                                                    : Icons
-                                                        .radio_button_checked,
-                                                color:
-                                                    AppColor.darkPrimaryColor),
-                                            onTap: () async {},
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  textWr: "ستتوفر قريبا",
+                                  fctOk: () {
+                                    Navigator.pop(context);
+                                  },
+                                  isErorr: false,
+                                  textOk: "حسنا"
                                 );
+                                // showModalBottomSheet(
+                                //   shape: RoundedRectangleBorder(
+                                //     borderRadius: BorderRadius.vertical(
+                                //       top: Radius.circular(35),
+                                //     ),
+                                //   ),
+                                //   context: context,
+                                //   builder: (context) => SizedBox(
+                                //     width: double.infinity,
+                                //     height: size.width * 0.8,
+                                //     child: Column(
+                                //       children: [
+                                //         SizedBox(
+                                //           height: size.width * 0.05,
+                                //         ),
+                                //         Container(
+                                //           color: Colors.grey,
+                                //           width: 35,
+                                //           height: 4,
+                                //         ),
+                                //         SizedBox(
+                                //           height: size.width * 0.04,
+                                //         ),
+                                //         CusttonTitleText(
+                                //           text: "خيارات اللغة",
+                                //           fontSize: 20,
+                                //         ),
+                                //         Divider(),
+                                //         SizedBox(
+                                //           height: size.width * 0.08,
+                                //         ),
+                                //         Directionality(
+                                //           textDirection: TextDirection.rtl,
+                                //           child: ListTile(
+                                //             title: CusttonTitleText(
+                                //               text: "العربية",
+                                //             ),
+                                //             trailing: Icon(
+                                //                 false
+                                //                     // ignore: dead_code
+                                //                     ? Icons
+                                //                         .radio_button_unchecked
+                                //                     : Icons
+                                //                         .radio_button_checked,
+                                //                 color:
+                                //                     AppColor.darkPrimaryColor),
+                                //             onTap: () async {},
+                                //           ),
+                                //         ),
+                                //         SizedBox(
+                                //           height: size.width * 0.04,
+                                //         ),
+                                //         Directionality(
+                                //           textDirection: TextDirection.rtl,
+                                //           child: ListTile(
+                                //             title: CusttonTitleText(
+                                //               text: "English",
+                                //             ),
+                                //             trailing: Icon(
+                                //                 false
+                                //                     // ignore: dead_code
+                                //                     ? Icons
+                                //                         .radio_button_unchecked
+                                //                     : Icons
+                                //                         .radio_button_checked,
+                                //                 color:
+                                //                     AppColor.darkPrimaryColor),
+                                //             onTap: () async {},
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // );
                               },
                             ),
                             Divider(
@@ -256,7 +266,17 @@ class _SetingViewState extends State<SetingView> {
                               size: size,
                               name: "العناوين",
                               icone: IconlyBold.location,
-                              onTap: () {},
+                              onTap: () {
+                                  showDilogOkOrCncel(
+                                  context: context,
+                                  textWr: "ستتوفر قريبا",
+                                  fctOk: () {
+                                    Navigator.pop(context);
+                                  },
+                                  isErorr: false,
+                                  textOk: "حسنا"
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -267,9 +287,16 @@ class _SetingViewState extends State<SetingView> {
                     ),
                     TextButton(
                       onPressed: () async {
-                        await context
-                            .read<AuthCubit>()
-                            .signOut(context: context);
+                        showDilogOkOrCncel(
+                          context: context,
+                          textWr: "هل تريد تسجيل الخروج",
+                          isErorr: true,
+                          fctOk: () async {
+                            await context
+                                .read<AuthCubit>()
+                                .signOut(context: context);
+                          },
+                        );
                       },
                       child: CusttonTitleText(
                         text: "تسجيل الخروج",

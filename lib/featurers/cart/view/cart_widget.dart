@@ -40,7 +40,7 @@ class CartWidget extends StatelessWidget {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      navigationTo(context: context, page: ProductDetiels());
+                      navigationTo(context: context, page: ProductDetiels(productModel: cartModel.products,));
                     },
                     child: Image.network(
                       width: width * 0.3,

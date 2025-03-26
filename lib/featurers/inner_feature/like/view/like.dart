@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+import 'package:my_shop/core/function/my_dilog.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
@@ -39,14 +40,31 @@ class _LikeState extends State<Like> {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
+            automaticallyImplyLeading: false,
+            leading:context.read<ProductCubit>().likes.isNotEmpty? IconButton(
+              icon: Icon(
+                IconlyBold.delete,
+                color: Theme.of(context).iconTheme.color,
+              ),
+              onPressed: () async {
+                showDilogOkOrCncel(
+                  context: context,
+                  textWr: "هل تريد حدف المفضلة",
+                  fctOk: () async {
+                    await context.read<ProductCubit>().unLikeAll();
+                    Navigator.pop(context);
+                  },
+                );
+              },
+            ):SizedBox(),
             actions: [
               IconButton(
                 icon: Icon(
-                  IconlyBold.delete,
+                  Icons.arrow_forward_ios,
                   color: Theme.of(context).iconTheme.color,
                 ),
-                onPressed: () async {
-                  await context.read<ProductCubit>().unLikeAll();
+                onPressed: () {
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -139,7 +157,7 @@ class LikeCard extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () {
                               navigationTo(
-                                  context: context, page: ProductDetiels());
+                                  context: context, page: ProductDetiels(productModel: likeModel!.products,));
                             },
                             child: Image.network(
                               width: width * 0.3,

@@ -7,6 +7,7 @@ import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
 import 'package:my_shop/featurers/search/cubit/search_cubit.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -37,109 +38,223 @@ class _SearchViewState extends State<SearchView> {
       listener: (context, state) {},
       builder: (context, state) {
         final cubit = context.read<SearchCubit>();
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: CusttonSubtitleText(
-              text: "البحت",
-              fontSize: width * 0.065,
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: CusttonSubtitleText(
+                text: "البحت",
+                fontSize: width * 0.065,
+              ),
             ),
-          ),
-          body: state is GetProductLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                  color: Colors.blue,
-                ))
-              : SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: SizedBox(
-                            width: width * 0.95,
-                            height: width * 0.15,
-                            child: CusttomTextFormFeild(
-                              onChanged: (value) async {
-                                cubit.serchByName(name: value);
-                              },
-                              hintStyle: TextStyle(
-                                color: Theme.of(context).iconTheme.color,
-                                fontSize: width * 0.052,
-                              ),
-                              prefixIcon: Icon(Icons.search),
-                              controller: controller,
-                              hint: "البحت",
+            body: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Skeletonizer(
+                enabled: state is GetProductSeLoading ? true : false,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: SizedBox(
+                          width: width * 0.95,
+                          height: width * 0.15,
+                          child: CusttomTextFormFeild(
+                            onChanged: (value) async {
+                              cubit.serchByName(name: value);
+                            },
+                            hintStyle: TextStyle(
+                              color: Theme.of(context).iconTheme.color,
+                              fontSize: width * 0.052,
                             ),
+                            prefixIcon: Icon(Icons.search),
+                            controller: controller,
+                            hint: "البحت",
                           ),
                         ),
                       ),
-                      if (cubit.selectedCategory != null ||
-                          cubit.selectedMarka != null) ...[
-                        CleraAllFilter(width: width),
-                        SizedBox(
-                          height: width * 0.02,
-                        ),
-                      ],
+                    ),
+                    if (cubit.selectedCategory != null ||
+                        cubit.selectedMarka != null) ...[
+                      CleraAllFilter(width: width),
                       SizedBox(
-                        height: width * 0.05,
+                        height: width * 0.02,
                       ),
-                      ListFilterCategory(
-                        width: width,
-                      ),
-                      SizedBox(
-                        height: width * 0.05,
-                      ),
-                      ListFilterPrand(
-                        width: width,
-                      ),
-                      SizedBox(
-                        height: width * 0.05,
-                      ),
-                      CustomScrollView(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        slivers: [
-                          Builder(builder: (context) {
-                            List<ProductModel> products;
-                            if (cubit.productsSearchByMarkaAndCat.isNotEmpty) {
-                              products = cubit.productsSearchByMarkaAndCat;
-                            } else if (cubit.productsSearch.isNotEmpty) {
-                              products = cubit.productsSearch;
-                            } else {
-                              products = cubit.products;
-                            }
-
-                            return SliverList(
-                              delegate:
-                                  SliverChildBuilderDelegate((context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 5), // مسافة بين العناصر
-                                  child: SearchWidget(
-                                    width: width,
-                                    productModel: products[index],
-                                  ),
-                                );
-                              }, childCount: products.length // عدد العناصر
-                                      ),
-                            );
-                          }),
-                        ],
-                      ),
-                      SizedBox(
-                        height: kBottomNavigationBarHeight + width * 0.08,
-                      )
                     ],
-                  ),
+                    SizedBox(
+                      height: width * 0.05,
+                    ),
+                    ListFilterCategory(
+                      width: width,
+                    ),
+                    SizedBox(
+                      height: width * 0.05,
+                    ),
+                    ListFilterPrand(
+                      width: width,
+                    ),
+                    SizedBox(
+                      height: width * 0.05,
+                    ),
+                    CustomScrollView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      slivers: [
+                        Builder(builder: (context) {
+                          List<ProductModel> products;
+                          if (cubit.productsSearchByMarkaAndCat.isNotEmpty) {
+                            products = cubit.productsSearchByMarkaAndCat;
+                          } else if (cubit.productsSearch.isNotEmpty) {
+                            products = cubit.productsSearch;
+                          } else {
+                            products = cubit.products;
+                          }
+
+                          return SliverList(
+                            delegate:
+                                SliverChildBuilderDelegate((context, index) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 5), // مسافة بين العناصر
+                                child: SearchWidget(
+                                  width: width,
+                                  productModel:state is GetProductSeLoading?damylist[index]: products[index],
+                                ),
+                              );
+                            }, childCount:state is GetProductSeLoading?damylist.length: products.length // عدد العناصر
+                                    ),
+                          );
+                        }),
+                      ],
+                    ),
+                    SizedBox(
+                      height: kBottomNavigationBarHeight + width * 0.08,
+                    )
+                  ],
                 ),
+              ),
+            ),
+          ),
         );
       },
     );
   }
+
+  List<ProductModel> damylist = [
+    ProductModel(
+      catrgory: "Apple",
+      productTitle: "Samsung Galaxy S25 Ultra",
+      listUrlImage: [
+        "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+        "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+        "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+      ],
+      price: "5000",
+    ),
+      ProductModel(
+      catrgory: "Apple",
+      productTitle: "Samsung Galaxy S25 Ultra",
+      listUrlImage: [
+        "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+        "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+        "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+      ],
+      price: "5000",
+    ),
+      ProductModel(
+      catrgory: "Apple",
+      productTitle: "Samsung Galaxy S25 Ultra",
+      listUrlImage: [
+        "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+        "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+        "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+      ],
+      price: "5000",
+    ),
+      ProductModel(
+      catrgory: "Apple",
+      productTitle: "Samsung Galaxy S25 Ultra",
+      listUrlImage: [
+        "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+        "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+        "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+      ],
+      price: "5000",
+    ),
+      ProductModel(
+      catrgory: "Apple",
+      productTitle: "Samsung Galaxy S25 Ultra",
+      listUrlImage: [
+        "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+        "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+        "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+      ],
+      price: "5000",
+    ),
+      ProductModel(
+      catrgory: "Apple",
+      productTitle: "Samsung Galaxy S25 Ultra",
+      listUrlImage: [
+        "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+        "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+        "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+      ],
+      price: "5000",
+    ),
+      ProductModel(
+      catrgory: "Apple",
+      productTitle: "Samsung Galaxy S25 Ultra",
+      listUrlImage: [
+        "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+        "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+        "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+      ],
+      price: "5000",
+    ),
+      ProductModel(
+      catrgory: "Apple",
+      productTitle: "Samsung Galaxy S25 Ultra",
+      listUrlImage: [
+        "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+        "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+        "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+      ],
+      price: "5000",
+    ),
+      ProductModel(
+      catrgory: "Apple",
+      productTitle: "Samsung Galaxy S25 Ultra",
+      listUrlImage: [
+        "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+        "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+        "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+      ],
+      price: "5000",
+    ),
+      ProductModel(
+      catrgory: "Apple",
+      productTitle: "Samsung Galaxy S25 Ultra",
+      listUrlImage: [
+        "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+        "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+        "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+      ],
+      price: "5000",
+    ),
+      ProductModel(
+      catrgory: "Apple",
+      productTitle: "Samsung Galaxy S25 Ultra",
+      listUrlImage: [
+        "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+        "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+        "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+      ],
+      price: "5000",
+    ),
+  ];
 }
 
 class SearchWidget extends StatelessWidget {
@@ -162,7 +277,7 @@ class SearchWidget extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   child: GestureDetector(
                     onTap: () {
-                      navigationTo(context: context, page: ProductDetiels());
+                      navigationTo(context: context, page: ProductDetiels(productModel: productModel,));
                     },
                     child: Image.network(
                       width: width * 0.3,

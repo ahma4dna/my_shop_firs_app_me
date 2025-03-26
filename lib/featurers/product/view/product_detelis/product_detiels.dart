@@ -223,9 +223,12 @@ class _ProductDetielsState extends State<ProductDetiels> {
                             color: Colors.blue[200],
                           ),
                           onRatingUpdate: (rating) async {
+                            setState(() {
+                            });
                             await navigationToReplace(
                               context: context,
                               page: RatingAndRivew(
+                                riv2: rating.toInt(),
                                 size: size,
                                 productModel: widget.productModel,
                                 initialRating:
@@ -262,6 +265,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
                                 navigationTo(
                                   context: context,
                                   page: RatingAndRivew(
+                                    riv2: cubitMe.rateuser,
                                     size: size,
                                     productModel: widget.productModel,
                                     initialRating:

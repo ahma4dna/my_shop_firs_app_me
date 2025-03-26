@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+import 'package:my_shop/core/function/my_dilog.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/inner_feature/recently/cubit/recently_cubit.dart';
 import 'package:my_shop/featurers/inner_feature/recently/model/recently_model/recently_model.dart';
+import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Recently extends StatefulWidget {
   const Recently({super.key});
@@ -38,14 +41,36 @@ class _RecentlyState extends State<Recently> {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
+            automaticallyImplyLeading: false,
+            leading: context.read<RecentlyCubit>().recentlyList.isNotEmpty
+                ? IconButton(
+                    icon: Icon(
+                      IconlyBold.delete,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    onPressed: () async {
+                      showDilogOkOrCncel(
+                        context: context,
+                        textWr: "هل تريد حدف السجل",
+                        fctOk: () async {
+                          await context
+                              .read<RecentlyCubit>()
+                              .clearAllRecently();
+                          // ignore: use_build_context_synchronously
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  )
+                : SizedBox(),
             actions: [
               IconButton(
                 icon: Icon(
-                  IconlyBold.delete,
+                  Icons.arrow_forward_ios,
                   color: Theme.of(context).iconTheme.color,
                 ),
-                onPressed: () async {
-                  await context.read<RecentlyCubit>().clearAllRecently();
+                onPressed: () {
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -54,44 +79,93 @@ class _RecentlyState extends State<Recently> {
               fontSize: width * 0.05,
             ),
           ),
-          body: state is GetRecentlyLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                  color: Colors.blue,
-                ))
-              : CustomScrollView(
-                  slivers: [
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        final recentlyCubit = context.read<RecentlyCubit>();
+          body: Skeletonizer(
+            enabled: state is GetRecentlyLoading ? true : false,
+            child: CustomScrollView(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final recentlyCubit = context.read<RecentlyCubit>();
 
-                        if (recentlyCubit.recentlyList.isEmpty) {
-                          return SizedBox();
-                        }
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 7.0),
-                          child: RrcentlyCard(
-                            size: MediaQuery.of(context).size,
-                            width: width,
-                            recentlyModel: context
-                                .read<RecentlyCubit>()
-                                .recentlyList[index],
-                          ),
-                        );
-                      },
-                          childCount: context
-                              .read<RecentlyCubit>()
-                              .recentlyList
-                              .length),
-                    ),
-                  ],
+                    if (recentlyCubit.recentlyList.isEmpty) {
+                      return SizedBox();
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 7.0),
+                      child: RrcentlyCard(
+                        size: MediaQuery.of(context).size,
+                        width: width,
+                        recentlyModel: state is GetRecentlyLoading
+                            ? damyListCrt[index]
+                            : context.read<RecentlyCubit>().recentlyList[index],
+                      ),
+                    );
+                  },
+                      childCount: state is GetRecentlyLoading
+                          ? damyListCrt.length
+                          : context.read<RecentlyCubit>().recentlyList.length),
                 ),
+              ],
+            ),
+          ),
         );
       },
     );
   }
+
+  List<RecentlyModel> damyListCrt = [
+    RecentlyModel(
+      products: ProductModel(
+        catrgory: "Apple",
+        productTitle: "Samsung Galaxy S25 Ultra",
+        listUrlImage: [
+          "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+          "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+          "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+        ],
+        price: "5000",
+      ),
+    ),
+    RecentlyModel(
+      products: ProductModel(
+        catrgory: "Apple",
+        productTitle: "Samsung Galaxy S25 Ultra",
+        listUrlImage: [
+          "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+          "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+          "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+        ],
+        price: "5000",
+      ),
+    ),
+    RecentlyModel(
+      products: ProductModel(
+        catrgory: "Apple",
+        productTitle: "Samsung Galaxy S25 Ultra",
+        listUrlImage: [
+          "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+          "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+          "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+        ],
+        price: "5000",
+      ),
+    ),
+    RecentlyModel(
+      products: ProductModel(
+        catrgory: "Apple",
+        productTitle: "Samsung Galaxy S25 Ultra",
+        listUrlImage: [
+          "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+          "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+          "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+        ],
+        price: "5000",
+      ),
+    ),
+  ];
 }
 
+// ignore: must_be_immutable
 class RrcentlyCard extends StatelessWidget {
   const RrcentlyCard({
     super.key,
@@ -131,7 +205,10 @@ class RrcentlyCard extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () {
                               navigationTo(
-                                  context: context, page: ProductDetiels());
+                                  context: context,
+                                  page: ProductDetiels(
+                                    productModel: recentlyModel!.products,
+                                  ));
                             },
                             child: Image.network(
                               width: width * 0.3,

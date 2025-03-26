@@ -8,9 +8,11 @@ import 'package:my_shop/featurers/auth/view/auth_view.dart';
 Future<dynamic> showDilogOkOrCncel({
   required BuildContext context,
   required String textWr,
-  required bool isErorr,
+   bool? isErorr=true,
   required Function fctOk,
   AuthState? state,
+  String textOk = "نعم",
+  String textCncel = "لا",
 }) {
   return showDialog(
     context: context,
@@ -36,9 +38,9 @@ Future<dynamic> showDilogOkOrCncel({
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Visibility(
-                        visible: isErorr,
+                        visible: isErorr??true,
                         child: CustonTextButton(
-                          text: "لا",
+                          text: textCncel,
                           function: () {
                             Navigator.pop(context);
                           },
@@ -46,7 +48,7 @@ Future<dynamic> showDilogOkOrCncel({
                         ),
                       ),
                       CustonTextButton(
-                        text: "نعم",
+                        text: textOk,
                         function: () {
                           fctOk();
                         },

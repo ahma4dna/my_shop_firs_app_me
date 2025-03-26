@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:my_shop/constant/constant.dart';
+import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/featurers/product/view/product_home/product_list.dart';
+import 'package:my_shop/featurers/search/cubit/search_cubit.dart';
+import 'package:my_shop/featurers/search/view/search_view.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeView extends StatefulWidget {
@@ -32,15 +35,11 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  bool loading = true;
+  
   @override
   void initState() {
     fatchDataProduct();
-    Timer(Duration(milliseconds: 1500), () {
-      setState(() {
-        loading = false;
-      });
-    });
+  
     super.initState();
   }
 
@@ -51,85 +50,90 @@ class _HomeViewState extends State<HomeView> {
     return BlocConsumer<ProductCubit, ProductState>(
       listener: (context, state) {},
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            leading: Icon(
-              IconlyBold.notification,
-              size: size.width * 0.08,
-            ),
-            title: FittedBox(
-              child: CusttonTitleText(
-                text: "متجري",
-                fontSize: size.width * 0.06,
-                fontWeight: FontWeight.w600,
+        return BlocBuilder<SearchCubit, SearchState>(
+          builder: (context, state) {
+            return Scaffold(
+              appBar: AppBar(
+                leading: Icon(
+                  IconlyBold.notification,
+                  size: size.width * 0.08,
+                ),
+                title: FittedBox(
+                  child: CusttonTitleText(
+                    text: "متجري",
+                    fontSize: size.width * 0.06,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                centerTitle: true,
               ),
-            ),
-            centerTitle: true,
-          ),
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Skeletonizer(
-              enabled: loading,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: size.width * 0.05,
-                  ),
-                  slideer(size),
-                  SizedBox(
-                    height: size.width * 0.1,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: Row(
-                      children: [
-                        FittedBox(
-                          child: CusttonTitleText(
-                            text: "مضاف مؤخرأ",
-                            fontSize: size.width * 0.06,
-                          ),
+              body: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Skeletonizer(
+              enabled:     state is GetProductLoading?true:false,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: size.width * 0.05,
+                      ),
+                
+                         slideer(size),
+                      SizedBox(
+                        height: size.width * 0.1,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: Row(
+                          children: [
+                            FittedBox(
+                              child: CusttonTitleText(
+                                text: "مضاف مؤخرأ",
+                                fontSize: size.width * 0.06,
+                              ),
+                            ),
+                            SizedBox(
+                              width: size.width * 0.05,
+                            ),
+                            FittedBox(
+                              child: Icon(
+                                Icons.rocket_launch,
+                                size: size.width * 0.07,
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          width: size.width * 0.05,
+                      ),
+                      SizedBox(
+                        height: size.width * 0.06,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: ProductList()),
+                      SizedBox(
+                        height: size.width * 0.06,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: Row(
+                          children: [
+                            CusttonTitleText(
+                              text: "التصنيفات",
+                              fontSize: size.width * 0.06,
+                            ),
+                          ],
                         ),
-                        FittedBox(
-                          child: Icon(
-                            Icons.rocket_launch,
-                            size: size.width * 0.07,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: size.width * 0.03,
+                      ),
+                      CategoryList(size: size)
+                    ],
                   ),
-                  SizedBox(
-                    height: size.width * 0.06,
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: ProductList()),
-                  SizedBox(
-                    height: size.width * 0.06,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: Row(
-                      children: [
-                        CusttonTitleText(
-                          text: "التصنيفات",
-                          fontSize: size.width * 0.06,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: size.width * 0.03,
-                  ),
-                  CategoryList(size: size)
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
@@ -183,11 +187,18 @@ class CategoryList extends StatelessWidget {
       child: ListView.builder(
         itemBuilder: (context, index) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: CategoryCard(
-            size: size,
-            icon: CategoryMosel.categryModel[index].icon,
-            text: CategoryMosel.categryModel[index].text,
-            onPressed: CategoryMosel.categryModel[index].onPressed,
+          child: GestureDetector(
+            onTap: () async {
+              context
+                  .read<SearchCubit>()
+                  .selectCategoryHome(CategoryMosel.categryModel[index].text);
+              navigationTo(context: context, page: SearchView());
+            },
+            child: CategoryCard(
+              size: size,
+              icon: CategoryMosel.categryModel[index].icon,
+              text: CategoryMosel.categryModel[index].text,
+            ),
           ),
         ),
         itemCount: 5,
@@ -229,6 +240,7 @@ class CategoryCard extends StatelessWidget {
                   icon: Icon(
                     icon,
                     size: size.width * 0.13,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                 ),
               ],

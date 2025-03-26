@@ -15,11 +15,12 @@ class RatingAndRivew extends StatefulWidget {
       required this.size,
       required this.initialRating,
       this.cubitMe,
-      this.productModel});
+      this.productModel, this.riv2});
   final Size size;
   final double initialRating;
   final ProductCubit? cubitMe;
   final ProductModel? productModel;
+  final  int? riv2;
   @override
   State<RatingAndRivew> createState() => _RatingAndRivewState();
 }
@@ -29,6 +30,7 @@ class _RatingAndRivewState extends State<RatingAndRivew> {
 
   double? rate;
   int? riv;
+
   @override
   void initState() {
     controller = TextEditingController(text: widget.cubitMe?.commentUser ?? "");
@@ -63,7 +65,7 @@ class _RatingAndRivewState extends State<RatingAndRivew> {
                               idRev: widget.cubitMe!.id!,
                               productId: widget.productModel!.productId!,
                               data: {
-                                "rate": riv,
+                                "rate": riv??widget.riv2,
                                 "comment": controller.text,
                                 "id_reviwe": widget.cubitMe!.id,
                                 "created_at": widget.cubitMe!.date
@@ -76,7 +78,7 @@ class _RatingAndRivewState extends State<RatingAndRivew> {
                                 data: {
                                   "created_at":
                                       DateTime.now().toIso8601String(),
-                                  "rate": riv,
+                                  "rate": riv??widget.riv2,
                                   "comment": controller.text,
                                   "for_product": widget.productModel!.productId,
                                   "for_user": Supabase

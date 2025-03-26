@@ -14,7 +14,7 @@ class SearchCubit extends Cubit<SearchState> {
 
   Future<void> getProduct() async {
     products = [];
-    emit(GetProductLoading());
+    emit(GetProductSeLoading());
     try {
       final data = await _apiDio.getData(path: "products");
 
@@ -23,12 +23,12 @@ class SearchCubit extends Cubit<SearchState> {
           products.add(ProductModel.fromJson(product));
         }
 
-        emit(GetProductSucecc());
+        emit(GetProductSeSucecc());
       } else {}
       // log(data.toString());
     } catch (e) {
       // log(e.toString());
-      emit(GetProductErorr());
+      emit(GetProductSeErorr());
     }
   }
 
@@ -49,8 +49,21 @@ class SearchCubit extends Cubit<SearchState> {
 
   String? selectedCategory;
   String? selectedMarka;
+void selectCategoryHome(String category) {
+    selectedCategory = null;
+    selectedMarka = null;
+    selectedCategory = category;
+    filterProducts();
+  }
 
+  void selectMarkaExplor(String marka) {
+    selectedMarka = null;
+    selectedCategory = null;
+    selectedMarka = marka;
+    filterProducts();
+  }
   void selectCategory(String category) {
+    
     selectedCategory = category;
     filterProducts();
   }
