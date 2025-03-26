@@ -14,7 +14,7 @@ class ProductCubit extends Cubit<ProductState> {
   ProductCubit() : super(ProductInitial());
   final ApiDio _apiDio = ApiDio();
 
-  List<ProductModel> products = [];
+  List<ProductModel> products = [];                                               
 
   Future<void> getProduct() async {
     products = [];

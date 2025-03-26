@@ -20,9 +20,7 @@ class Recently extends StatefulWidget {
 
 class _RecentlyState extends State<Recently> {
   Future<void> getRec() async {
-    Future.wait({
-      context.read<RecentlyCubit>().getRecently(),
-    });
+    await context.read<RecentlyCubit>().getRecently();
   }
 
   @override
@@ -38,6 +36,7 @@ class _RecentlyState extends State<Recently> {
     return BlocConsumer<RecentlyCubit, RecentlyState>(
       listener: (context, state) {},
       builder: (context, state) {
+          final recentlyCubit = context.read<RecentlyCubit>();
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -79,30 +78,32 @@ class _RecentlyState extends State<Recently> {
               fontSize: width * 0.05,
             ),
           ),
-          body: Skeletonizer(
+          body:state is GetRecentlySucecc&&recentlyCubit.recentlyList.isEmpty?Center(
+                  child: CusttonTitleText(text: "سجل المشاهدة فارغ"),
+                ): Skeletonizer(
             enabled: state is GetRecentlyLoading ? true : false,
             child: CustomScrollView(
               slivers: [
                 SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
-                    final recentlyCubit = context.read<RecentlyCubit>();
+                  
 
-                    if (recentlyCubit.recentlyList.isEmpty) {
-                      return SizedBox();
-                    }
+                    // if (recentlyCubit.recentlyList.isEmpty) {
+                    //   return SizedBox();
+                    // }
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7.0),
                       child: RrcentlyCard(
                         size: MediaQuery.of(context).size,
                         width: width,
                         recentlyModel: state is GetRecentlyLoading
-                            ? damyListCrt[index]
+                            ? damyListRec[index]
                             : context.read<RecentlyCubit>().recentlyList[index],
                       ),
                     );
                   },
                       childCount: state is GetRecentlyLoading
-                          ? damyListCrt.length
+                          ? damyListRec.length
                           : context.read<RecentlyCubit>().recentlyList.length),
                 ),
               ],
@@ -113,7 +114,7 @@ class _RecentlyState extends State<Recently> {
     );
   }
 
-  List<RecentlyModel> damyListCrt = [
+  List<RecentlyModel> damyListRec = [
     RecentlyModel(
       products: ProductModel(
         catrgory: "Apple",
@@ -151,6 +152,78 @@ class _RecentlyState extends State<Recently> {
       ),
     ),
     RecentlyModel(
+      products: ProductModel(
+        catrgory: "Apple",
+        productTitle: "Samsung Galaxy S25 Ultra",
+        listUrlImage: [
+          "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+          "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+          "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+        ],
+        price: "5000",
+      ),
+    ),
+        RecentlyModel(
+      products: ProductModel(
+        catrgory: "Apple",
+        productTitle: "Samsung Galaxy S25 Ultra",
+        listUrlImage: [
+          "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+          "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+          "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+        ],
+        price: "5000",
+      ),
+    ),
+        RecentlyModel(
+      products: ProductModel(
+        catrgory: "Apple",
+        productTitle: "Samsung Galaxy S25 Ultra",
+        listUrlImage: [
+          "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+          "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+          "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+        ],
+        price: "5000",
+      ),
+    ),
+        RecentlyModel(
+      products: ProductModel(
+        catrgory: "Apple",
+        productTitle: "Samsung Galaxy S25 Ultra",
+        listUrlImage: [
+          "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+          "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+          "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+        ],
+        price: "5000",
+      ),
+    ),
+        RecentlyModel(
+      products: ProductModel(
+        catrgory: "Apple",
+        productTitle: "Samsung Galaxy S25 Ultra",
+        listUrlImage: [
+          "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+          "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+          "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+        ],
+        price: "5000",
+      ),
+    ),
+        RecentlyModel(
+      products: ProductModel(
+        catrgory: "Apple",
+        productTitle: "Samsung Galaxy S25 Ultra",
+        listUrlImage: [
+          "https://img.freepik.com/free-psd/flat-design-black-friday-template_23-2149690283.jpg?t=st=1741067825~exp=1741071425~hmac=ee578d9c0a3049a586a3ef81c7c95cd492e6cf8624231d48faa2ee0ceee4b8fa&w=1800",
+          "https://img.freepik.com/free-psd/gradient-social-media-giveaway-landing-page_23-2150871663.jpg?t=st=1741067778~exp=1741071378~hmac=64a1e903e33c6eb9289f44854d21558c992a5e960291862690836ecc36d0bb0f&w=1800",
+          "https://img.freepik.com/free-vector/electronics-store-template-design_23-2151285501.jpg?t=st=1741067719~exp=1741071319~hmac=2222620820b55d335b058c508ca5b52ff04b51b70a72f41ebe6f91200f237c9a&w=1480",
+        ],
+        price: "5000",
+      ),
+    ),
+        RecentlyModel(
       products: ProductModel(
         catrgory: "Apple",
         productTitle: "Samsung Galaxy S25 Ultra",

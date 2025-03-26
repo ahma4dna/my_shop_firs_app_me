@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
-import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/product_home/haert_botton.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProductCard extends StatefulWidget {
   const ProductCard({

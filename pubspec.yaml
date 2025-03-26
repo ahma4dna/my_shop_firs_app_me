@@ -42,7 +42,6 @@ dependencies:
   animated_theme_switcher: ^2.0.10
   #loading
   skeletonizer: ^1.4.3
-  skeleton_loader: ^2.0.0+4
   #state_manegement
   flutter_bloc: ^9.1.0
   bloc: ^9.0.0
@@ -51,6 +50,7 @@ dependencies:
   supabase_flutter: ^2.8.4
   google_sign_in: ^6.3.0
   dio: ^5.8.0+1
+
   
   
 

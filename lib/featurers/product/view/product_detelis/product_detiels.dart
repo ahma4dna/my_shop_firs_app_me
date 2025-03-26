@@ -38,13 +38,14 @@ class _ProductDetielsState extends State<ProductDetiels> {
   ];
   int selctedImage = 0;
   Future<void> fatchDetiels() async {
-    Future.wait({
+    await Future.wait({
       context
           .read<ProductCubit>()
           .getReview(productId: widget.productModel!.productId!),
       context.read<CartCubit>().getCards(),
     });
-    Future.wait({
+    await Future.wait({
+      // ignore: use_build_context_synchronously
       context.read<RecentlyCubit>().addRecently(data: {
         "for_product": widget.productModel!.productId!,
         "for_user": Supabase.instance.client.auth.currentUser!.id,
@@ -72,7 +73,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
           bottomSheet: BlocBuilder<CartCubit, CartState>(
             builder: (context, state) {
               return Skeletonizer(
-                enabled: context.read<ProductCubit>().isLoadingriv,
+                enabled: state is GetReviewLoading ? true : false,
                 child: BottonSeatDetils(
                   onPressed2: () async {},
                   productModel: widget.productModel,
@@ -223,8 +224,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
                             color: Colors.blue[200],
                           ),
                           onRatingUpdate: (rating) async {
-                            setState(() {
-                            });
+                            setState(() {});
                             await navigationToReplace(
                               context: context,
                               page: RatingAndRivew(

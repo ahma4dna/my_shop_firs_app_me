@@ -30,18 +30,22 @@ class _ProductListState extends State<ProductList> {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10), // مسافة بين العناصر
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10), // مسافة بين العناصر
                       child: ProductCard(
-                        // listRiv: context.read<ProductCubit>().reviews,
-                        // reviewModel:  context.read<ProductCubit>().reviews[index],
-                        productModel:state is GetProductLoading ?Constant.damylist[index]:context.read<ProductCubit>().products[index],
+                        productModel: state is GetProductLoading
+                            ? Constant.damylist[index]
+                            : context.read<ProductCubit>().products[index],
                         size: size,
                       ),
                     );
                   },
-                  childCount:state is GetProductLoading ?Constant.damylist.length:
-                      context.read<ProductCubit>().products.length, // عدد العناصر
+                  childCount: state is GetProductLoading
+                      ? Constant.damylist.length
+                      : context
+                          .read<ProductCubit>()
+                          .products
+                          .length, // عدد العناصر
                 ),
               ),
             ],

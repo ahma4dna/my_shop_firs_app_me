@@ -24,10 +24,11 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   Future<void> fatchDataProduct() async {
     try {
-      Future.wait({
+      await Future.wait({
         context.read<ProductCubit>().getProduct(),
       });
-      Future.wait({
+      await Future.wait({
+        // ignore: use_build_context_synchronously
         context.read<ProductCubit>().getLike(),
       });
     } catch (e) {
@@ -35,11 +36,10 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  
   @override
   void initState() {
     fatchDataProduct();
-  
+
     super.initState();
   }
 
@@ -50,90 +50,85 @@ class _HomeViewState extends State<HomeView> {
     return BlocConsumer<ProductCubit, ProductState>(
       listener: (context, state) {},
       builder: (context, state) {
-        return BlocBuilder<SearchCubit, SearchState>(
-          builder: (context, state) {
-            return Scaffold(
-              appBar: AppBar(
-                leading: Icon(
-                  IconlyBold.notification,
-                  size: size.width * 0.08,
-                ),
-                title: FittedBox(
-                  child: CusttonTitleText(
-                    text: "متجري",
-                    fontSize: size.width * 0.06,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                centerTitle: true,
+        return Scaffold(
+          appBar: AppBar(
+            leading: Icon(
+              IconlyBold.notification,
+              size: size.width * 0.08,
+            ),
+            title: FittedBox(
+              child: CusttonTitleText(
+                text: "متجري",
+                fontSize: size.width * 0.06,
+                fontWeight: FontWeight.w600,
               ),
-              body: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Skeletonizer(
-              enabled:     state is GetProductLoading?true:false,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: size.width * 0.05,
-                      ),
-                
-                         slideer(size),
-                      SizedBox(
-                        height: size.width * 0.1,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: Row(
-                          children: [
-                            FittedBox(
-                              child: CusttonTitleText(
-                                text: "مضاف مؤخرأ",
-                                fontSize: size.width * 0.06,
-                              ),
-                            ),
-                            SizedBox(
-                              width: size.width * 0.05,
-                            ),
-                            FittedBox(
-                              child: Icon(
-                                Icons.rocket_launch,
-                                size: size.width * 0.07,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: size.width * 0.06,
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: ProductList()),
-                      SizedBox(
-                        height: size.width * 0.06,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: Row(
-                          children: [
-                            CusttonTitleText(
-                              text: "التصنيفات",
-                              fontSize: size.width * 0.06,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: size.width * 0.03,
-                      ),
-                      CategoryList(size: size)
-                    ],
+            ),
+            centerTitle: true,
+          ),
+          body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Skeletonizer(
+              enabled: state is GetProductLoading ? true : false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: size.width * 0.05,
                   ),
-                ),
+                  slideer(size),
+                  SizedBox(
+                    height: size.width * 0.1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Row(
+                      children: [
+                        FittedBox(
+                          child: CusttonTitleText(
+                            text: "مضاف مؤخرأ",
+                            fontSize: size.width * 0.06,
+                          ),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.05,
+                        ),
+                        FittedBox(
+                          child: Icon(
+                            Icons.rocket_launch,
+                            size: size.width * 0.07,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.width * 0.06,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ProductList()),
+                  SizedBox(
+                    height: size.width * 0.06,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Row(
+                      children: [
+                        CusttonTitleText(
+                          text: "التصنيفات",
+                          fontSize: size.width * 0.06,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.width * 0.03,
+                  ),
+                  CategoryList(size: size)
+                ],
               ),
-            );
-          },
+            ),
+          ),
         );
       },
     );
