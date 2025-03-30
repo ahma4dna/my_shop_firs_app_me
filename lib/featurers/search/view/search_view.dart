@@ -7,6 +7,7 @@ import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
 import 'package:my_shop/featurers/search/cubit/search_cubit.dart';
+import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SearchView extends StatefulWidget {
@@ -18,10 +19,19 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   final TextEditingController controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
   Future<void> getData() async {
-    Future.wait({
+    if (context.read<RootAppCubit>().currentIndex == 2) {
+      context.read<SearchCubit>().clearFilter();
+    }
+
+    await Future.wait([
       context.read<SearchCubit>().getProduct(),
-    });
+    ]);
+    Future.delayed(Duration(milliseconds: 500));
+    _scrollController.animateTo(0,
+        duration: Duration(milliseconds: 500), curve: Curves.easeOut);
   }
 
   @override
@@ -48,92 +58,103 @@ class _SearchViewState extends State<SearchView> {
                 fontSize: width * 0.065,
               ),
             ),
-            body: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Skeletonizer(
-                enabled: state is GetProductSeLoading ? true : false,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: SizedBox(
-                          width: width * 0.95,
-                          height: width * 0.15,
-                          child: CusttomTextFormFeild(
-                            onChanged: (value) async {
-                              cubit.serchByName(name: value);
-                            },
-                            hintStyle: TextStyle(
-                              color: Theme.of(context).iconTheme.color,
-                              fontSize: width * 0.052,
+            body: RefreshIndicator(
+              backgroundColor: Theme.of(context).iconTheme.color,
+              color: Theme.of(context).primaryColor,
+              onRefresh: getData,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: BouncingScrollPhysics(),
+                child: Skeletonizer(
+                  enabled: state is GetProductSeLoading ? true : false,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: SizedBox(
+                            width: width * 0.95,
+                            height: width * 0.15,
+                            child: CusttomTextFormFeild(
+                              onChanged: (value) async {
+                                cubit.serchByName(name: value);
+                              },
+                              hintStyle: TextStyle(
+                                color: Theme.of(context).iconTheme.color,
+                                fontSize: width * 0.052,
+                              ),
+                              prefixIcon: Icon(Icons.search),
+                              controller: controller,
+                              hint: "البحت",
                             ),
-                            prefixIcon: Icon(Icons.search),
-                            controller: controller,
-                            hint: "البحت",
                           ),
                         ),
                       ),
-                    ),
-                    if (cubit.selectedCategory != null ||
-                        cubit.selectedMarka != null) ...[
-                      CleraAllFilter(width: width),
-                      SizedBox(
-                        height: width * 0.02,
-                      ),
-                    ],
-                    SizedBox(
-                      height: width * 0.05,
-                    ),
-                    ListFilterCategory(
-                      width: width,
-                    ),
-                    SizedBox(
-                      height: width * 0.05,
-                    ),
-                    ListFilterPrand(
-                      width: width,
-                    ),
-                    SizedBox(
-                      height: width * 0.05,
-                    ),
-                    CustomScrollView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      slivers: [
-                        Builder(builder: (context) {
-                          List<ProductModel> products;
-                          if (cubit.productsSearchByMarkaAndCat.isNotEmpty) {
-                            products = cubit.productsSearchByMarkaAndCat;
-                          } else if (cubit.productsSearch.isNotEmpty) {
-                            products = cubit.productsSearch;
-                          } else {
-                            products = cubit.products;
-                          }
-
-                          return SliverList(
-                            delegate:
-                                SliverChildBuilderDelegate((context, index) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5), // مسافة بين العناصر
-                                child: SearchWidget(
-                                  width: width,
-                                  productModel:state is GetProductSeLoading?damylist[index]: products[index],
-                                ),
-                              );
-                            }, childCount:state is GetProductSeLoading?damylist.length: products.length // عدد العناصر
-                                    ),
-                          );
-                        }),
+                      if (cubit.selectedCategory != null ||
+                          cubit.selectedMarka != null) ...[
+                        CleraAllFilter(width: width),
+                        SizedBox(
+                          height: width * 0.02,
+                        ),
                       ],
-                    ),
-                    SizedBox(
-                      height: kBottomNavigationBarHeight + width * 0.08,
-                    )
-                  ],
+                      SizedBox(
+                        height: width * 0.05,
+                      ),
+                      ListFilterCategory(
+                        width: width,
+                      ),
+                      SizedBox(
+                        height: width * 0.05,
+                      ),
+                      ListFilterPrand(
+                        width: width,
+                      ),
+                      SizedBox(
+                        height: width * 0.05,
+                      ),
+                      CustomScrollView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        slivers: [
+                          Builder(builder: (context) {
+                            List<ProductModel> products;
+                            if (cubit.productsSearchByMarkaAndCat.isNotEmpty) {
+                              products = cubit.productsSearchByMarkaAndCat;
+                            } else if (cubit.productsSearch.isNotEmpty) {
+                              products = cubit.productsSearch;
+                            } else {
+                              products = cubit.products;
+                            }
+
+                            return SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5), // مسافة بين العناصر
+                                  child: SearchWidget(
+                                    width: width,
+                                    productModel: state is GetProductSeLoading
+                                        ? damylist[index]
+                                        : products[index],
+                                  ),
+                                );
+                              },
+                                  childCount: state is GetProductSeLoading
+                                      ? damylist.length
+                                      : products.length // عدد العناصر
+                                  ),
+                            );
+                          }),
+                        ],
+                      ),
+                      SizedBox(
+                        height: kBottomNavigationBarHeight + width * 0.08,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -154,7 +175,7 @@ class _SearchViewState extends State<SearchView> {
       ],
       price: "5000",
     ),
-      ProductModel(
+    ProductModel(
       catrgory: "Apple",
       productTitle: "Samsung Galaxy S25 Ultra",
       listUrlImage: [
@@ -164,7 +185,7 @@ class _SearchViewState extends State<SearchView> {
       ],
       price: "5000",
     ),
-      ProductModel(
+    ProductModel(
       catrgory: "Apple",
       productTitle: "Samsung Galaxy S25 Ultra",
       listUrlImage: [
@@ -174,7 +195,7 @@ class _SearchViewState extends State<SearchView> {
       ],
       price: "5000",
     ),
-      ProductModel(
+    ProductModel(
       catrgory: "Apple",
       productTitle: "Samsung Galaxy S25 Ultra",
       listUrlImage: [
@@ -184,7 +205,7 @@ class _SearchViewState extends State<SearchView> {
       ],
       price: "5000",
     ),
-      ProductModel(
+    ProductModel(
       catrgory: "Apple",
       productTitle: "Samsung Galaxy S25 Ultra",
       listUrlImage: [
@@ -194,7 +215,7 @@ class _SearchViewState extends State<SearchView> {
       ],
       price: "5000",
     ),
-      ProductModel(
+    ProductModel(
       catrgory: "Apple",
       productTitle: "Samsung Galaxy S25 Ultra",
       listUrlImage: [
@@ -204,7 +225,7 @@ class _SearchViewState extends State<SearchView> {
       ],
       price: "5000",
     ),
-      ProductModel(
+    ProductModel(
       catrgory: "Apple",
       productTitle: "Samsung Galaxy S25 Ultra",
       listUrlImage: [
@@ -214,7 +235,7 @@ class _SearchViewState extends State<SearchView> {
       ],
       price: "5000",
     ),
-      ProductModel(
+    ProductModel(
       catrgory: "Apple",
       productTitle: "Samsung Galaxy S25 Ultra",
       listUrlImage: [
@@ -224,7 +245,7 @@ class _SearchViewState extends State<SearchView> {
       ],
       price: "5000",
     ),
-      ProductModel(
+    ProductModel(
       catrgory: "Apple",
       productTitle: "Samsung Galaxy S25 Ultra",
       listUrlImage: [
@@ -234,7 +255,7 @@ class _SearchViewState extends State<SearchView> {
       ],
       price: "5000",
     ),
-      ProductModel(
+    ProductModel(
       catrgory: "Apple",
       productTitle: "Samsung Galaxy S25 Ultra",
       listUrlImage: [
@@ -244,7 +265,7 @@ class _SearchViewState extends State<SearchView> {
       ],
       price: "5000",
     ),
-      ProductModel(
+    ProductModel(
       catrgory: "Apple",
       productTitle: "Samsung Galaxy S25 Ultra",
       listUrlImage: [
@@ -277,7 +298,12 @@ class SearchWidget extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   child: GestureDetector(
                     onTap: () {
-                      navigationTo(context: context, page: ProductDetiels(productModel: productModel,));
+                      navigationTo(
+                        context: context,
+                        page: ProductDetiels(
+                          productModel: productModel,
+                        ),
+                      );
                     },
                     child: Image.network(
                       width: width * 0.3,

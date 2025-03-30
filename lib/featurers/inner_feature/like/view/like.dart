@@ -20,10 +20,15 @@ class Like extends StatefulWidget {
 }
 
 class _LikeState extends State<Like> {
+  final ScrollController _scrollController = ScrollController();
+
   Future<void> getLike() async {
     await Future.wait({
       context.read<ProductCubit>().getLike(),
     });
+      Future.delayed(Duration(milliseconds: 500));
+    _scrollController.animateTo(0,
+        duration: Duration(milliseconds: 500), curve: Curves.easeOut);
   }
 
   @override
@@ -77,42 +82,54 @@ class _LikeState extends State<Like> {
               fontSize: width * 0.05,
             ),
           ),
-          body:state is GetLikeProductSucecc&&like.isEmpty?Center(
+          body: state is GetLikeProductSucecc && like.isEmpty
+              ? Center(
                   child: CusttonTitleText(text: " المفضلة فارغة"),
-                ): Skeletonizer(
-            enabled: state is GetLikeProductLoading ? true : false,
-            child: CustomScrollView(
-              slivers: [
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      
-                      return  Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 7.0),
-                              child: LikeCard(
-                                productModel: state is GetLikeProductLoading
-                                    ? damyListLike[index].products!
-                                    : context
-                                        .read<ProductCubit>()
-                                        .likes[index]
-                                        .products!,
-                                size: MediaQuery.of(context).size,
-                                width: width,
-                                likeModel: state is GetLikeProductLoading
-                                    ? damyListLike[index]
-                                    : context.read<ProductCubit>().likes[index],
-                              ),
-                            );
-                    },
-                    childCount: state is GetLikeProductLoading
-                        ? damyListLike.length
-                        : context.read<ProductCubit>().likes.length ?? 0,
+                )
+              : Skeletonizer(
+                  enabled: state is GetLikeProductLoading ? true : false,
+                  child: RefreshIndicator(
+                    backgroundColor: Theme.of(context).iconTheme.color,
+                    color: Theme.of(context).primaryColor,
+                    onRefresh: getLike,
+                    child: CustomScrollView(
+                      controller: _scrollController,
+                      physics: BouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics()),
+                      slivers: [
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 7.0),
+                                child: LikeCard(
+                                  productModel: state is GetLikeProductLoading
+                                      ? damyListLike[index].products!
+                                      : context
+                                          .read<ProductCubit>()
+                                          .likes[index]
+                                          .products!,
+                                  size: MediaQuery.of(context).size,
+                                  width: width,
+                                  likeModel: state is GetLikeProductLoading
+                                      ? damyListLike[index]
+                                      : context
+                                          .read<ProductCubit>()
+                                          .likes[index],
+                                ),
+                              );
+                            },
+                            childCount: state is GetLikeProductLoading
+                                ? damyListLike.length
+                                : context.read<ProductCubit>().likes.length ??
+                                    0,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
         );
       },
     );

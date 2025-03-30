@@ -30,62 +30,68 @@ class QuantitySelector extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Theme.of(context).primaryColor,
-              size: withe * 0.05,
-            ),
-            onPressed: () async {
-              cubit.addQuantity(index);
-              cubit.totalPrice();
-              cubit.totalPriceOneProdct(productId: cartModel.forProduct!);
-              await cubit.updateToalProctPrice(data: {
-                "id": cartModel.id,
-                "total_price": cartModel.totalPrice,
-              }, id: cartModel.id!);
-              await cubit.updateQuantity(
-                data: {"id": cartModel.id, "quantiti": cubit.quantity},
-                id: cartModel.id!,
-              );
-              // تحديث العدد حسب index
-            },
-          ),
-          Text(
-            '$quantity',
-            style: TextStyle(
-              color: Theme.of(context).iconTheme.color,
-              fontSize: withe * 0.045,
+          Flexible(
+            child: IconButton(
+              icon: Icon(
+                Icons.add,
+                color: Theme.of(context).primaryColor,
+                size: withe * 0.05,
+              ),
+              onPressed: () async {
+                cubit.addQuantity(index);
+                cubit.totalPrice();
+                cubit.totalPriceOneProdct(productId: cartModel.forProduct!);
+                await cubit.updateToalProctPrice(data: {
+                  "id": cartModel.id,
+                  "total_price": cartModel.totalPrice,
+                }, id: cartModel.id!);
+                await cubit.updateQuantity(
+                  data: {"id": cartModel.id, "quantiti": cubit.quantity},
+                  id: cartModel.id!,
+                );
+                // تحديث العدد حسب index
+              },
             ),
           ),
-          IconButton(
-            icon: Icon(
-              quantity == 1 ? Icons.delete : Icons.remove,
-              color: Theme.of(context).primaryColor,
-              size: withe * 0.05,
+          Flexible(
+            child: Text(
+              '$quantity',
+              style: TextStyle(
+                color: Theme.of(context).iconTheme.color,
+                fontSize: withe * 0.045,
+              ),
             ),
-            onPressed: () async {
-              if (cubit.quantity == 1) {
-                await cubit.removeCards(
-                    id: cartModel.id!,
-                    data: {
-                      "id": cartModel.id,
-                    },
-                    prodctId: cartModel.forProduct!);
-                await cubit.getCards();
-              }
-              cubit.removeQuantity(index);
-              cubit.totalPrice();
-              cubit.totalPriceOneProdct(productId: cartModel.forProduct!);
-              await cubit.updateToalProctPrice(data: {
-                "id": cartModel.id,
-                "total_price": cartModel.totalPrice,
-              }, id: cartModel.id!); // تحديث العدد حسب index
-              await cubit.updateQuantity(
-                data: {"id": cartModel.id, "quantiti": cubit.quantity},
-                id: cartModel.id!,
-              );
-            },
+          ),
+          Flexible(
+            child: IconButton(
+              icon: Icon(
+                quantity == 1 ? Icons.delete : Icons.remove,
+                color: Theme.of(context).primaryColor,
+                size: withe * 0.05,
+              ),
+              onPressed: () async {
+                if (cubit.quantity == 1) {
+                  await cubit.removeCards(
+                      id: cartModel.id!,
+                      data: {
+                        "id": cartModel.id,
+                      },
+                      prodctId: cartModel.forProduct!);
+                  await cubit.getCards();
+                }
+                cubit.removeQuantity(index);
+                cubit.totalPrice();
+                cubit.totalPriceOneProdct(productId: cartModel.forProduct!);
+                await cubit.updateToalProctPrice(data: {
+                  "id": cartModel.id,
+                  "total_price": cartModel.totalPrice,
+                }, id: cartModel.id!); // تحديث العدد حسب index
+                await cubit.updateQuantity(
+                  data: {"id": cartModel.id, "quantiti": cubit.quantity},
+                  id: cartModel.id!,
+                );
+              },
+            ),
           ),
         ],
       ),

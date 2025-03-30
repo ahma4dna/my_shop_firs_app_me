@@ -20,6 +20,7 @@ class LightTheme {
         titleTextStyle: TextStyle(color: Colors.black),
         backgroundColor: AppColor.lightScaffoldColor,
         elevation: 0,
+        surfaceTintColor: Colors.transparent,
       ),
       iconTheme: IconThemeData(color: Colors.black),
 
@@ -29,7 +30,7 @@ class LightTheme {
         surfaceTintColor: Colors.transparent,
         height: kBottomNavigationBarHeight + 25,
         backgroundColor: AppColor.lightScaffoldColor,
-        indicatorColor: Color(0xFFBBDEFB),
+        indicatorColor: Colors.transparent,
         labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
           // ignore: duplicate_ignore
           // ignore: deprecated_member_use
@@ -106,11 +107,11 @@ class DarkTheme {
 
       // تخصيص شريط التطبيق (AppBar)
       appBarTheme: AppBarTheme(
-        iconTheme: IconThemeData(color: AppColor.lightBackgroundColor),
-        titleTextStyle: TextStyle(color: Colors.white),
-        backgroundColor: AppColor.primaryDarkColor,
-        elevation: 0,
-      ),
+          iconTheme: IconThemeData(color: AppColor.lightBackgroundColor),
+          titleTextStyle: TextStyle(color: Colors.white),
+          backgroundColor: AppColor.primaryDarkColor,
+          elevation: 0,
+          surfaceTintColor: Colors.transparent),
       iconTheme: IconThemeData(color: Colors.white),
 
       // تخصيص شريط التنقل (NavigationBar)
@@ -119,7 +120,7 @@ class DarkTheme {
         surfaceTintColor: Colors.transparent,
         height: kBottomNavigationBarHeight + 25,
         backgroundColor: AppColor.primaryDarkColor,
-        indicatorColor: Color(0xFF64B5F6),
+        indicatorColor: Colors.transparent,
         labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
           (Set<MaterialState> states) {
             return TextStyle(

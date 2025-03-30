@@ -21,9 +21,12 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView>
+    with AutomaticKeepAliveClientMixin {
+  final ScrollController _scrollController = ScrollController();
   Future<void> fatchDataProduct() async {
     try {
+      
       await Future.wait({
         context.read<ProductCubit>().getProduct(),
       });
@@ -31,6 +34,9 @@ class _HomeViewState extends State<HomeView> {
         // ignore: use_build_context_synchronously
         context.read<ProductCubit>().getLike(),
       });
+      Future.delayed(Duration(milliseconds: 500));
+      _scrollController.animateTo(0,
+          duration: Duration(milliseconds: 500), curve: Curves.easeOut);
     } catch (e) {
       log(e.toString());
     }
@@ -44,7 +50,10 @@ class _HomeViewState extends State<HomeView> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     Size size = MediaQuery.of(context).size;
 
     return BlocConsumer<ProductCubit, ProductState>(
@@ -65,67 +74,73 @@ class _HomeViewState extends State<HomeView> {
             ),
             centerTitle: true,
           ),
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Skeletonizer(
-              enabled: state is GetProductLoading ? true : false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: size.width * 0.05,
-                  ),
-                  slideer(size),
-                  SizedBox(
-                    height: size.width * 0.1,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: Row(
-                      children: [
-                        FittedBox(
-                          child: CusttonTitleText(
-                            text: "مضاف مؤخرأ",
+          body: RefreshIndicator(
+            backgroundColor: Theme.of(context).iconTheme.color,
+            color: Theme.of(context).primaryColor,
+            onRefresh: fatchDataProduct,
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              physics: BouncingScrollPhysics(),
+              child: Skeletonizer(
+                enabled: state is GetProductLoading ? true : false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: size.width * 0.05,
+                    ),
+                    slideer(size),
+                    SizedBox(
+                      height: size.width * 0.1,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20.0),
+                      child: Row(
+                        children: [
+                          FittedBox(
+                            child: CusttonTitleText(
+                              text: "مضاف مؤخرأ",
+                              fontSize: size.width * 0.06,
+                            ),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.05,
+                          ),
+                          FittedBox(
+                            child: Icon(
+                              Icons.rocket_launch,
+                              size: size.width * 0.07,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.width * 0.06,
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ProductList()),
+                    SizedBox(
+                      height: size.width * 0.06,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20.0),
+                      child: Row(
+                        children: [
+                          CusttonTitleText(
+                            text: "التصنيفات",
                             fontSize: size.width * 0.06,
                           ),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.05,
-                        ),
-                        FittedBox(
-                          child: Icon(
-                            Icons.rocket_launch,
-                            size: size.width * 0.07,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: size.width * 0.06,
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: ProductList()),
-                  SizedBox(
-                    height: size.width * 0.06,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: Row(
-                      children: [
-                        CusttonTitleText(
-                          text: "التصنيفات",
-                          fontSize: size.width * 0.06,
-                        ),
-                      ],
+                    SizedBox(
+                      height: size.width * 0.03,
                     ),
-                  ),
-                  SizedBox(
-                    height: size.width * 0.03,
-                  ),
-                  CategoryList(size: size)
-                ],
+                    CategoryList(size: size)
+                  ],
+                ),
               ),
             ),
           ),
@@ -187,7 +202,12 @@ class CategoryList extends StatelessWidget {
               context
                   .read<SearchCubit>()
                   .selectCategoryHome(CategoryMosel.categryModel[index].text);
-              navigationTo(context: context, page: SearchView());
+              navigationTo(
+                context: context,
+                page: SearchView(
+                  // caegory: CategoryMosel.categryModel[index].text,
+                ),
+              );
             },
             child: CategoryCard(
               size: size,
@@ -196,7 +216,7 @@ class CategoryList extends StatelessWidget {
             ),
           ),
         ),
-        itemCount: 5,
+        itemCount: CategoryMosel.caeoryText.length,
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
       ),

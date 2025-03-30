@@ -23,6 +23,12 @@ class RootAppCubit extends Cubit<RootAppState> {
   ];
 
   int currentIndex = 0;
+  late PageController pageController;
+  PageController get getPageCon => pageController;
+  void setPageControler(PageController pageCon) {
+    pageController = pageCon;
+  }
+
   void changeIndex(int index) {
     currentIndex = index;
     emit(RootAppChangeIndex());

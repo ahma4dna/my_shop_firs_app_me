@@ -6,6 +6,7 @@ import 'package:my_shop/core/text/custton_subtitle_text.dart';
 import 'package:my_shop/core/text/custton_title_text.dart';
 import 'package:my_shop/featurers/search/cubit/search_cubit.dart';
 import 'package:my_shop/featurers/search/view/search_view.dart';
+import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ExplorView extends StatefulWidget {
@@ -25,8 +26,8 @@ class _ExplorViewState extends State<ExplorView>
 
   @override
   void initState() {
-    fatchDataProduct();
     super.initState();
+    fatchDataProduct();
   }
 
   @override
@@ -35,7 +36,8 @@ class _ExplorViewState extends State<ExplorView>
   Widget build(BuildContext context) {
     super.build(context);
     double width = MediaQuery.of(context).size.width;
-    return BlocBuilder<SearchCubit, SearchState>(
+    return BlocConsumer<SearchCubit, SearchState>(
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -80,7 +82,11 @@ class _ExplorViewState extends State<ExplorView>
                         context
                             .read<SearchCubit>()
                             .selectMarkaExplor(PrandModel.prand[index]);
-                        navigationTo(context: context, page: SearchView());
+                        
+                        navigationTo(
+                          context: context,
+                          page: SearchView(),
+                        );
                       },
                       child: Card(
                         child: Column(

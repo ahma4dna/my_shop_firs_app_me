@@ -4,6 +4,7 @@ Future<dynamic> navigationTo(
     {required BuildContext context, required Widget page}) {
   return Navigator.of(context).push(
     PageRouteBuilder(
+      
       pageBuilder: (context, animation, secondaryAnimation) => page,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         var slideIn = Tween(begin: Offset(-1.0, 0.0), end: Offset.zero)

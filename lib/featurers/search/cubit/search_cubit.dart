@@ -40,16 +40,14 @@ class SearchCubit extends Cubit<SearchState> {
         productsSearch.add(element);
       }
     }
-  emit(GetProductSuceccSe());
+    emit(GetProductSuceccSe());
   }
-
-
 
   List<ProductModel> productsSearchByMarkaAndCat = [];
 
   String? selectedCategory;
   String? selectedMarka;
-void selectCategoryHome(String category) {
+  void selectCategoryHome(String category) {
     selectedCategory = null;
     selectedMarka = null;
     selectedCategory = category;
@@ -62,8 +60,8 @@ void selectCategoryHome(String category) {
     selectedMarka = marka;
     filterProducts();
   }
+
   void selectCategory(String category) {
-    
     selectedCategory = category;
     filterProducts();
   }
@@ -84,7 +82,7 @@ void selectCategoryHome(String category) {
       productsSearchByMarkaAndCat =
           products.where((product) => product.marka == selectedMarka).toList();
     } else {
-      productsSearchByMarkaAndCat = products; // عرض كل المنتجات إذا لم يتم اختيار أي فلتر
+      productsSearchByMarkaAndCat = products;
     }
     emit(GetProductSuceccMarkaAndCategory());
   }
@@ -95,12 +93,13 @@ void selectCategoryHome(String category) {
     }).toList();
     emit(GetProductSuceccMarkaAndCategory());
   }
+
   void clearFilter() {
     productsSearchByMarkaAndCat = [];
     productsSearch = [];
     selectedCategory = null;
     selectedMarka = null;
-    
+
     emit(ClearFilter());
   }
 }

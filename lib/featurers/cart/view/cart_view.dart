@@ -19,8 +19,13 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
+      final ScrollController _scrollController = ScrollController();
+
   Future<void> getCards() async {
     await context.read<CartCubit>().getCards();
+      Future.delayed(Duration(milliseconds: 500));
+      _scrollController.animateTo(0,
+          duration: Duration(milliseconds: 500), curve: Curves.easeOut);
   }
 
   @override
@@ -77,43 +82,49 @@ class _CartViewState extends State<CartView> {
                 )
               : Skeletonizer(
                   enabled: state is GetCardsLoading ? true : false,
-                  child: ListView(
-                    physics: BouncingScrollPhysics(),
-                    children: [
-                      CustomScrollView(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        slivers: [
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5),
-                                  child: CartWidget(
-                                    width: width,
-                                    cartModel: state is GetCardsLoading
-                                        ? damyListCrt[index]
-                                        : context
-                                            .read<CartCubit>()
-                                            .cardPurchases[index],
-                                    index: index, // تمرير index لكل عنصر
-                                  ),
-                                );
-                              },
-                              childCount: state is GetCardsLoading
-                                  ? damyListCrt.length
-                                  : context
-                                      .read<CartCubit>()
-                                      .cardPurchases
-                                      .length,
+                  child: RefreshIndicator(
+                        backgroundColor: Theme.of(context).iconTheme.color,
+              color: Theme.of(context).primaryColor,
+                    onRefresh: getCards,
+                    child: ListView(
+                      controller: _scrollController,
+                      physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                      children: [
+                        CustomScrollView(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          slivers: [
+                            SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 5),
+                                    child: CartWidget(
+                                      width: width,
+                                      cartModel: state is GetCardsLoading
+                                          ? damyListCrt[index]
+                                          : context
+                                              .read<CartCubit>()
+                                              .cardPurchases[index],
+                                      index: index, // تمرير index لكل عنصر
+                                    ),
+                                  );
+                                },
+                                childCount: state is GetCardsLoading
+                                    ? damyListCrt.length
+                                    : context
+                                        .read<CartCubit>()
+                                        .cardPurchases
+                                        .length,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: kBottomNavigationBarHeight + width * 0.1,
-                      )
-                    ],
+                          ],
+                        ),
+                        SizedBox(
+                          height: kBottomNavigationBarHeight + width * 0.1,
+                        )
+                      ],
+                    ),
                   ),
                 ),
         );

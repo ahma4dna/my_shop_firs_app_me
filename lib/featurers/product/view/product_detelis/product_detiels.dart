@@ -18,6 +18,7 @@ import 'package:my_shop/featurers/product/view/product_detelis/review/review_car
 import 'package:my_shop/featurers/product/view/product_detelis/review/review_card_me.dart';
 import 'package:my_shop/featurers/product/view/product_home/haert_botton.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -37,6 +38,8 @@ class _ProductDetielsState extends State<ProductDetiels> {
     "https://storage.store.arriadagroup.com/images/products/4660/variants/8389/1822937191671cc8a91ab218.05490775___8b290af9010608bb458a1babb5018259.webp",
   ];
   int selctedImage = 0;
+  final ScrollController _scrollController = ScrollController();
+
   Future<void> fatchDetiels() async {
     await Future.wait({
       context
@@ -51,13 +54,16 @@ class _ProductDetielsState extends State<ProductDetiels> {
         "for_user": Supabase.instance.client.auth.currentUser!.id,
       }, productId: widget.productModel!.productId!)
     });
+
+    Future.delayed(Duration(milliseconds: 500));
+    _scrollController.animateTo(0,
+        duration: Duration(milliseconds: 500), curve: Curves.easeOut);
   }
 
   @override
   void initState() {
-    fatchDetiels();
-
     super.initState();
+    fatchDetiels();
   }
 
   @override
@@ -73,9 +79,17 @@ class _ProductDetielsState extends State<ProductDetiels> {
           bottomSheet: BlocBuilder<CartCubit, CartState>(
             builder: (context, state) {
               return Skeletonizer(
-                enabled: state is GetReviewLoading ? true : false,
+                enabled: state is GetReviewLoading ||
+                        state is GetCardsLoading ||
+                        state is AddRecentlyLoading
+                    ? true
+                    : false,
                 child: BottonSeatDetils(
-                  onPressed2: () async {},
+                  onPressed2: () async {
+                    Navigator.pop(context);
+                    context.read<RootAppCubit>().changeIndex(1);
+                    context.read<RootAppCubit>().getPageCon.jumpToPage(1);
+                  },
                   productModel: widget.productModel,
                   size: size,
                   onPressed: () async {
@@ -114,204 +128,217 @@ class _ProductDetielsState extends State<ProductDetiels> {
             centerTitle: true,
           ),
           body: Skeletonizer(
-            enabled: context.read<ProductCubit>().isLoadingriv,
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: HaertBotton(
-                            productModel: widget.productModel,
-                            size: size,
-                          ),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.01,
-                        ),
-                        Flexible(
-                          flex: 3,
-                          child: FittedBox(
-                            child: CusttonTitleText(
-                              text: widget.productModel?.productTitle ??
-                                  "iPhone 16 Pro Max",
-                              fontSize: size.width * 0.05,
-                              overflow: TextOverflow.clip,
+            enabled: state is GetReviewLoading ||
+                    state is GetCardsLoading ||
+                    state is AddRecentlyLoading
+                ? true
+                : false,
+            child: RefreshIndicator(
+              backgroundColor: Theme.of(context).iconTheme.color,
+              color: Theme.of(context).primaryColor,
+              onRefresh: fatchDetiels,
+              child: ListView(
+                controller: _scrollController,
+                physics: BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: HaertBotton(
+                              productModel: widget.productModel,
+                              size: size,
                             ),
                           ),
+                          SizedBox(
+                            width: size.width * 0.01,
+                          ),
+                          Flexible(
+                            flex: 3,
+                            child: FittedBox(
+                              child: CusttonTitleText(
+                                text: widget.productModel?.productTitle ??
+                                    "iPhone 16 Pro Max",
+                                fontSize: size.width * 0.05,
+                                overflow: TextOverflow.clip,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.width * 0.05,
+                      ),
+                      imageSelct(context, size),
+                      SizedBox(
+                        height: size.width * 0.05,
+                      ),
+                      Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: selectListImage(size)),
+                      SizedBox(
+                        height: size.width * 0.05,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                CusttonTitleText(
+                                  text: "وصف المنتج",
+                                  fontSize: size.width * 0.05,
+                                ),
+                                SizedBox(
+                                  height: size.width * 0.02,
+                                ),
+                                Directionality(
+                                  textDirection: TextDirection.rtl,
+                                  child: CusttonTitleText(
+                                    text:
+                                        widget.productModel?.descripsion ?? "",
+                                    maxLines: 35,
+                                    fontSize: 14,
+                                    color: Theme.of(context).iconTheme.color,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: size.width * 0.05,
+                                ),
+                                FittedBox(
+                                  child: CusttonTitleText(
+                                    text: "قيم المنتج",
+                                    fontSize: size.width * 0.05,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: size.width * 0.05,
+                                ),
+                              ],
+                            ),
+                            RatingWidget1(
+                              size: size,
+                            )
+                          ],
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.width * 0.05,
-                    ),
-                    imageSelct(context, size),
-                    SizedBox(
-                      height: size.width * 0.05,
-                    ),
-                    Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: selectListImage(size)),
-                    SizedBox(
-                      height: size.width * 0.05,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
+                      ),
+                      SizedBox(
+                        height: size.width * 0.05,
+                      ),
+                      Center(
+                        child: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: RatingBar.builder(
+                            initialRating: (cubitMe.rateuser)?.toDouble() ?? 0,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: false,
+                            itemCount: 5,
+                            glowColor: Colors.transparent,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 18.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.blue[200],
+                            ),
+                            onRatingUpdate: (rating) async {
+                              setState(() {});
+                              await navigationToReplace(
+                                context: context,
+                                page: RatingAndRivew(
+                                  riv2: rating.toInt(),
+                                  size: size,
+                                  productModel: widget.productModel,
+                                  initialRating:
+                                      (cubitMe.rateuser)?.toDouble() ?? rating,
+                                  cubitMe: cubitMe,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: size.width * 0.05,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            if (cubitMe.rateuser != null) ...[
                               CusttonTitleText(
-                                text: "وصف المنتج",
+                                text: "مراجعتي",
                                 fontSize: size.width * 0.05,
                               ),
                               SizedBox(
-                                height: size.width * 0.02,
+                                height: size.width * 0.03,
                               ),
-                              Directionality(
-                                textDirection: TextDirection.rtl,
+                              ReviewCardMe(
+                                cubitMe: cubitMe,
+                                size: size,
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  navigationTo(
+                                    context: context,
+                                    page: RatingAndRivew(
+                                      riv2: cubitMe.rateuser,
+                                      size: size,
+                                      productModel: widget.productModel,
+                                      initialRating:
+                                          (cubitMe.rateuser)!.toDouble(),
+                                      cubitMe: cubitMe,
+                                    ),
+                                  );
+                                },
                                 child: CusttonTitleText(
-                                  text: widget.productModel?.descripsion ?? "",
-                                  maxLines: 35,
-                                  fontSize: 14,
-                                  color: Theme.of(context).iconTheme.color,
-                                  fontWeight: FontWeight.w400,
+                                  text: "تعديل المراجعة",
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                               SizedBox(
-                                height: size.width * 0.05,
-                              ),
-                              FittedBox(
-                                child: CusttonTitleText(
-                                  text: "قيم المنتج",
-                                  fontSize: size.width * 0.05,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(
-                                height: size.width * 0.05,
+                                height: size.width * 0.03,
                               ),
                             ],
-                          ),
-                          RatingWidget1(
-                            size: size,
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: size.width * 0.05,
-                    ),
-                    Center(
-                      child: Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: RatingBar.builder(
-                          initialRating: (cubitMe.rateuser)?.toDouble() ?? 0,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: false,
-                          itemCount: 5,
-                          glowColor: Colors.transparent,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 18.0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.blue[200],
-                          ),
-                          onRatingUpdate: (rating) async {
-                            setState(() {});
-                            await navigationToReplace(
-                              context: context,
-                              page: RatingAndRivew(
-                                riv2: rating.toInt(),
-                                size: size,
-                                productModel: widget.productModel,
-                                initialRating:
-                                    (cubitMe.rateuser)?.toDouble() ?? rating,
-                                cubitMe: cubitMe,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: size.width * 0.05,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          if (cubitMe.rateuser != null) ...[
                             CusttonTitleText(
-                              text: "مراجعتي",
+                              text: "باقي المراجعات",
                               fontSize: size.width * 0.05,
                             ),
                             SizedBox(
                               height: size.width * 0.03,
                             ),
-                            ReviewCardMe(
-                              cubitMe: cubitMe,
-                              size: size,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                navigationTo(
-                                  context: context,
-                                  page: RatingAndRivew(
-                                    riv2: cubitMe.rateuser,
-                                    size: size,
-                                    productModel: widget.productModel,
-                                    initialRating:
-                                        (cubitMe.rateuser)!.toDouble(),
-                                    cubitMe: cubitMe,
-                                  ),
-                                );
-                              },
-                              child: CusttonTitleText(
-                                text: "تعديل المراجعة",
-                                color: Theme.of(context).primaryColor,
+                            ListView.builder(
+                              itemBuilder: (context, index) => Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 8.0, left: 5),
+                                child: ReviewCard(
+                                  reviewModel: cubit[index],
+                                  size: size,
+                                  // reviewModel: widget.reviewModel!,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: size.width * 0.03,
+                              itemCount: cubit.length,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                             ),
                           ],
-                          CusttonTitleText(
-                            text: "باقي المراجعات",
-                            fontSize: size.width * 0.05,
-                          ),
-                          SizedBox(
-                            height: size.width * 0.03,
-                          ),
-                          ListView.builder(
-                            itemBuilder: (context, index) => Padding(
-                              padding: const EdgeInsets.only(top: 8.0, left: 5),
-                              child: ReviewCard(
-                                reviewModel: cubit[index],
-                                size: size,
-                                // reviewModel: widget.reviewModel!,
-                              ),
-                            ),
-                            itemCount: cubit.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: kBottomNavigationBarHeight + 70,
-                    ),
-                  ],
-                ),
-              ],
+                      SizedBox(
+                        height: kBottomNavigationBarHeight + 70,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );

@@ -14,8 +14,6 @@ import 'package:my_shop/featurers/inner_feature/recently/view/recently.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../constant/theam/theame.dart';
-
 class SetingView extends StatefulWidget {
   const SetingView({super.key});
 
@@ -23,12 +21,15 @@ class SetingView extends StatefulWidget {
   State<SetingView> createState() => _SetingViewState();
 }
 
-class _SetingViewState extends State<SetingView> {
+class _SetingViewState extends State<SetingView>
+    with AutomaticKeepAliveClientMixin {
   bool valueBool = false;
   bool loading = false;
-
+  @override
+  bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     Size size = MediaQuery.of(context).size;
     return BlocProvider(
       create: (context) {
@@ -174,14 +175,13 @@ class _SetingViewState extends State<SetingView> {
                               icone: Icons.language,
                               onTap: () {
                                 showDilogOkOrCncel(
-                                  context: context,
-                                  textWr: "ستتوفر قريبا",
-                                  fctOk: () {
-                                    Navigator.pop(context);
-                                  },
-                                  isErorr: false,
-                                  textOk: "حسنا"
-                                );
+                                    context: context,
+                                    textWr: "ستتوفر قريبا",
+                                    fctOk: () {
+                                      Navigator.pop(context);
+                                    },
+                                    isErorr: false,
+                                    textOk: "حسنا");
                                 // showModalBottomSheet(
                                 //   shape: RoundedRectangleBorder(
                                 //     borderRadius: BorderRadius.vertical(
@@ -267,15 +267,14 @@ class _SetingViewState extends State<SetingView> {
                               name: "العناوين",
                               icone: IconlyBold.location,
                               onTap: () {
-                                  showDilogOkOrCncel(
-                                  context: context,
-                                  textWr: "ستتوفر قريبا",
-                                  fctOk: () {
-                                    Navigator.pop(context);
-                                  },
-                                  isErorr: false,
-                                  textOk: "حسنا"
-                                );
+                                showDilogOkOrCncel(
+                                    context: context,
+                                    textWr: "ستتوفر قريبا",
+                                    fctOk: () {
+                                      Navigator.pop(context);
+                                    },
+                                    isErorr: false,
+                                    textOk: "حسنا");
                               },
                             ),
                           ],

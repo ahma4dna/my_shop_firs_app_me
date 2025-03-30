@@ -35,19 +35,46 @@ class BottonSeatDetils extends StatelessWidget {
             height: size.width * 0.24,
             child: Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0, left: 5),
-                  child:
-                      cubit.isInCartqe(productId: productModel!.productId ?? "")
-                          ? SizedBox(
-                              width: size.width * 0.7,
-                              child: OutlinedButton(
+                Flexible(
+                  flex: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0, left: 5),
+                    child:
+                        cubit.isInCartqe(productId: productModel!.productId ?? "")
+                            ? SizedBox(
+                                width: size.width * 0.7,
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                  side: BorderSide(width: 2,color: Theme.of(context).primaryColor),
+                                    shape: RoundedRectangleBorder(
+                                  
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: onPressed2,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 8,
+                                      horizontal: size.width * 0.13,
+                                    ),
+                                    child: FittedBox(
+                                      child: CusttonTitleText(
+                                        text: "انتقل الى السله",
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: size.width * 0.05,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : ElevatedButton(
                                 style: ElevatedButton.styleFrom(
+                                  
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-                                onPressed: onPressed2,
+                                onPressed: onPressed,
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(
                                     vertical: 8,
@@ -55,35 +82,14 @@ class BottonSeatDetils extends StatelessWidget {
                                   ),
                                   child: FittedBox(
                                     child: CusttonTitleText(
-                                      text: " تمت الاضافة الى السلة",
+                                      text: "إضافة الى السلة",
                                       color: Theme.of(context).iconTheme.color,
                                       fontSize: size.width * 0.05,
                                     ),
                                   ),
                                 ),
                               ),
-                            )
-                          : ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              onPressed: onPressed,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: size.width * 0.13,
-                                ),
-                                child: FittedBox(
-                                  child: CusttonTitleText(
-                                    text: "إضافة الى السلة",
-                                    color: Theme.of(context).iconTheme.color,
-                                    fontSize: size.width * 0.05,
-                                  ),
-                                ),
-                              ),
-                            ),
+                  ),
                 ),
                 SizedBox(
                   width: size.width * 0.02,

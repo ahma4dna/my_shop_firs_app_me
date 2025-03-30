@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/featurers/auth/cubit/auth_cubit.dart';
 import 'package:my_shop/featurers/auth/view/login_form.dart';
 import 'package:my_shop/featurers/auth/view/sign_up_form.dart';
+import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:my_shop/root/root_screen.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -22,17 +23,14 @@ class _AuthScreenState extends State<AuthScreen> {
     double withe = MediaQuery.of(context).size.width;
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is LoginGoogleSucces ||
-            state is LoginSucces ||
-            state is SignUpSucces) {
-          // تعديل التوجيه بعد تسجيل الدخول عبر Google
+      if (state is LoginGoogleSucces || state is LoginSucces || state is SignUpSucces) {
+          final rootCubit = context.read<RootAppCubit>();
+          rootCubit.changeIndex(0); // تعيين الصفحة الافتراضية إلى "الرئيسية"
+
           WidgetsBinding.instance.addPostFrameCallback((_) async {
-            // استخدام Navigator.pushReplacement مع التوجيه الصحيح
             await Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) => RootScreen()), // الصفحة الرئيسية
-              // إزالة جميع الصفحات السابقة
+              MaterialPageRoute(builder: (context) => RootScreen()),
             );
           });
         }

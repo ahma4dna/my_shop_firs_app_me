@@ -19,8 +19,13 @@ class Recently extends StatefulWidget {
 }
 
 class _RecentlyState extends State<Recently> {
+  final ScrollController _scrollController = ScrollController();
+
   Future<void> getRec() async {
     await context.read<RecentlyCubit>().getRecently();
+    Future.delayed(Duration(milliseconds: 500));
+    _scrollController.animateTo(0,
+        duration: Duration(milliseconds: 500), curve: Curves.easeOut);
   }
 
   @override
@@ -36,7 +41,7 @@ class _RecentlyState extends State<Recently> {
     return BlocConsumer<RecentlyCubit, RecentlyState>(
       listener: (context, state) {},
       builder: (context, state) {
-          final recentlyCubit = context.read<RecentlyCubit>();
+        final recentlyCubit = context.read<RecentlyCubit>();
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -78,37 +83,52 @@ class _RecentlyState extends State<Recently> {
               fontSize: width * 0.05,
             ),
           ),
-          body:state is GetRecentlySucecc&&recentlyCubit.recentlyList.isEmpty?Center(
+          body: state is GetRecentlySucecc && recentlyCubit.recentlyList.isEmpty
+              ? Center(
                   child: CusttonTitleText(text: "سجل المشاهدة فارغ"),
-                ): Skeletonizer(
-            enabled: state is GetRecentlyLoading ? true : false,
-            child: CustomScrollView(
-              slivers: [
-                SliverList(
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                  
-
-                    // if (recentlyCubit.recentlyList.isEmpty) {
-                    //   return SizedBox();
-                    // }
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 7.0),
-                      child: RrcentlyCard(
-                        size: MediaQuery.of(context).size,
-                        width: width,
-                        recentlyModel: state is GetRecentlyLoading
-                            ? damyListRec[index]
-                            : context.read<RecentlyCubit>().recentlyList[index],
-                      ),
-                    );
-                  },
-                      childCount: state is GetRecentlyLoading
-                          ? damyListRec.length
-                          : context.read<RecentlyCubit>().recentlyList.length),
+                )
+              : Skeletonizer(
+                  enabled: state is GetRecentlyLoading ? true : false,
+                  child: RefreshIndicator(
+                    onRefresh: getRec,
+                    backgroundColor: Theme.of(context).iconTheme.color,
+                    color: Theme.of(context).primaryColor,
+                    child: CustomScrollView(
+                      controller: _scrollController,
+                      physics: BouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics()),
+                      slivers: [
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                            // if (recentlyCubit.recentlyList.isEmpty) {
+                            //   return SizedBox();
+                            // }
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 7.0),
+                              child: RrcentlyCard(
+                                size: MediaQuery.of(context).size,
+                                width: width,
+                                recentlyModel: state is GetRecentlyLoading
+                                    ? damyListRec[index]
+                                    : context
+                                        .read<RecentlyCubit>()
+                                        .recentlyList[index],
+                              ),
+                            );
+                          },
+                              childCount: state is GetRecentlyLoading
+                                  ? damyListRec.length
+                                  : context
+                                      .read<RecentlyCubit>()
+                                      .recentlyList
+                                      .length),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
-            ),
-          ),
         );
       },
     );
@@ -163,7 +183,7 @@ class _RecentlyState extends State<Recently> {
         price: "5000",
       ),
     ),
-        RecentlyModel(
+    RecentlyModel(
       products: ProductModel(
         catrgory: "Apple",
         productTitle: "Samsung Galaxy S25 Ultra",
@@ -175,7 +195,7 @@ class _RecentlyState extends State<Recently> {
         price: "5000",
       ),
     ),
-        RecentlyModel(
+    RecentlyModel(
       products: ProductModel(
         catrgory: "Apple",
         productTitle: "Samsung Galaxy S25 Ultra",
@@ -187,7 +207,7 @@ class _RecentlyState extends State<Recently> {
         price: "5000",
       ),
     ),
-        RecentlyModel(
+    RecentlyModel(
       products: ProductModel(
         catrgory: "Apple",
         productTitle: "Samsung Galaxy S25 Ultra",
@@ -199,7 +219,7 @@ class _RecentlyState extends State<Recently> {
         price: "5000",
       ),
     ),
-        RecentlyModel(
+    RecentlyModel(
       products: ProductModel(
         catrgory: "Apple",
         productTitle: "Samsung Galaxy S25 Ultra",
@@ -211,7 +231,7 @@ class _RecentlyState extends State<Recently> {
         price: "5000",
       ),
     ),
-        RecentlyModel(
+    RecentlyModel(
       products: ProductModel(
         catrgory: "Apple",
         productTitle: "Samsung Galaxy S25 Ultra",
@@ -223,7 +243,7 @@ class _RecentlyState extends State<Recently> {
         price: "5000",
       ),
     ),
-        RecentlyModel(
+    RecentlyModel(
       products: ProductModel(
         catrgory: "Apple",
         productTitle: "Samsung Galaxy S25 Ultra",
