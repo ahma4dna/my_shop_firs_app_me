@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_shop/core/text/custton_subtitle_text.dart';
+import 'package:my_shop/core/compnds/text/custton_subtitle_text.dart';
 import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
 
 class CheakBottonSheat extends StatelessWidget {

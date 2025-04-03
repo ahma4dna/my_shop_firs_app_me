@@ -1,0 +1,2 @@
+C:/Users/ahma4/VscodeProjects/my_shop/android/app/.cxx/Debug/63z2h5h2/x86/CMakeFiles/edit_cache.dir
+C:/Users/ahma4/VscodeProjects/my_shop/android/app/.cxx/Debug/63z2h5h2/x86/CMakeFiles/rebuild_cache.dir

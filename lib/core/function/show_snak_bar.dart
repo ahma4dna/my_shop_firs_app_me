@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/core/compnds/text/custton_title_text.dart';
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnakBar(
     BuildContext context, String text) {

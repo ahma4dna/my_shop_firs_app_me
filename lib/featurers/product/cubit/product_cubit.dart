@@ -206,6 +206,7 @@ class ProductCubit extends Cubit<ProductState> {
       required Map<String, dynamic> dataMap}) async {
     emit(PostLikeProductLoading());
     try {
+      // ignore: unused_local_variable
       final data = await _apiDio.postData(
         path:
             "like_table?for_user=eq.${Supabase.instance.client.auth.currentUser!.id}&for_product=eq.$productId",
@@ -223,6 +224,7 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> unLike({required String productId}) async {
     emit(UnLikeProductLoading());
     try {
+      // ignore: unused_local_variable
       final data = await _apiDio.delatAll(
         path:
             "like_table?for_user=eq.${Supabase.instance.client.auth.currentUser!.id}&for_product=eq.$productId",
@@ -239,6 +241,7 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> unLikeAll() async {
     emit(UnLikeAllProductLoading());
     try {
+      // ignore: unused_local_variable
       final data = await _apiDio.delatAll(
         path:
             "like_table?for_user=eq.${Supabase.instance.client.auth.currentUser!.id}",

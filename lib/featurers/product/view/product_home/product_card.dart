@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
-import 'package:my_shop/core/text/custton_subtitle_text.dart';
-import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/core/compnds/text/custton_subtitle_text.dart';
+import 'package:my_shop/core/compnds/text/custton_title_text.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/product_home/haert_botton.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';

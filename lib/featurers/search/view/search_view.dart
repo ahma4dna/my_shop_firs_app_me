@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/core/compnds/custtom_text_form_feild.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
-import 'package:my_shop/core/text/custton_subtitle_text.dart';
+import 'package:my_shop/core/compnds/text/custton_subtitle_text.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
 import 'package:my_shop/featurers/search/cubit/search_cubit.dart';

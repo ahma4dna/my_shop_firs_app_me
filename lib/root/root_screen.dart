@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
-import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/core/compnds/text/custton_title_text.dart';
 import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
 
 import 'package:my_shop/root/cubit/root_app_cubit.dart';

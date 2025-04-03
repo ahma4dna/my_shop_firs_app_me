@@ -71,7 +71,9 @@ class MyApp extends StatelessWidget {
           ThemeMode themeMode = ThemeMode.system;
 
           return AnimatedTheme(
-            duration: Duration(milliseconds: 300),
+            duration: Duration(
+              milliseconds: 300,
+            ),
             data: themeMode == ThemeMode.dark
                 ? DarkTheme.themeData(context)
                 : LightTheme.themeData(context),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:my_shop/core/compnds/custtom_text_form_feild.dart';
-import 'package:my_shop/core/text/custton_subtitle_text.dart';
+import 'package:my_shop/core/compnds/text/custton_subtitle_text.dart';
 import 'package:my_shop/featurers/auth/cubit/auth_cubit.dart';
 import 'package:my_shop/featurers/auth/view/google_botton_signin.dart';
 

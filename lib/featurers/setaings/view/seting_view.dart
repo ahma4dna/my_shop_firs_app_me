@@ -4,8 +4,8 @@ import 'package:iconly/iconly.dart';
 import 'package:my_shop/core/function/my_dilog.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 
-import 'package:my_shop/core/text/custton_subtitle_text.dart';
-import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/core/compnds/text/custton_subtitle_text.dart';
+import 'package:my_shop/core/compnds/text/custton_title_text.dart';
 import 'package:my_shop/featurers/auth/cubit/auth_cubit.dart';
 import 'package:my_shop/featurers/auth/view/auth_view.dart';
 import 'package:my_shop/featurers/inner_feature/like/view/like.dart';

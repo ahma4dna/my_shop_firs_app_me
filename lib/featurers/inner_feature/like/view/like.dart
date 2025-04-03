@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:my_shop/core/function/my_dilog.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
-import 'package:my_shop/core/text/custton_subtitle_text.dart';
-import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/core/compnds/text/custton_subtitle_text.dart';
+import 'package:my_shop/core/compnds/text/custton_title_text.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/featurers/product/model/like_model/like_model.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
@@ -60,6 +60,7 @@ class _LikeState extends State<Like> {
                         textWr: "هل تريد حدف المفضلة",
                         fctOk: () async {
                           await context.read<ProductCubit>().unLikeAll();
+                          // ignore: use_build_context_synchronously
                           Navigator.pop(context);
                         },
                       );
@@ -122,8 +123,7 @@ class _LikeState extends State<Like> {
                             },
                             childCount: state is GetLikeProductLoading
                                 ? damyListLike.length
-                                : context.read<ProductCubit>().likes.length ??
-                                    0,
+                                : context.read<ProductCubit>().likes.length,
                           ),
                         ),
                       ],

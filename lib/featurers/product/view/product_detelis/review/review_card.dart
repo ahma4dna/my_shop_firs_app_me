@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:my_shop/core/function/my_expandable_text.dart';
-import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/core/compnds/text/custton_title_text.dart';
 import 'package:my_shop/featurers/product/model/review_model/review_model.dart';
 
 class ReviewCard extends StatelessWidget {

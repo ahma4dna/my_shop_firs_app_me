@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/function/naviation_to_replace.dart';
-import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/core/compnds/text/custton_title_text.dart';
 import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
 import 'package:my_shop/featurers/inner_feature/recently/cubit/recently_cubit.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';

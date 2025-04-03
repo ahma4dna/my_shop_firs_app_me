@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/core/compnds/text/custton_title_text.dart';
 import 'package:my_shop/featurers/cart/view/cart_view.dart';
 import 'package:my_shop/featurers/explor/view/explor_view.dart';
 import 'package:my_shop/featurers/home/view/home_view.dart';

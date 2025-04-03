@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
-import 'package:my_shop/core/text/custton_subtitle_text.dart';
-import 'package:my_shop/core/text/custton_title_text.dart';
+import 'package:my_shop/core/compnds/text/custton_subtitle_text.dart';
+import 'package:my_shop/core/compnds/text/custton_title_text.dart';
 import 'package:my_shop/featurers/search/cubit/search_cubit.dart';
 import 'package:my_shop/featurers/search/view/search_view.dart';
-import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ExplorView extends StatefulWidget {
