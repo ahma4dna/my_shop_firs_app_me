@@ -38,7 +38,20 @@ class _ProductDetielsState extends State<ProductDetiels> {
     "https://storage.store.arriadagroup.com/images/products/4660/variants/8389/1822937191671cc8a91ab218.05490775___8b290af9010608bb458a1babb5018259.webp",
   ];
   int selctedImage = 0;
+  Timer? timer;
   final ScrollController _scrollController = ScrollController();
+  void starAutoImageSelct() {
+   timer= Timer.periodic(
+    
+      Duration(seconds: 3),
+      (timer) {
+        setState(() {
+          
+          selctedImage = (selctedImage + 1)%widget.productModel!.listUrlImage!.length;
+        });
+      },
+    );
+  }
 
   Future<void> fatchDetiels() async {
     await Future.wait({
@@ -54,14 +67,13 @@ class _ProductDetielsState extends State<ProductDetiels> {
         "for_user": Supabase.instance.client.auth.currentUser!.id,
       }, productId: widget.productModel!.productId!)
     });
-
-  
   }
 
   @override
   void initState() {
     super.initState();
     fatchDetiels();
+    starAutoImageSelct();
   }
 
   @override
@@ -84,7 +96,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
                     : false,
                 child: BottonSeatDetils(
                   onPressed2: () async {
-                  navigationTo(context: context, page: CartView());
+                    navigationTo(context: context, page: CartView());
                   },
                   productModel: widget.productModel,
                   size: size,
@@ -381,9 +393,11 @@ class _ProductDetielsState extends State<ProductDetiels> {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: GestureDetector(
             onTap: () {
+              timer?.cancel();
               setState(() {
                 selctedImage = index;
               });
+              
             },
             child: Stack(
               children: [
