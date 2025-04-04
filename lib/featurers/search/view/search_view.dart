@@ -29,9 +29,7 @@ class _SearchViewState extends State<SearchView> {
     await Future.wait([
       context.read<SearchCubit>().getProduct(),
     ]);
-    Future.delayed(Duration(milliseconds: 500));
-    _scrollController.animateTo(0,
-        duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+   
   }
 
   @override
@@ -64,7 +62,7 @@ class _SearchViewState extends State<SearchView> {
               onRefresh: getData,
               child: SingleChildScrollView(
                 controller: _scrollController,
-                physics: BouncingScrollPhysics(),
+                physics: BouncingScrollPhysics( parent: AlwaysScrollableScrollPhysics()),
                 child: Skeletonizer(
                   enabled: state is GetProductSeLoading ? true : false,
                   child: Column(

@@ -1,12 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:iconly/iconly.dart';
-import 'package:my_shop/core/compnds/text/custton_title_text.dart';
-import 'package:my_shop/featurers/cart/view/cart_view.dart';
 import 'package:my_shop/featurers/explor/view/explor_view.dart';
 import 'package:my_shop/featurers/home/view/home_view.dart';
 import 'package:my_shop/featurers/search/view/search_view.dart';
 import 'package:my_shop/featurers/setaings/view/seting_view.dart';
+import 'package:rive_animated_icon/rive_animated_icon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 part 'root_app_state.dart';
 
@@ -16,12 +14,17 @@ class RootAppCubit extends Cubit<RootAppState> {
   RootAppCubit() : super(RootAppInitial());
   List<Widget> pages = [
     HomeView(),
-    CartView(),
     SearchView(),
     ExplorView(),
     SetingView(),
   ];
-
+List<RiveIcon>icon=[
+  RiveIcon.home2,
+  RiveIcon.unlock,
+  RiveIcon.search,
+  RiveIcon.dislike,
+  RiveIcon.profile,
+];
   int currentIndex = 0;
   late PageController pageController;
   PageController get getPageCon => pageController;
@@ -34,39 +37,7 @@ class RootAppCubit extends Cubit<RootAppState> {
     emit(RootAppChangeIndex());
   }
 
-  List<NavigationDestination> destinations = [
-    NavigationDestination(
-      icon: Icon(IconlyLight.home),
-      label: "الرئيسية",
-      selectedIcon: Icon(IconlyBold.home),
-    ),
-    NavigationDestination(
-      icon: Badge(
-          backgroundColor: Colors.red,
-          label: CusttonTitleText(
-            text: "3",
-            fontSize: 12,
-          ),
-          child: Icon(IconlyLight.bag_2)),
-      label: "السلة",
-      selectedIcon: Icon(IconlyBold.bag_2),
-    ),
-    NavigationDestination(
-      icon: Icon(IconlyLight.search),
-      label: "البحث",
-      selectedIcon: Icon(IconlyBold.search),
-    ),
-    NavigationDestination(
-      icon: Icon(IconlyLight.discovery),
-      label: "استكشاف",
-      selectedIcon: Icon(IconlyBold.discovery),
-    ),
-    NavigationDestination(
-      icon: Icon(IconlyLight.profile),
-      label: "حسابي",
-      selectedIcon: Icon(IconlyBold.profile),
-    ),
-  ];
+  
 
   AppThemeMode themeMode = AppThemeMode.system; // الوضع الافتراضي
 

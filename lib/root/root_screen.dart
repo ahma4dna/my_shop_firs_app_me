@@ -1,86 +1,139 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:iconly/iconly.dart';
-import 'package:my_shop/core/compnds/text/custton_title_text.dart';
-import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
-
+import 'package:my_shop/constant/theam/theame.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 
-class RootScreen extends StatelessWidget {
+class RootScreen extends StatefulWidget {
   static const String routName = "RootScreen";
-  RootScreen({super.key});
+
+  const RootScreen({super.key});
+
+  @override
+  State<RootScreen> createState() => _RootScreenState();
+}
+
+class _RootScreenState extends State<RootScreen> {
+   int selctIcon = 0;
   final PageController pageController = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
-    double withe = MediaQuery.of(context).size.width;
+    // ignore: unused_local_variable
+    double width = MediaQuery.of(context).size.width;
+
     return BlocConsumer<RootAppCubit, RootAppState>(
       listener: (context, state) {},
       builder: (context, state) {
+       
         final cubit = context.read<RootAppCubit>();
-        cubit.setPageControler(pageController);
-        return BlocBuilder<CartCubit, CartState>(
-          builder: (context, state) {
-            final cartCubit = context.read<CartCubit>();
-            return Directionality(
+        // cubit.setPageControler(pageController);
+
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
+            extendBody: true,
+            body: PageView(
+              controller: pageController,
+              physics: NeverScrollableScrollPhysics(),
+              children: cubit.pages,
+            ),
+            bottomNavigationBar: Directionality(
               textDirection: TextDirection.rtl,
-              child: Scaffold(
-                body: PageView(
-                  controller: pageController,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: cubit.pages,
-                ),
-                bottomNavigationBar: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: NavigationBar(
-                    selectedIndex: cubit.currentIndex,
-                    onDestinationSelected: (value) {
-                      cubit.changeIndex(value);
-                      pageController.jumpToPage(value);
-                    },
-                    destinations: [
-                      NavigationDestination(
-                        icon: Icon(IconlyLight.home),
-                        label: "الرئيسية",
-                        selectedIcon: Icon(IconlyBold.home),
+              child: SafeArea(
+                child: SizedBox(
+                  child: Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 15.w),
+                    child: Container(
+                      height: 200.h,
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(vertical: 85.h),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(90.r)),
+                          color: Theme.of(context).primaryColorDark,
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0, 20),
+                              // ignore: deprecated_member_use
+                              color: AppColor.darkCardColor,
+                              blurRadius: 45,
+                            )
+                          ]),
+                      child: Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 50.0.w),
+                        child: GNav(
+                          selectedIndex: cubit.currentIndex,
+                          onTabChange: (value) {
+                            setState(() {
+                              selctIcon = value;
+                            });
+              
+                            cubit.changeIndex(value);
+                            pageController.jumpToPage(value);
+                          },
+                          haptic: false, // haptic feedback
+                          tabBorderRadius: 35.r, // tab button border
+                          curve: Curves.linear, // tab animation curves
+                          duration:
+                              Duration(milliseconds: 100), // tab animation duration
+                          gap: 10.w, // the tab button gap between icon and text
+                          color: Colors.white, // unselected icon color
+                          activeColor: Colors.blue,
+                          // selected icon and text color
+                          iconSize: 60.r, // tab button icon size
+                          tabBackgroundColor:
+                              Colors.blue[100]!, // selected tab background color
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 0.05.sw,
+                            vertical: 0.03.sw,
+                          ), // navigation bar padding
+                          tabs: [
+                            GButton(
+                              iconSize: 80.r,
+                              icon: selctIcon == 0
+                                  ? IconlyBold.home
+                                  : IconlyLight.home,
+                              text: 'الرئيسية',
+                            ),
+                            GButton(
+                              iconSize: 80.r,
+                              icon: selctIcon == 1
+                                  ? IconlyBold.search
+                                  : IconlyLight.search,
+                              text: 'البحث',
+                            ),
+                            GButton(
+                              iconSize: 80.r,
+                              icon:  selctIcon == 2
+                                  ? IconlyBold.discovery
+                                  : IconlyLight.discovery,
+                              text: 'استكشاف',
+                            ),
+                            GButton(
+                              iconSize: 80.r,
+                              icon:  selctIcon == 3
+                                  ? IconlyBold.profile
+                                  : IconlyLight.profile,
+                              text: 'حسابي',
+                            ),
+                          ],
+                        ),
                       ),
-                      NavigationDestination(
-                        icon: cartCubit.cardPurchases.isNotEmpty
-                            ? Badge(
-                                backgroundColor: Colors.red,
-                                label: CusttonTitleText(
-                                  text:
-                                      cartCubit.cardPurchases.length.toString(),
-                                  fontSize: withe * 0.03,
-                                ),
-                                child: Icon(IconlyLight.bag_2))
-                            : Icon(IconlyLight.bag_2),
-                        label: "السلة",
-                        selectedIcon: Icon(IconlyBold.bag_2),
-                      ),
-                      NavigationDestination(
-                        icon: Icon(IconlyLight.search),
-                        label: "البحث",
-                        selectedIcon: Icon(IconlyBold.search),
-                      ),
-                      NavigationDestination(
-                        icon: Icon(IconlyLight.discovery),
-                        label: "استكشاف",
-                        selectedIcon: Icon(IconlyBold.discovery),
-                      ),
-                      NavigationDestination(
-                        icon: Icon(IconlyLight.profile),
-                        label: "حسابي",
-                        selectedIcon: Icon(IconlyBold.profile),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            );
-          },
+            ),
+          ),
         );
       },
     );
   }
 }
+
+
+
+

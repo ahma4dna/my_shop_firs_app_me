@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_shop/constant/bloc_obsorvr.dart';
 import 'package:my_shop/constant/theam/theame.dart';
 import 'package:my_shop/featurers/auth/cubit/auth_cubit.dart';
@@ -77,26 +78,31 @@ class MyApp extends StatelessWidget {
             data: themeMode == ThemeMode.dark
                 ? DarkTheme.themeData(context)
                 : LightTheme.themeData(context),
-            child: MaterialApp(
-              themeMode:
-                  context.watch<RootAppCubit>().themeMode == AppThemeMode.dark
-                      ? ThemeMode.dark
-                      : context.watch<RootAppCubit>().themeMode ==
-                              AppThemeMode.light
-                          ? ThemeMode.light
-                          : ThemeMode.system,
-              theme: LightTheme.themeData(context),
-              darkTheme: DarkTheme.themeData(context),
-              debugShowCheckedModeBanner: false,
-              home: user != null
-                  ? Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: RootScreen(),
-                    )
-                  : Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: AuthScreen(),
-                    ),
+            child: ScreenUtilInit(
+              designSize: const Size(1220, 2712), // دقة شاشة Poco X6 Pro
+              minTextAdapt: true,
+              splitScreenMode: true,
+              child: MaterialApp(
+                themeMode:
+                    context.watch<RootAppCubit>().themeMode == AppThemeMode.dark
+                        ? ThemeMode.dark
+                        : context.watch<RootAppCubit>().themeMode ==
+                                AppThemeMode.light
+                            ? ThemeMode.light
+                            : ThemeMode.system,
+                theme: LightTheme.themeData(context),
+                darkTheme: DarkTheme.themeData(context),
+                debugShowCheckedModeBanner: false,
+                home: user != null
+                    ? Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: RootScreen(),
+                      )
+                    : Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: AuthScreen(),
+                      ),
+              ),
             ),
           );
         },

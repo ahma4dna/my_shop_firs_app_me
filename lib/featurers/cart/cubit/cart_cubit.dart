@@ -172,10 +172,12 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void removeQuantity(int index) {
+  if (index != -1 && index >= 0 && index < cardPurchases.length) {
     if (cardPurchases[index].quantiti! > 1) {
-      quantity =
-          cardPurchases[index].quantiti = cardPurchases[index].quantiti! - 1;
+      quantity = cardPurchases[index].quantiti = cardPurchases[index].quantiti! - 1;
       emit(RemoveQuantity());
     }
   }
+}
+
 }

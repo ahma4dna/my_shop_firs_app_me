@@ -23,9 +23,7 @@ class _CartViewState extends State<CartView> {
 
   Future<void> getCards() async {
     await context.read<CartCubit>().getCards();
-      Future.delayed(Duration(milliseconds: 500));
-      _scrollController.animateTo(0,
-          duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+      
   }
 
   @override
@@ -43,90 +41,93 @@ class _CartViewState extends State<CartView> {
       builder: (context, state) {
         final cubit = context.read<CartCubit>();
 
-        return Scaffold(
-          bottomSheet: context.read<CartCubit>().cardPurchases.isEmpty
-              ? null
-              : CheakBottonSheat(width: width),
-          appBar: AppBar(
-            centerTitle: true,
-            title: CusttonSubtitleText(
-              text: "السله",
-              fontSize: width * 0.065,
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
+            bottomSheet: context.read<CartCubit>().cardPurchases.isEmpty
+                ? null
+                : CheakBottonSheat(width: width),
+            appBar: AppBar(
+              centerTitle: true,
+              title: CusttonSubtitleText(
+                text: "السله",
+                fontSize: width * 0.065,
+              ),
+              actions: [
+                cubit.cardPurchases.isNotEmpty
+                    ? IconButton(
+                        onPressed: () async {
+                          showDilogOkOrCncel(
+                            context: context,
+                            textWr: "هل تريد حدف السله",
+                            isErorr: true,
+                            fctOk: () async {
+                              await cubit.removeAllCards();
+                              await cubit.getCards();
+                              // ignore: use_build_context_synchronously
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                        icon: Icon(IconlyBold.delete),
+                        color: Colors.red,
+                      )
+                    : SizedBox(),
+              ],
             ),
-            actions: [
-              cubit.cardPurchases.isNotEmpty
-                  ? IconButton(
-                      onPressed: () async {
-                        showDilogOkOrCncel(
-                          context: context,
-                          textWr: "هل تريد حدف السله",
-                          isErorr: true,
-                          fctOk: () async {
-                            await cubit.removeAllCards();
-                            await cubit.getCards();
-                            // ignore: use_build_context_synchronously
-                            Navigator.pop(context);
-                          },
-                        );
-                      },
-                      icon: Icon(IconlyBold.delete),
-                      color: Colors.red,
-                    )
-                  : SizedBox(),
-            ],
-          ),
-          body: state is GetCardsSucecc &&
-                  context.read<CartCubit>().cardPurchases.isEmpty
-              ? Center(
-                  child: CusttonTitleText(text: "السله فارغة"),
-                )
-              : Skeletonizer(
-                  enabled: state is GetCardsLoading ? true : false,
-                  child: RefreshIndicator(
-                        backgroundColor: Theme.of(context).iconTheme.color,
-              color: Theme.of(context).primaryColor,
-                    onRefresh: getCards,
-                    child: ListView(
-                      controller: _scrollController,
-                      physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                      children: [
-                        CustomScrollView(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          slivers: [
-                            SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  return Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 5),
-                                    child: CartWidget(
-                                      width: width,
-                                      cartModel: state is GetCardsLoading
-                                          ? damyListCrt[index]
-                                          : context
-                                              .read<CartCubit>()
-                                              .cardPurchases[index],
-                                      index: index, // تمرير index لكل عنصر
-                                    ),
-                                  );
-                                },
-                                childCount: state is GetCardsLoading
-                                    ? damyListCrt.length
-                                    : context
-                                        .read<CartCubit>()
-                                        .cardPurchases
-                                        .length,
+            body: state is GetCardsSucecc &&
+                    context.read<CartCubit>().cardPurchases.isEmpty
+                ? Center(
+                    child: CusttonTitleText(text: "السله فارغة"),
+                  )
+                : Skeletonizer(
+                    enabled: state is GetCardsLoading ? true : false,
+                    child: RefreshIndicator(
+                          backgroundColor: Theme.of(context).iconTheme.color,
+                color: Theme.of(context).primaryColor,
+                      onRefresh: getCards,
+                      child: ListView(
+                        controller: _scrollController,
+                        physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                        children: [
+                          CustomScrollView(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            slivers: [
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    return Padding(
+                                      padding: EdgeInsets.symmetric(vertical: 5),
+                                      child: CartWidget(
+                                        width: width,
+                                        cartModel: state is GetCardsLoading
+                                            ? damyListCrt[index]
+                                            : context
+                                                .read<CartCubit>()
+                                                .cardPurchases[index],
+                                        index: index, // تمرير index لكل عنصر
+                                      ),
+                                    );
+                                  },
+                                  childCount: state is GetCardsLoading
+                                      ? damyListCrt.length
+                                      : context
+                                          .read<CartCubit>()
+                                          .cardPurchases
+                                          .length,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: kBottomNavigationBarHeight + width * 0.1,
-                        )
-                      ],
+                            ],
+                          ),
+                          SizedBox(
+                            height: kBottomNavigationBarHeight + width * 0.1,
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
+          ),
         );
       },
     );

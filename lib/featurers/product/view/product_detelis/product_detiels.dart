@@ -7,6 +7,7 @@ import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/function/naviation_to_replace.dart';
 import 'package:my_shop/core/compnds/text/custton_title_text.dart';
 import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
+import 'package:my_shop/featurers/cart/view/cart_view.dart';
 import 'package:my_shop/featurers/inner_feature/recently/cubit/recently_cubit.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
@@ -18,7 +19,6 @@ import 'package:my_shop/featurers/product/view/product_detelis/review/review_car
 import 'package:my_shop/featurers/product/view/product_detelis/review/review_card_me.dart';
 import 'package:my_shop/featurers/product/view/product_home/haert_botton.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -55,9 +55,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
       }, productId: widget.productModel!.productId!)
     });
 
-    Future.delayed(Duration(milliseconds: 500));
-    _scrollController.animateTo(0,
-        duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+  
   }
 
   @override
@@ -86,9 +84,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
                     : false,
                 child: BottonSeatDetils(
                   onPressed2: () async {
-                    Navigator.pop(context);
-                    context.read<RootAppCubit>().changeIndex(1);
-                    context.read<RootAppCubit>().getPageCon.jumpToPage(1);
+                  navigationTo(context: context, page: CartView());
                   },
                   productModel: widget.productModel,
                   size: size,

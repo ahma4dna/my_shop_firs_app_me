@@ -4,10 +4,13 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconly/iconly.dart';
 import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/compnds/text/custton_title_text.dart';
+import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
+import 'package:my_shop/featurers/cart/view/cart_view.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/featurers/product/view/product_home/product_list.dart';
 import 'package:my_shop/featurers/search/cubit/search_cubit.dart';
@@ -26,7 +29,6 @@ class _HomeViewState extends State<HomeView>
   final ScrollController _scrollController = ScrollController();
   Future<void> fatchDataProduct() async {
     try {
-      
       await Future.wait({
         context.read<ProductCubit>().getProduct(),
       });
@@ -56,94 +58,129 @@ class _HomeViewState extends State<HomeView>
     super.build(context);
     Size size = MediaQuery.of(context).size;
 
-    return BlocConsumer<ProductCubit, ProductState>(
-      listener: (context, state) {},
+    return BlocBuilder<CartCubit, CartState>(
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            leading: Icon(
-              IconlyBold.notification,
-              size: size.width * 0.08,
-            ),
-            title: FittedBox(
-              child: CusttonTitleText(
-                text: "متجري",
-                fontSize: size.width * 0.06,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            centerTitle: true,
-          ),
-          body: RefreshIndicator(
-            backgroundColor: Theme.of(context).iconTheme.color,
-            color: Theme.of(context).primaryColor,
-            onRefresh: fatchDataProduct,
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              physics: BouncingScrollPhysics(),
-              child: Skeletonizer(
-                enabled: state is GetProductLoading ? true : false,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: size.width * 0.05,
-                    ),
-                    slideer(size),
-                    SizedBox(
-                      height: size.width * 0.1,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: Row(
-                        children: [
-                          FittedBox(
-                            child: CusttonTitleText(
-                              text: "مضاف مؤخرأ",
-                              fontSize: size.width * 0.06,
+         final cubitCart = context.read<CartCubit>();
+        return BlocConsumer<ProductCubit, ProductState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+           
+            return Scaffold(
+              appBar: AppBar(
+                leading: Icon(
+                  IconlyBold.notification,
+                  size: size.width * 0.08,
+                ),
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      navigationTo(
+                        context: context,
+                        page: CartView(),
+                      );
+                    },
+                    icon: cubitCart.cardPurchases.isNotEmpty
+                        ? Badge(
+                            backgroundColor: Colors.red,
+                            label: CusttonTitleText(
+                              text: cubitCart.cardPurchases.length.toString(),
+                              fontSize: 40.sp,
                             ),
-                          ),
-                          SizedBox(
-                            width: size.width * 0.05,
-                          ),
-                          FittedBox(
                             child: Icon(
-                              Icons.rocket_launch,
-                              size: size.width * 0.07,
+                              IconlyBold.bag_2,
+                              size: 100.r,
                             ),
+                          )
+                        : Icon(
+                            IconlyBold.bag_2,
+                            size: 100.r,
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: size.width * 0.06,
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: ProductList()),
-                    SizedBox(
-                      height: size.width * 0.06,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: Row(
-                        children: [
-                          CusttonTitleText(
-                            text: "التصنيفات",
-                            fontSize: size.width * 0.06,
+                  ),
+                ],
+                title: FittedBox(
+                  child: CusttonTitleText(
+                    text: "متجري",
+                    fontSize: size.width * 0.06,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                centerTitle: true,
+              ),
+              body: RefreshIndicator(
+                backgroundColor: Theme.of(context).iconTheme.color,
+                color: Theme.of(context).primaryColor,
+                onRefresh: fatchDataProduct,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  physics: BouncingScrollPhysics(),
+                  child: Skeletonizer(
+                    enabled: state is GetProductLoading ? true : false,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: size.width * 0.05,
+                        ),
+                        slideer(size),
+                        SizedBox(
+                          height: size.width * 0.1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: Row(
+                            children: [
+                              FittedBox(
+                                child: CusttonTitleText(
+                                  text: "مضاف مؤخرأ",
+                                  fontSize: size.width * 0.06,
+                                ),
+                              ),
+                              SizedBox(
+                                width: size.width * 0.05,
+                              ),
+                              FittedBox(
+                                child: Icon(
+                                  Icons.rocket_launch,
+                                  size: size.width * 0.07,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: size.width * 0.06,
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: ProductList()),
+                        SizedBox(
+                          height: size.width * 0.06,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: Row(
+                            children: [
+                              CusttonTitleText(
+                                text: "التصنيفات",
+                                fontSize: size.width * 0.06,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: size.width * 0.03,
+                        ),
+                        CategoryList(size: size),
+                        SizedBox(
+                          height: kBottomNavigationBarHeight + 20,
+                        )
+                      ],
                     ),
-                    SizedBox(
-                      height: size.width * 0.03,
-                    ),
-                    CategoryList(size: size)
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
@@ -205,8 +242,8 @@ class CategoryList extends StatelessWidget {
               navigationTo(
                 context: context,
                 page: SearchView(
-                  // caegory: CategoryMosel.categryModel[index].text,
-                ),
+                    // caegory: CategoryMosel.categryModel[index].text,
+                    ),
               );
             },
             child: CategoryCard(

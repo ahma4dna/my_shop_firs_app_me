@@ -74,7 +74,7 @@ class LightTheme {
           borderRadius: BorderRadius.circular(12),
         ),
       ),
-
+primaryColorDark: Colors.grey,
       // تخصيص الأزرار (ElevatedButton)
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
@@ -104,6 +104,7 @@ class DarkTheme {
       primaryColor: AppColor.darkPrimaryColor,
       scaffoldBackgroundColor: AppColor.primaryDarkColor,
       brightness: Brightness.dark,
+primaryColorDark: AppColor.darkCardColor,
 
       // تخصيص شريط التطبيق (AppBar)
       appBarTheme: AppBarTheme(
