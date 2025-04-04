@@ -24,8 +24,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
       if (state is LoginGoogleSucces || state is LoginSucces || state is SignUpSucces) {
-          final rootCubit = context.read<RootAppCubit>();
-          rootCubit.changeIndex(0); // تعيين الصفحة الافتراضية إلى "الرئيسية"
+    
 
           WidgetsBinding.instance.addPostFrameCallback((_) async {
             await Navigator.pushReplacement(

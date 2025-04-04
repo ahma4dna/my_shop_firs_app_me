@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconly/iconly.dart';
 import 'package:my_shop/core/function/my_dilog.dart';
 import 'package:my_shop/core/compnds/text/custton_subtitle_text.dart';
@@ -19,11 +20,10 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
-      final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   Future<void> getCards() async {
     await context.read<CartCubit>().getCards();
-      
   }
 
   @override
@@ -46,7 +46,12 @@ class _CartViewState extends State<CartView> {
           child: Scaffold(
             bottomSheet: context.read<CartCubit>().cardPurchases.isEmpty
                 ? null
-                : CheakBottonSheat(width: width),
+                : SafeArea(
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 0.03.sw),
+                      child: CheakBottonSheat(width: width),
+                    ),
+                  ),
             appBar: AppBar(
               centerTitle: true,
               title: CusttonSubtitleText(
@@ -83,12 +88,13 @@ class _CartViewState extends State<CartView> {
                 : Skeletonizer(
                     enabled: state is GetCardsLoading ? true : false,
                     child: RefreshIndicator(
-                          backgroundColor: Theme.of(context).iconTheme.color,
-                color: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).iconTheme.color,
+                      color: Theme.of(context).primaryColor,
                       onRefresh: getCards,
                       child: ListView(
                         controller: _scrollController,
-                        physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                        physics: BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics()),
                         children: [
                           CustomScrollView(
                             shrinkWrap: true,
@@ -98,7 +104,8 @@ class _CartViewState extends State<CartView> {
                                 delegate: SliverChildBuilderDelegate(
                                   (context, index) {
                                     return Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 5),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 5),
                                       child: CartWidget(
                                         width: width,
                                         cartModel: state is GetCardsLoading
