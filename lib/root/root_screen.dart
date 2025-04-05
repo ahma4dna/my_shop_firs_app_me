@@ -19,7 +19,11 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
    int selctIcon = 0;
   final PageController pageController = PageController(initialPage: 0);
-
+@override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
@@ -76,9 +80,7 @@ class _RootScreenState extends State<RootScreen> {
                           },
                           haptic: false, // haptic feedback
                           tabBorderRadius: 35.r, // tab button border
-                          curve: Curves.linear, // tab animation curves
-                          duration:
-                              Duration(milliseconds: 100), // tab animation duration
+                         
                           gap: 10.w, // the tab button gap between icon and text
                           color: Colors.white, // unselected icon color
                           activeColor: Colors.blue,

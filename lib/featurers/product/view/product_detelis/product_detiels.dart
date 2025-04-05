@@ -43,7 +43,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
   void starAutoImageSelct() {
    timer= Timer.periodic(
     
-      Duration(seconds: 3),
+      Duration(seconds: 1),
       (timer) {
         setState(() {
           
@@ -75,7 +75,11 @@ class _ProductDetielsState extends State<ProductDetiels> {
     fatchDetiels();
     starAutoImageSelct();
   }
-
+@override
+  void dispose() {
+  timer?.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
