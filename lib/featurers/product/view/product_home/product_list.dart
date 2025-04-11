@@ -4,14 +4,10 @@ import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
 import 'package:my_shop/featurers/product/view/product_home/product_card.dart';
 
-class ProductList extends StatefulWidget {
+class ProductList extends StatelessWidget {
   const ProductList({super.key});
 
-  @override
-  State<ProductList> createState() => _ProductListState();
-}
 
-class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -33,14 +29,14 @@ class _ProductListState extends State<ProductList> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 10), // مسافة بين العناصر
                       child: ProductCard(
-                        productModel: state is GetProductLoading
+                        productModel: context.read<ProductCubit>().isLoading
                             ? Constant.damylist[index]
                             : context.read<ProductCubit>().products[index],
                         size: size,
                       ),
                     );
                   },
-                  childCount: state is GetProductLoading
+                  childCount: context.read<ProductCubit>().isLoading
                       ? Constant.damylist.length
                       : context
                           .read<ProductCubit>()

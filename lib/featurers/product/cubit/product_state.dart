@@ -52,3 +52,6 @@ final class UnLikeAllProductLoading extends ProductState {}
 final class UnLikeAllProductSucecc extends ProductState {}
 
 final class UnLikeAllProductErorr extends ProductState {}
+final class GetImageSliderLoading extends ProductState {}
+final class GetImageSliderSucecc extends ProductState {}
+final class GetImageSliderErorr extends ProductState {}

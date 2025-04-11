@@ -7,39 +7,16 @@ import 'package:my_shop/core/compnds/text/custton_subtitle_text.dart';
 import 'package:my_shop/featurers/product/model/product_model.dart';
 import 'package:my_shop/featurers/product/view/product_detelis/product_detiels.dart';
 import 'package:my_shop/featurers/search/cubit/search_cubit.dart';
-import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class SearchView extends StatefulWidget {
-  const SearchView({super.key});
+// ignore: must_be_immutable
+class SearchView extends StatelessWidget {
+   SearchView({super.key});
 
-  @override
-  State<SearchView> createState() => _SearchViewState();
-}
-
-class _SearchViewState extends State<SearchView> {
-  final TextEditingController controller = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
-
-  Future<void> getData() async {
-    if (context.read<RootAppCubit>().currentIndex == 2) {
-      context.read<SearchCubit>().clearFilter();
-    }
-
-    await Future.wait([
-      context.read<SearchCubit>().getProduct(),
-    ]);
-   
-  }
-
-  @override
-  void initState() {
-    getData();
-    super.initState();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
+  
     double width = MediaQuery.of(context).size.width;
 
     return BlocConsumer<SearchCubit, SearchState>(
@@ -59,12 +36,12 @@ class _SearchViewState extends State<SearchView> {
             body: RefreshIndicator(
               backgroundColor: Theme.of(context).iconTheme.color,
               color: Theme.of(context).primaryColor,
-              onRefresh: getData,
+              onRefresh: cubit.getProduct,
               child: SingleChildScrollView(
-                controller: _scrollController,
+              
                 physics: BouncingScrollPhysics( parent: AlwaysScrollableScrollPhysics()),
                 child: Skeletonizer(
-                  enabled: state is GetProductSeLoading ? true : false,
+                  enabled: state is GetProductSeLoadingSerc ? true : false,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +61,7 @@ class _SearchViewState extends State<SearchView> {
                                 fontSize: width * 0.052,
                               ),
                               prefixIcon: Icon(Icons.search),
-                              controller: controller,
+                              controller: TextEditingController(),
                               hint: "البحت",
                             ),
                           ),
@@ -134,13 +111,13 @@ class _SearchViewState extends State<SearchView> {
                                       vertical: 5), // مسافة بين العناصر
                                   child: SearchWidget(
                                     width: width,
-                                    productModel: state is GetProductSeLoading
+                                    productModel: state is GetProductSeLoadingSerc
                                         ? damylist[index]
                                         : products[index],
                                   ),
                                 );
                               },
-                                  childCount: state is GetProductSeLoading
+                                  childCount: state is GetProductSeLoadingSerc
                                       ? damylist.length
                                       : products.length // عدد العناصر
                                   ),

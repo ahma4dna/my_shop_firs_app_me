@@ -13,7 +13,7 @@ class SearchCubit extends Cubit<SearchState> {
 
   Future<void> getProduct() async {
     products = [];
-    emit(GetProductSeLoading());
+    emit(GetProductSeLoadingSerc());
     try {
       final data = await _apiDio.getData(path: "products");
 
@@ -22,7 +22,7 @@ class SearchCubit extends Cubit<SearchState> {
           products.add(ProductModel.fromJson(product));
         }
 
-        emit(GetProductSeSucecc());
+        emit(GetProductSeSuceccSer());
       } else {}
       // log(data.toString());
     } catch (e) {

@@ -1,3 +1,5 @@
+// ignore_for_file: dead_code
+
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:my_shop/core/compnds/text/custton_title_text.dart';

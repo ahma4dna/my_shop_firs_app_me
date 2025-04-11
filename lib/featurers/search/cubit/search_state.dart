@@ -5,9 +5,9 @@ sealed class SearchState {}
 
 final class SearchInitial extends SearchState {}
 
-final class GetProductSeLoading extends SearchState {}
+final class GetProductSeLoadingSerc extends SearchState {}
 
-final class GetProductSeSucecc extends SearchState {}
+final class GetProductSeSuceccSer extends SearchState {}
 
 final class GetProductSeErorr extends SearchState {}
 final class GetProductSuceccCat extends SearchState {}

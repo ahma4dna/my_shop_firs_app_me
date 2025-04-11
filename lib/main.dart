@@ -64,6 +64,11 @@ class MyApp extends StatelessWidget {
             return SearchCubit();
           },
         ),
+          BlocProvider(
+          create: (context) {
+            return AuthCubit();
+          },
+        ),
       ],
       child: BlocConsumer<RootAppCubit, RootAppState>(
         listener: (context, state) {},
@@ -79,7 +84,7 @@ class MyApp extends StatelessWidget {
                 ? DarkTheme.themeData(context)
                 : LightTheme.themeData(context),
             child: ScreenUtilInit(
-              designSize: const Size(1220, 2712), // دقة شاشة Poco X6 Pro
+              designSize: const Size(1220, 2712), 
               minTextAdapt: true,
               splitScreenMode: true,
               child: MaterialApp(

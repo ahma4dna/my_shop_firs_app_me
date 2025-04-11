@@ -43,7 +43,7 @@ class _ProductDetielsState extends State<ProductDetiels> {
   void starAutoImageSelct() {
    timer= Timer.periodic(
     
-      Duration(seconds: 1),
+      Duration(seconds: 3),
       (timer) {
         setState(() {
           

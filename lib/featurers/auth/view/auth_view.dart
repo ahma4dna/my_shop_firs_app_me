@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_shop/featurers/auth/cubit/auth_cubit.dart';
 import 'package:my_shop/featurers/auth/view/login_form.dart';
 import 'package:my_shop/featurers/auth/view/sign_up_form.dart';
-import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:my_shop/root/root_screen.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

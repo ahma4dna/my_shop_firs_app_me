@@ -9,6 +9,7 @@ import 'package:iconly/iconly.dart';
 import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/compnds/text/custton_title_text.dart';
+import 'package:my_shop/featurers/auth/cubit/auth_cubit.dart';
 import 'package:my_shop/featurers/cart/cubit/cart_cubit.dart';
 import 'package:my_shop/featurers/cart/view/cart_view.dart';
 import 'package:my_shop/featurers/product/cubit/product_cubit.dart';
@@ -26,19 +27,27 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
-  final ScrollController _scrollController = ScrollController();
   Future<void> fatchDataProduct() async {
     try {
       await Future.wait({
+        context.read<ProductCubit>().getImageSlider(),
+      });
+      await Future.wait({
+        // ignore: use_build_context_synchronously
         context.read<ProductCubit>().getProduct(),
+      });
+      await Future.wait({
+        // ignore: use_build_context_synchronously
+        context.read<AuthCubit>().getDataUser(context: context),
+      });
+      await Future.wait({
+        // ignore: use_build_context_synchronously
+        context.read<SearchCubit>().getProduct(),
       });
       await Future.wait({
         // ignore: use_build_context_synchronously
         context.read<ProductCubit>().getLike(),
       });
-      Future.delayed(Duration(milliseconds: 500));
-      _scrollController.animateTo(0,
-          duration: Duration(milliseconds: 500), curve: Curves.easeOut);
     } catch (e) {
       log(e.toString());
     }
@@ -60,11 +69,10 @@ class _HomeViewState extends State<HomeView>
 
     return BlocBuilder<CartCubit, CartState>(
       builder: (context, state) {
-         final cubitCart = context.read<CartCubit>();
+        final cubitCart = context.read<CartCubit>();
         return BlocConsumer<ProductCubit, ProductState>(
           listener: (context, state) {},
           builder: (context, state) {
-           
             return Scaffold(
               appBar: AppBar(
                 leading: Icon(
@@ -111,10 +119,9 @@ class _HomeViewState extends State<HomeView>
                 color: Theme.of(context).primaryColor,
                 onRefresh: fatchDataProduct,
                 child: SingleChildScrollView(
-                  controller: _scrollController,
                   physics: BouncingScrollPhysics(),
                   child: Skeletonizer(
-                    enabled: state is GetProductLoading ? true : false,
+                    enabled: context.read<ProductCubit>().isLoading,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -203,14 +210,19 @@ class _HomeViewState extends State<HomeView>
   }
 
   List<Widget> sliderList(Size size) {
-    return List.generate(Constant.images.length, (index) {
+    return List.generate(
+        context.read<ProductCubit>().isLoading
+            ? Constant.images.length
+            : context.read<ProductCubit>().imageSlider.length, (index) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: Image(
           width: size.width * 0.9,
           fit: BoxFit.cover,
           image: NetworkImage(
-            Constant.images[index],
+            context.read<ProductCubit>().isLoading
+                ? Constant.images[index]
+                : context.read<ProductCubit>().imageSlider[index],
           ),
         ),
       );

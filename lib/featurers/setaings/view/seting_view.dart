@@ -14,32 +14,17 @@ import 'package:my_shop/featurers/inner_feature/recently/view/recently.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class SetingView extends StatefulWidget {
+class SetingView extends StatelessWidget {
   const SetingView({super.key});
 
   @override
-  State<SetingView> createState() => _SetingViewState();
-}
-
-class _SetingViewState extends State<SetingView>
-    with AutomaticKeepAliveClientMixin {
-  bool valueBool = false;
-  bool loading = false;
-  @override
-  bool get wantKeepAlive => true;
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     Size size = MediaQuery.of(context).size;
-    return BlocProvider(
-      create: (context) {
-        final cubit = AuthCubit();
-        cubit.getDataUser(context: context);
-        return cubit;
-      },
-      child: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is SignOutSucecc) {
+
+    final cubit = context.read<AuthCubit>();
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+           if (state is SignOutSucecc) {
             WidgetsBinding.instance.addPostFrameCallback((_) async {
               await Navigator.pushReplacement(
                 context,
@@ -47,269 +32,192 @@ class _SetingViewState extends State<SetingView>
               );
             });
           }
-        },
-        builder: (context, state) {
-          final cubit = context.read<AuthCubit>();
-          return Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Skeletonizer(
-                enabled: state is SignOutLoading || state is GetDataUserLoading,
-                child: ListView(
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: size.width * 0.06,
-                          backgroundColor:
-                              Theme.of(context).appBarTheme.backgroundColor,
-                          child: Icon(
-                            IconlyBold.profile,
-                            color: Theme.of(context).iconTheme.color,
-                            size: size.width * 0.075,
-                          ),
+      },
+      builder: (context, state) {
+        return Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            child: Skeletonizer(
+              enabled: false,
+              child: ListView(
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: size.width * 0.06,
+                        backgroundColor:
+                            Theme.of(context).appBarTheme.backgroundColor,
+                        child: Icon(
+                          IconlyBold.profile,
+                          color: Theme.of(context).iconTheme.color,
+                          size: size.width * 0.075,
                         ),
-                        SizedBox(
-                          width: size.width * 0.03,
-                        ),
-                        FittedBox(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CusttonTitleText(
-                                text: cubit.userModel?.name ?? "not name",
-                                fontSize: size.width * 0.05,
-                              ),
-                              CusttonSubtitleText(
-                                text: cubit.userModel?.email ?? "not email",
-                                fontSize: size.width * 0.05,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.width * 0.03,
-                    ),
-                    CusttonTitleText(
-                      text: "عام",
-                      fontSize: size.width * 0.05,
-                    ),
-                    SizedBox(
-                      height: size.width * 0.03,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: size.width * 0.55,
-                      child: Card(
+                      ),
+                      SizedBox(
+                        width: size.width * 0.03,
+                      ),
+                      FittedBox(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            MyListTile(
-                              size: size,
-                              name: 'طلباتي',
-                              icone: IconlyBold.buy,
-                              onTap: () {},
+                            CusttonTitleText(
+                              text: cubit.userModel?.name ?? "not name",
+                              fontSize: size.width * 0.05,
                             ),
-                            Divider(
-                              endIndent: 15,
-                              indent: 15,
-                            ),
-                            MyListTile(
-                              size: size,
-                              name: "المفضلة",
-                              icone: IconlyBold.heart,
-                              onTap: () {
-                                navigationTo(context: context, page: Like());
-                              },
-                            ),
-                            Divider(
-                              endIndent: 15,
-                              indent: 15,
-                            ),
-                            MyListTile(
-                              size: size,
-                              name: 'تمت مشاهدنه مسبقا',
-                              icone: IconlyBold.time_square,
-                              onTap: () {
-                                navigationTo(
-                                    context: context, page: Recently());
-                              },
+                            CusttonSubtitleText(
+                              text: cubit.userModel?.email ?? "not email",
+                              fontSize: size.width * 0.05,
+                              fontWeight: FontWeight.w400,
                             ),
                           ],
                         ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.width * 0.03,
+                  ),
+                  CusttonTitleText(
+                    text: "عام",
+                    fontSize: size.width * 0.05,
+                  ),
+                  SizedBox(
+                    height: size.width * 0.03,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.width * 0.55,
+                    child: Card(
+                      child: Column(
+                        children: [
+                          MyListTile(
+                            size: size,
+                            name: 'طلباتي',
+                            icone: IconlyBold.buy,
+                            onTap: () {},
+                          ),
+                          Divider(
+                            endIndent: 15,
+                            indent: 15,
+                          ),
+                          MyListTile(
+                            size: size,
+                            name: "المفضلة",
+                            icone: IconlyBold.heart,
+                            onTap: () {
+                              navigationTo(context: context, page: Like());
+                            },
+                          ),
+                          Divider(
+                            endIndent: 15,
+                            indent: 15,
+                          ),
+                          MyListTile(
+                            size: size,
+                            name: 'تمت مشاهدنه مسبقا',
+                            icone: IconlyBold.time_square,
+                            onTap: () {
+                              navigationTo(context: context, page: Recently());
+                            },
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: size.width * 0.03,
+                  ),
+                  SizedBox(
+                    height: size.width * 0.03,
+                  ),
+                  CusttonTitleText(
+                    text: "الاعدادات",
+                    fontSize: size.width * 0.05,
+                  ),
+                  SizedBox(
+                    height: size.width * 0.03,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.width * 0.55,
+                    child: Card(
+                      child: Column(
+                        children: [
+                          MyListTile(
+                            size: size,
+                            name: "الثيم",
+                            icone: Icons.dark_mode_sharp,
+                            onTap: () {
+                              showThemeSelector(context, size);
+                            },
+                          ),
+                          Divider(
+                            endIndent: 15,
+                            indent: 15,
+                          ),
+                          MyListTile(
+                            size: size,
+                            name: "اللغة",
+                            icone: Icons.language,
+                            onTap: () {
+                              showDilogOkOrCncel(
+                                  context: context,
+                                  textWr: "ستتوفر قريبا",
+                                  fctOk: () {
+                                    Navigator.pop(context);
+                                  },
+                                  isErorr: false,
+                                  textOk: "حسنا");
+                            },
+                          ),
+                          Divider(
+                            endIndent: 15,
+                            indent: 15,
+                          ),
+                          MyListTile(
+                            size: size,
+                            name: "العناوين",
+                            icone: IconlyBold.location,
+                            onTap: () {
+                              showDilogOkOrCncel(
+                                  context: context,
+                                  textWr: "ستتوفر قريبا",
+                                  fctOk: () {
+                                    Navigator.pop(context);
+                                  },
+                                  isErorr: false,
+                                  textOk: "حسنا");
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    CusttonTitleText(
-                      text: "الاعدادات",
+                  ),
+                  SizedBox(
+                    height: size.width * 0.06,
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      showDilogOkOrCncel(
+                        context: context,
+                        textWr: "هل تريد تسجيل الخروج",
+                        isErorr: true,
+                        fctOk: () async {
+                          await context
+                              .read<AuthCubit>()
+                              .signOut(context: context);
+                        },
+                      );
+                    },
+                    child: CusttonTitleText(
+                      text: "تسجيل الخروج",
+                      color: Colors.blue,
                       fontSize: size.width * 0.05,
                     ),
-                    SizedBox(
-                      height: size.width * 0.03,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: size.width * 0.55,
-                      child: Card(
-                        child: Column(
-                          children: [
-                            MyListTile(
-                              size: size,
-                              name: "الثيم",
-                              icone: Icons.dark_mode_sharp,
-                              onTap: () {
-                                showThemeSelector(context, size);
-                              },
-                            ),
-                            Divider(
-                              endIndent: 15,
-                              indent: 15,
-                            ),
-                            MyListTile(
-                              size: size,
-                              name: "اللغة",
-                              icone: Icons.language,
-                              onTap: () {
-                                showDilogOkOrCncel(
-                                    context: context,
-                                    textWr: "ستتوفر قريبا",
-                                    fctOk: () {
-                                      Navigator.pop(context);
-                                    },
-                                    isErorr: false,
-                                    textOk: "حسنا");
-                                // showModalBottomSheet(
-                                //   shape: RoundedRectangleBorder(
-                                //     borderRadius: BorderRadius.vertical(
-                                //       top: Radius.circular(35),
-                                //     ),
-                                //   ),
-                                //   context: context,
-                                //   builder: (context) => SizedBox(
-                                //     width: double.infinity,
-                                //     height: size.width * 0.8,
-                                //     child: Column(
-                                //       children: [
-                                //         SizedBox(
-                                //           height: size.width * 0.05,
-                                //         ),
-                                //         Container(
-                                //           color: Colors.grey,
-                                //           width: 35,
-                                //           height: 4,
-                                //         ),
-                                //         SizedBox(
-                                //           height: size.width * 0.04,
-                                //         ),
-                                //         CusttonTitleText(
-                                //           text: "خيارات اللغة",
-                                //           fontSize: 20,
-                                //         ),
-                                //         Divider(),
-                                //         SizedBox(
-                                //           height: size.width * 0.08,
-                                //         ),
-                                //         Directionality(
-                                //           textDirection: TextDirection.rtl,
-                                //           child: ListTile(
-                                //             title: CusttonTitleText(
-                                //               text: "العربية",
-                                //             ),
-                                //             trailing: Icon(
-                                //                 false
-                                //                     // ignore: dead_code
-                                //                     ? Icons
-                                //                         .radio_button_unchecked
-                                //                     : Icons
-                                //                         .radio_button_checked,
-                                //                 color:
-                                //                     AppColor.darkPrimaryColor),
-                                //             onTap: () async {},
-                                //           ),
-                                //         ),
-                                //         SizedBox(
-                                //           height: size.width * 0.04,
-                                //         ),
-                                //         Directionality(
-                                //           textDirection: TextDirection.rtl,
-                                //           child: ListTile(
-                                //             title: CusttonTitleText(
-                                //               text: "English",
-                                //             ),
-                                //             trailing: Icon(
-                                //                 false
-                                //                     // ignore: dead_code
-                                //                     ? Icons
-                                //                         .radio_button_unchecked
-                                //                     : Icons
-                                //                         .radio_button_checked,
-                                //                 color:
-                                //                     AppColor.darkPrimaryColor),
-                                //             onTap: () async {},
-                                //           ),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ),
-                                // );
-                              },
-                            ),
-                            Divider(
-                              endIndent: 15,
-                              indent: 15,
-                            ),
-                            MyListTile(
-                              size: size,
-                              name: "العناوين",
-                              icone: IconlyBold.location,
-                              onTap: () {
-                                showDilogOkOrCncel(
-                                    context: context,
-                                    textWr: "ستتوفر قريبا",
-                                    fctOk: () {
-                                      Navigator.pop(context);
-                                    },
-                                    isErorr: false,
-                                    textOk: "حسنا");
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: size.width * 0.06,
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        showDilogOkOrCncel(
-                          context: context,
-                          textWr: "هل تريد تسجيل الخروج",
-                          isErorr: true,
-                          fctOk: () async {
-                            await context
-                                .read<AuthCubit>()
-                                .signOut(context: context);
-                          },
-                        );
-                      },
-                      child: CusttonTitleText(
-                        text: "تسجيل الخروج",
-                        color: Colors.blue,
-                        fontSize: size.width * 0.05,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

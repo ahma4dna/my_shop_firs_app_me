@@ -1,10 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:iconly/iconly.dart';
-import 'package:my_shop/constant/theam/theame.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 
 class RootScreen extends StatefulWidget {
@@ -17,12 +13,17 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-   int selctIcon = 0;
+  int selctIcon = 0;
   final PageController pageController = PageController(initialPage: 0);
-@override
+  @override
   void dispose() {
     pageController.dispose();
     super.dispose();
+  }
+@override
+  void initState() {
+    context.read<RootAppCubit>().changeIndex(0);
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -32,14 +33,13 @@ class _RootScreenState extends State<RootScreen> {
     return BlocConsumer<RootAppCubit, RootAppState>(
       listener: (context, state) {},
       builder: (context, state) {
-       
         final cubit = context.read<RootAppCubit>();
         // cubit.setPageControler(pageController);
 
         return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
-            extendBody: true,
+           
             body: PageView(
               controller: pageController,
               physics: NeverScrollableScrollPhysics(),
@@ -47,86 +47,34 @@ class _RootScreenState extends State<RootScreen> {
             ),
             bottomNavigationBar: Directionality(
               textDirection: TextDirection.rtl,
-              child: SafeArea(
-                child: SizedBox(
-                  child: Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 15.w),
-                    child: Container(
-                      height: 200.h,
-                      width: double.infinity,
-                      margin: EdgeInsets.symmetric(vertical: 85.h),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(90.r)),
-                          color: Theme.of(context).primaryColorDark,
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0, 20),
-                              // ignore: deprecated_member_use
-                              color: AppColor.darkCardColor,
-                              blurRadius: 45,
-                            )
-                          ]),
-                      child: Padding(
-                        padding:  EdgeInsets.symmetric(horizontal: 50.0.w),
-                        child: GNav(
-                          selectedIndex: cubit.currentIndex,
-                          onTabChange: (value) {
-                            setState(() {
-                              selctIcon = value;
-                            });
-              
-                            cubit.changeIndex(value);
-                            pageController.jumpToPage(value);
-                          },
-                          haptic: false, // haptic feedback
-                          tabBorderRadius: 35.r, // tab button border
-                         
-                          gap: 10.w, // the tab button gap between icon and text
-                          color: Colors.white, // unselected icon color
-                          activeColor: Colors.blue,
-                          // selected icon and text color
-                          iconSize: 60.r, // tab button icon size
-                          tabBackgroundColor:
-                              Colors.blue[100]!, // selected tab background color
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 0.05.sw,
-                            vertical: 0.03.sw,
-                          ), // navigation bar padding
-                          tabs: [
-                            GButton(
-                              iconSize: 80.r,
-                              icon: selctIcon == 0
-                                  ? IconlyBold.home
-                                  : IconlyLight.home,
-                              text: 'الرئيسية',
-                            ),
-                            GButton(
-                              iconSize: 80.r,
-                              icon: selctIcon == 1
-                                  ? IconlyBold.search
-                                  : IconlyLight.search,
-                              text: 'البحث',
-                            ),
-                            GButton(
-                              iconSize: 80.r,
-                              icon:  selctIcon == 2
-                                  ? IconlyBold.discovery
-                                  : IconlyLight.discovery,
-                              text: 'استكشاف',
-                            ),
-                            GButton(
-                              iconSize: 80.r,
-                              icon:  selctIcon == 3
-                                  ? IconlyBold.profile
-                                  : IconlyLight.profile,
-                              text: 'حسابي',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+              child: NavigationBar(
+                selectedIndex: cubit.currentIndex,
+                onDestinationSelected: (value) {
+                  cubit.changeIndex(value);
+                  pageController.jumpToPage(value);
+                },
+                destinations: [
+                  NavigationDestination(
+                    icon: Icon(IconlyLight.home),
+                    label: "الرئيسية",
+                    selectedIcon: Icon(IconlyBold.home),
                   ),
-                ),
+                  NavigationDestination(
+                    icon: Icon(IconlyLight.search),
+                    label: "البحث",
+                    selectedIcon: Icon(IconlyBold.search),
+                  ),
+                  NavigationDestination(
+                    icon: Icon(IconlyLight.discovery),
+                    label: "استكشاف",
+                    selectedIcon: Icon(IconlyBold.discovery),
+                  ),
+                  NavigationDestination(
+                    icon: Icon(IconlyLight.profile),
+                    label: "حسابي",
+                    selectedIcon: Icon(IconlyBold.profile),
+                  ),
+                ],
               ),
             ),
           ),
@@ -135,7 +83,3 @@ class _RootScreenState extends State<RootScreen> {
     );
   }
 }
-
-
-
-

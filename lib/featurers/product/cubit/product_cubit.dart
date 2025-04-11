@@ -14,7 +14,30 @@ class ProductCubit extends Cubit<ProductState> {
   ProductCubit() : super(ProductInitial());
   final ApiDio _apiDio = ApiDio();
 
-  List<ProductModel> products = [];                                               
+  List<ProductModel> products = []; 
+   List<String> imageSlider = [];  
+   bool isLoading = true; 
+   Future<void> getImageSlider() async {
+    imageSlider = [];
+    emit(GetImageSliderLoading());
+    try{
+      final data = await _apiDio.getData(path: "slideer_image");
+      if (data.statusCode == 200) {
+        for (var image in data.data) {
+          imageSlider.add(image['url_image']);
+        }
+        log( imageSlider.toString());
+        emit(GetImageSliderSucecc());
+      } else {
+        emit(GetImageSliderErorr());
+      }
+        
+    }catch(e){
+      emit(GetImageSliderErorr());
+    }finally{
+     
+    }
+   }                                            
 
   Future<void> getProduct() async {
     products = [];
@@ -198,6 +221,8 @@ class ProductCubit extends Cubit<ProductState> {
     } catch (e) {
       log(e.toString());
       emit(GetLikeProductErorr());
+    }finally {
+      isLoading = false;
     }
   }
 
