@@ -1,3 +1,4 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
 import 'package:my_shop/core/compnds/text/custton_subtitle_text.dart';
@@ -51,12 +52,16 @@ class ProductCard extends StatelessWidget {
                       bottomLeft: Radius.circular(5),
                       bottomRight: Radius.circular(5),
                     ),
-                    child: Image.network(
-                      productModel.listUrlImage![0],
+                    child: FancyShimmerImage(
+                   imageUrl:    productModel.listUrlImage![0],
                       width: double.infinity,
                       height: size.width *
                           0.5, 
-                      fit: BoxFit.cover,
+                      boxFit: BoxFit.cover,
+                       shimmerBaseColor: Colors.grey[300]!,
+                      shimmerHighlightColor: Colors.grey[100]!,
+                      shimmerBackColor: Colors.white,
+                      errorWidget: Icon(Icons.error),
                     ),
                   ),
                 ),

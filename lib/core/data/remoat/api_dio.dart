@@ -15,12 +15,16 @@ class ApiDio {
   }
 
   Future<Response> getData({required String path}) async {
-    return await _dio.get(path);
+    return await _dio.get(path,queryParameters:{
+      "order": "created_at.desc"
+    });
   }
 
-  Future<Response> putDat(
+ 
+///supabase use patch method to update data
+   Future<Response> patchData(
       {required String path, required Map<String, dynamic> data}) async {
-    return await _dio.put(path, data: data);
+    return await _dio.patch(path, data: data);
   }
 
   Future<Response> delateData(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:my_shop/constant/constant.dart';
 import 'package:my_shop/core/compnds/custtom_text_form_feild.dart';
 import 'package:my_shop/core/function/naviation_to.dart';
@@ -11,17 +12,16 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 // ignore: must_be_immutable
 class SearchView extends StatelessWidget {
-   SearchView({super.key});
+  SearchView({super.key});
 
- 
   @override
   Widget build(BuildContext context) {
-  
     double width = MediaQuery.of(context).size.width;
 
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
       builder: (context, state) {
+       
         final cubit = context.read<SearchCubit>();
         return Directionality(
           textDirection: TextDirection.rtl,
@@ -37,99 +37,95 @@ class SearchView extends StatelessWidget {
               backgroundColor: Theme.of(context).iconTheme.color,
               color: Theme.of(context).primaryColor,
               onRefresh: cubit.getProduct,
-              child: SingleChildScrollView(
-              
-                physics: BouncingScrollPhysics( parent: AlwaysScrollableScrollPhysics()),
-                child: Skeletonizer(
-                  enabled: state is GetProductSeLoadingSerc ? true : false,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: SizedBox(
-                            width: width * 0.95,
-                            height: width * 0.15,
-                            child: CusttomTextFormFeild(
-                              onChanged: (value) async {
-                                cubit.serchByName(name: value);
-                              },
-                              hintStyle: TextStyle(
-                                color: Theme.of(context).iconTheme.color,
-                                fontSize: width * 0.052,
-                              ),
-                              prefixIcon: Icon(Icons.search),
-                              controller: TextEditingController(),
-                              hint: "البحت",
+              child: Skeletonizer(
+                enableSwitchAnimation: true,
+                enabled: state is GetProductSeLoadingSerc ? true : false,
+                child: ListView(
+                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  children: [
+                    Center(
+                      child: Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: SizedBox(
+                          width: width * 0.95,
+                          height: width * 0.15,
+                          child: CusttomTextFormFeild(
+                            onChanged: (value) async {
+                              cubit.serchByName(name: value);
+                            },
+                            hintStyle: TextStyle(
+                              color: Theme.of(context).iconTheme.color,
+                              fontSize: width * 0.052,
                             ),
+                            prefixIcon: Icon(Icons.search),
+                            controller: TextEditingController(),
+                            hint: "البحت",
                           ),
                         ),
                       ),
-                      if (cubit.selectedCategory != null ||
-                          cubit.selectedMarka != null) ...[
-                        CleraAllFilter(width: width),
-                        SizedBox(
-                          height: width * 0.02,
-                        ),
-                      ],
+                    ),
+                    if (cubit.selectedCategory != null ||
+                        cubit.selectedMarka != null) ...[
+                      CleraAllFilter(width: width),
                       SizedBox(
-                        height: width * 0.05,
+                        height: width * 0.02,
                       ),
-                      ListFilterCategory(
-                        width: width,
-                      ),
-                      SizedBox(
-                        height: width * 0.05,
-                      ),
-                      ListFilterPrand(
-                        width: width,
-                      ),
-                      SizedBox(
-                        height: width * 0.05,
-                      ),
-                      CustomScrollView(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        slivers: [
-                          Builder(builder: (context) {
-                            List<ProductModel> products;
-                            if (cubit.productsSearchByMarkaAndCat.isNotEmpty) {
-                              products = cubit.productsSearchByMarkaAndCat;
-                            } else if (cubit.productsSearch.isNotEmpty) {
-                              products = cubit.productsSearch;
-                            } else {
-                              products = cubit.products;
-                            }
-
-                            return SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                  (context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 5), // مسافة بين العناصر
-                                  child: SearchWidget(
-                                    width: width,
-                                    productModel: state is GetProductSeLoadingSerc
-                                        ? damylist[index]
-                                        : products[index],
-                                  ),
-                                );
-                              },
-                                  childCount: state is GetProductSeLoadingSerc
-                                      ? damylist.length
-                                      : products.length // عدد العناصر
-                                  ),
-                            );
-                          }),
-                        ],
-                      ),
-                      SizedBox(
-                        height: kBottomNavigationBarHeight + width * 0.08,
-                      )
                     ],
-                  ),
+                    SizedBox(
+                      height: width * 0.05,
+                    ),
+                    ListFilterCategory(
+                      width: width,
+                    ),
+                    SizedBox(
+                      height: width * 0.05,
+                    ),
+                    ListFilterPrand(
+                      width: width,
+                    ),
+                    SizedBox(
+                      height: width * 0.05,
+                    ),
+                    CustomScrollView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      slivers: [
+                        Builder(builder: (context) {
+                          List<ProductModel> products;
+                          if (cubit.productsSearchByMarkaAndCat.isNotEmpty) {
+                            products = cubit.productsSearchByMarkaAndCat;
+                          } else if (cubit.productsSearch.isNotEmpty) {
+                            products = cubit.productsSearch;
+                          } else {
+                            products = cubit.products;
+                          }
+
+                          return SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 5), // مسافة بين العناصر
+                                child: SearchWidget(
+                                  width: width,
+                                  productModel: state is GetProductSeLoadingSerc
+                                      ? damylist[index]
+                                      : products[index],
+                                ),
+                              );
+                            },
+                                childCount: state is GetProductSeLoadingSerc
+                                    ? damylist.length
+                                    : products.length // عدد العناصر
+                                ),
+                          );
+                        }),
+                      ],
+                    ),
+                    SizedBox(
+                      height: kBottomNavigationBarHeight + width * 0.08,
+                    )
+                  ],
                 ),
               ),
             ),

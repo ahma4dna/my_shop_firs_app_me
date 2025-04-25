@@ -67,8 +67,7 @@ class _RatingAndRivewState extends State<RatingAndRivew> {
                               data: {
                                 "rate": riv??widget.riv2,
                                 "comment": controller.text,
-                                "id_reviwe": widget.cubitMe!.id,
-                                "created_at": widget.cubitMe!.date
+                              
                               },
                             );
                           } else {

@@ -13,7 +13,7 @@ class LightTheme {
       primaryColor: AppColor.lightPrimaryColor,
       scaffoldBackgroundColor: AppColor.lightScaffoldColor,
       brightness: Brightness.light,
-
+dialogBackgroundColor: Colors.black.withOpacity(0.09),
       // تخصيص شريط التطبيق (AppBar)
       appBarTheme: AppBarTheme(
         iconTheme: IconThemeData(color: AppColor.darkScaffoldColor),
@@ -145,7 +145,7 @@ primaryColorDark: AppColor.darkCardColor,
           },
         ),
       ),
-
+dialogBackgroundColor: Colors.white.withOpacity(0.09),
       // تخصيص مدخلات النصوص (TextField)
       inputDecorationTheme: InputDecorationTheme(
         contentPadding: const EdgeInsets.all(10),
@@ -156,6 +156,7 @@ primaryColorDark: AppColor.darkCardColor,
             color: Colors.red,
             width: 1,
           ),
+          
           borderRadius: BorderRadius.circular(12),
         ),
         enabledBorder: OutlineInputBorder(

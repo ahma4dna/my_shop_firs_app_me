@@ -23,7 +23,12 @@ void main() async {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3bWpia3ZzaHZvb2p0d2F4a2xqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE3ODE4MDQsImV4cCI6MjA1NzM1NzgwNH0.UaajTcSoXHSoFaZUB5I9T8LMyIwtrYWYhRJYcp57GHA',
   );
   Bloc.observer = MyBlocObserver();
-  runApp(const MyApp());
+  runApp(ScreenUtilInit(
+      designSize: const Size(1220, 2712), 
+              minTextAdapt: true,
+              splitScreenMode: true,
+    
+    child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -83,11 +88,7 @@ class MyApp extends StatelessWidget {
             data: themeMode == ThemeMode.dark
                 ? DarkTheme.themeData(context)
                 : LightTheme.themeData(context),
-            child: ScreenUtilInit(
-              designSize: const Size(1220, 2712), 
-              minTextAdapt: true,
-              splitScreenMode: true,
-              child: MaterialApp(
+            child:  MaterialApp(
                 themeMode:
                     context.watch<RootAppCubit>().themeMode == AppThemeMode.dark
                         ? ThemeMode.dark
@@ -108,7 +109,7 @@ class MyApp extends StatelessWidget {
                         child: AuthScreen(),
                       ),
               ),
-            ),
+           
           );
         },
       ),

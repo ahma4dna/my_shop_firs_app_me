@@ -11,3 +11,7 @@ final class SaveTheme extends RootAppState {}
 final class ThemeChanged extends RootAppState {}
 
 final class ThemeLoaded extends RootAppState {}
+final class InternetConnectionChanged extends RootAppState {
+  final bool hasConnection;
+  InternetConnectionChanged(this.hasConnection);
+}

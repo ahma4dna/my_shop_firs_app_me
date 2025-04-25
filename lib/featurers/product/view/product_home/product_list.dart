@@ -29,14 +29,18 @@ class ProductList extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: 10), // مسافة بين العناصر
                       child: ProductCard(
-                        productModel: context.read<ProductCubit>().isLoading
+                        productModel: state is GetImageSliderLoading ||
+                        state is GetProductLoading ||
+                        state is GetLikeProductLoading
                             ? Constant.damylist[index]
                             : context.read<ProductCubit>().products[index],
                         size: size,
                       ),
                     );
                   },
-                  childCount: context.read<ProductCubit>().isLoading
+                  childCount: state is GetImageSliderLoading ||
+                        state is GetProductLoading ||
+                        state is GetLikeProductLoading
                       ? Constant.damylist.length
                       : context
                           .read<ProductCubit>()

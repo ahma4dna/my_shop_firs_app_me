@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CusttonSubtitleText extends StatelessWidget {
-  const CusttonSubtitleText({
+   const CusttonSubtitleText({
     super.key,
     required this.text,
     this.color,
-    this.fontSize = 15,
+    this.fontSize ,
     this.maxLines = 1,
     this.overflow = TextOverflow.ellipsis,
     this.fontWeight = FontWeight.w600,

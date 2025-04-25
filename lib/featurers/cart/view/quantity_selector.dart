@@ -42,11 +42,11 @@ class QuantitySelector extends StatelessWidget {
                 cubit.totalPrice();
                 cubit.totalPriceOneProdct(productId: cartModel.forProduct!);
                 await cubit.updateToalProctPrice(data: {
-                  "id": cartModel.id,
+                  
                   "total_price": cartModel.totalPrice,
                 }, id: cartModel.id!);
                 await cubit.updateQuantity(
-                  data: {"id": cartModel.id, "quantiti": cubit.quantity},
+                  data: {"quantiti": cubit.quantity},
                   id: cartModel.id!,
                 );
                 // تحديث العدد حسب index
@@ -83,11 +83,11 @@ class QuantitySelector extends StatelessWidget {
                 cubit.totalPrice();
                 cubit.totalPriceOneProdct(productId: cartModel.forProduct!);
                 await cubit.updateToalProctPrice(data: {
-                  "id": cartModel.id,
+                
                   "total_price": cartModel.totalPrice,
                 }, id: cartModel.id!); // تحديث العدد حسب index
                 await cubit.updateQuantity(
-                  data: {"id": cartModel.id, "quantiti": cubit.quantity},
+                  data: {"quantiti": cubit.quantity},
                   id: cartModel.id!,
                 );
               },

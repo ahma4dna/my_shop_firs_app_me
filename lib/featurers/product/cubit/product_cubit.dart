@@ -162,7 +162,7 @@ class ProductCubit extends Cubit<ProductState> {
       required BuildContext context}) async {
     emit(PutReviewLoading());
     try {
-      await _apiDio.putDat(
+      await _apiDio.patchData(
         path: "review?id_reviwe=eq.$idRev",
         data: data,
       );
@@ -222,7 +222,7 @@ class ProductCubit extends Cubit<ProductState> {
       log(e.toString());
       emit(GetLikeProductErorr());
     }finally {
-      isLoading = false;
+     
     }
   }
 

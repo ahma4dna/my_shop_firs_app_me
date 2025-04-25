@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:my_shop/root/cubit/root_app_cubit.dart';
 
 class RootScreen extends StatefulWidget {
@@ -20,10 +21,12 @@ class _RootScreenState extends State<RootScreen> {
     pageController.dispose();
     super.dispose();
   }
+ 
 @override
   void initState() {
-    context.read<RootAppCubit>().changeIndex(0);
-    super.initState();
+     context.read<RootAppCubit>().changeIndex(0);
+  context.read<RootAppCubit>().initInternetConnection();
+  super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -31,10 +34,16 @@ class _RootScreenState extends State<RootScreen> {
     double width = MediaQuery.of(context).size.width;
 
     return BlocConsumer<RootAppCubit, RootAppState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+
+          if (state is InternetConnectionChanged) {
+      
+      debugPrint("Connection changed: ${state.hasConnection}");
+    }
+      },
       builder: (context, state) {
         final cubit = context.read<RootAppCubit>();
-        // cubit.setPageControler(pageController);
+       
 
         return Directionality(
           textDirection: TextDirection.rtl,
@@ -43,7 +52,7 @@ class _RootScreenState extends State<RootScreen> {
             body: PageView(
               controller: pageController,
               physics: NeverScrollableScrollPhysics(),
-              children: cubit.pages,
+              children:  cubit.hasInternet ? cubit.pages : cubit.pagesNoNet,
             ),
             bottomNavigationBar: Directionality(
               textDirection: TextDirection.rtl,

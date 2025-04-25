@@ -1,5 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:my_shop/core/compnds/text/custton_title_text.dart';
 import 'package:my_shop/featurers/explor/view/explor_view.dart';
 import 'package:my_shop/featurers/home/view/home_view.dart';
 import 'package:my_shop/featurers/search/view/search_view.dart';
@@ -12,19 +15,58 @@ enum AppThemeMode { system, light, dark }
 
 class RootAppCubit extends Cubit<RootAppState> {
   RootAppCubit() : super(RootAppInitial());
+  bool hasInternet = true;
+
+Future<void> initInternetConnection() async {
+  hasInternet = await InternetConnectionChecker.instance.hasConnection;
+  emit(InternetConnectionChanged(hasInternet));
+
+  InternetConnectionChecker.instance.onStatusChange.listen((status) {
+    hasInternet = status == InternetConnectionStatus.connected;
+    emit(InternetConnectionChanged(hasInternet));
+  });
+}
+
   List<Widget> pages = [
     HomeView(),
     SearchView(),
     ExplorView(),
     SetingView(),
   ];
-List<RiveIcon>icon=[
-  RiveIcon.home2,
-  RiveIcon.unlock,
-  RiveIcon.search,
-  RiveIcon.dislike,
-  RiveIcon.profile,
-];
+
+  List<Widget> pagesNoNet = [
+    Center(
+      child: CusttonTitleText(
+        text: " لا يوجد إتصال بالانترنت يرجي الاتصال",
+        fontSize: 68.sp,
+      ),
+    ),
+    Center(
+      child: CusttonTitleText(
+        text: " لا يوجد إتصال بالانترنت يرجي الاتصال",
+        fontSize: 68.sp,
+      ),
+    ),
+   Center(
+      child: CusttonTitleText(
+        text: " لا يوجد إتصال بالانترنت يرجي الاتصال",
+        fontSize: 68.sp,
+      ),
+    ),
+    Center(
+      child: CusttonTitleText(
+        text: " لا يوجد إتصال بالانترنت يرجي الاتصال",
+        fontSize: 68.sp,
+      ),
+    ),
+  ];
+  List<RiveIcon> icon = [
+    RiveIcon.home2,
+    RiveIcon.unlock,
+    RiveIcon.search,
+    RiveIcon.dislike,
+    RiveIcon.profile,
+  ];
   int currentIndex = 0;
   late PageController pageController;
   PageController get getPageCon => pageController;
@@ -36,8 +78,6 @@ List<RiveIcon>icon=[
     currentIndex = index;
     emit(RootAppChangeIndex());
   }
-
-  
 
   AppThemeMode themeMode = AppThemeMode.system; // الوضع الافتراضي
 

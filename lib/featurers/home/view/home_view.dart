@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -118,71 +119,74 @@ class _HomeViewState extends State<HomeView>
                 backgroundColor: Theme.of(context).iconTheme.color,
                 color: Theme.of(context).primaryColor,
                 onRefresh: fatchDataProduct,
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Skeletonizer(
-                    enabled: context.read<ProductCubit>().isLoading,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: size.width * 0.05,
-                        ),
-                        slideer(size),
-                        SizedBox(
-                          height: size.width * 0.1,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: Row(
-                            children: [
-                              FittedBox(
-                                child: CusttonTitleText(
-                                  text: "مضاف مؤخرأ",
-                                  fontSize: size.width * 0.06,
-                                ),
-                              ),
-                              SizedBox(
-                                width: size.width * 0.05,
-                              ),
-                              FittedBox(
-                                child: Icon(
-                                  Icons.rocket_launch,
-                                  size: size.width * 0.07,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.width * 0.06,
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: ProductList()),
-                        SizedBox(
-                          height: size.width * 0.06,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: Row(
-                            children: [
-                              CusttonTitleText(
-                                text: "التصنيفات",
+                child: Skeletonizer(
+                  enableSwitchAnimation: true,
+                  enabled: state is GetImageSliderLoading ||
+                          state is GetProductLoading ||
+                          state is GetLikeProductLoading
+                      ? true
+                      : false,
+                  child: ListView(
+                    physics: BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
+                    children: [
+                      SizedBox(
+                        height: size.width * 0.05,
+                      ),
+                      slideer(size),
+                      SizedBox(
+                        height: size.width * 0.1,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: Row(
+                          children: [
+                            FittedBox(
+                              child: CusttonTitleText(
+                                text: "مضاف مؤخرأ",
                                 fontSize: size.width * 0.06,
                               ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              width: size.width * 0.05,
+                            ),
+                            FittedBox(
+                              child: Icon(
+                                Icons.rocket_launch,
+                                size: size.width * 0.07,
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: size.width * 0.03,
+                      ),
+                      SizedBox(
+                        height: size.width * 0.06,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: ProductList()),
+                      SizedBox(
+                        height: size.width * 0.06,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: Row(
+                          children: [
+                            CusttonTitleText(
+                              text: "التصنيفات",
+                              fontSize: size.width * 0.06,
+                            ),
+                          ],
                         ),
-                        CategoryList(size: size),
-                        SizedBox(
-                          height: kBottomNavigationBarHeight + 20,
-                        )
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: size.width * 0.03,
+                      ),
+                      CategoryList(size: size),
+                      SizedBox(
+                        height: kBottomNavigationBarHeight + 20,
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -210,20 +214,18 @@ class _HomeViewState extends State<HomeView>
   }
 
   List<Widget> sliderList(Size size) {
-    return List.generate(
-        context.read<ProductCubit>().isLoading
-            ? Constant.images.length
-            : context.read<ProductCubit>().imageSlider.length, (index) {
+    return List.generate(context.read<ProductCubit>().imageSlider.length,
+        (index) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(15),
-        child: Image(
+        child: FancyShimmerImage(
           width: size.width * 0.9,
-          fit: BoxFit.cover,
-          image: NetworkImage(
-            context.read<ProductCubit>().isLoading
-                ? Constant.images[index]
-                : context.read<ProductCubit>().imageSlider[index],
-          ),
+          boxFit: BoxFit.cover,
+          imageUrl: context.read<ProductCubit>().imageSlider[index],
+          shimmerBaseColor: Colors.grey[300]!,
+          shimmerHighlightColor: Colors.grey[100]!,
+          shimmerBackColor: Colors.white,
+          errorWidget: Icon(Icons.error),
         ),
       );
     });

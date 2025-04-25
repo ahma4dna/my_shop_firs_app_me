@@ -80,7 +80,7 @@ class CartCubit extends Cubit<CartState> {
       {required Map<String, dynamic> data, required String id}) async {
     emit(UpdateQuantityCardsLoading());
     try {
-      final dataRes = await apiDio.putDat(
+      final dataRes = await apiDio.patchData(
         path: "card_and_purchase?id=eq.$id",
         data: data,
       );
@@ -97,7 +97,7 @@ class CartCubit extends Cubit<CartState> {
       {required Map<String, dynamic> data, required String id}) async {
     emit(UpdateTotalPriceProdctLoading());
     try {
-      final dataRes = await apiDio.putDat(
+      final dataRes = await apiDio.patchData(
         path: "card_and_purchase?id=eq.$id",
         data: data,
       );
@@ -164,7 +164,11 @@ class CartCubit extends Cubit<CartState> {
 
   int quantity = 1;
   void addQuantity(int index) {
+    
     if (cardPurchases[index].quantiti! < 50) {
+      if(cardPurchases.isNotEmpty){
+        quantity=cardPurchases[index].quantiti!.toInt();
+      }
       quantity =
           cardPurchases[index].quantiti = cardPurchases[index].quantiti! + 1;
       emit(AddQuantity());
